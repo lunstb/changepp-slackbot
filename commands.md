@@ -2,4 +2,42 @@
 
 This text file gives a list of commands for the slackbot
 
-## 
+# Admin Commands
+
+# Non-Admin Commands
+
+## Library Functionality
+
+1. `library list_books`
+
+The `list_books` commands returns a list of books currently available in the library including who currently owns them.
+
+**EXAMPLE**
+
+Salomon: list_books
+
+SlackBot:
+| Book Name          | ID  | Owners |
+|--------------------------------------|-----|-------------------------------|
+| Dynamic Programming: Made easy       | ABC | Berke Lunstad, Salomon Dushimirimana         |
+| How is Berke so Cool                 | DAW | Adam Hollander                |
+| Whatever Happened to Easy Interviews | BKL | Izzy Hood                     |
+
+2. `library borrow_book BOOK_ID (USER_EMAIL)`
+
+The `borrow_book` command is passed a `BOOK_ID` and (optional) `USER_EMAIL`. The slackbot then sets up a conversation between person and owner of book with ID of transaction. Owner of book confirms transaction via `library confirm TRANSACTION_ID`
+
+**EXAMPLE**
+
+Salomon: library borrow_book ABC
+
+
+
+
+3. `library donate_book ISBN`
+
+Adds specified book to library. 
+
+## Internship Functionality
+
+Get companies at which Changepp members have worked! ~NETWORKING~
