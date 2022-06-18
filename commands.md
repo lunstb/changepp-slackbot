@@ -41,3 +41,24 @@ Adds specified book to library.
 ## Internship Functionality
 
 Get companies at which Changepp members have worked! ~NETWORKING~
+
+1. `internship list_companies`
+
+**EXAMPLE**
+
+Salomon: `internship list_companies`
+
+SlackBot:
+| Company Name          | ID  | workers |
+|--------------------------------------|-----|-------------------------------|
+| Microsoft       | ABC | Berke Lunstad, Salomon Dushimirimana         |
+| Google                 | DAW | Adam Hollander                |
+| Meta | BKL | Izzy Hood                     |
+
+2. `internship network [COMPANY_ID] optional-[user_email]`
+
+3. `internship list_resumes`
+
+4. `internship add_resume`
+
+5. `inernship add_company year`
