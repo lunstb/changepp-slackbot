@@ -1,6 +1,4 @@
 """This contains the enums for the different possible commands"""
-
-from lib.modules.terraformmodule.terraform import *
 from enum import Enum
 
 
@@ -53,11 +51,6 @@ command_dispatch = {
     Commands.DATE_SINGLE : "`...{date 1}...` - A single date in a message will result in the returning of the contractor's schedule on that date and the following 2 months",
     Commands.DATE_RANGE : "`...{date 1}...{date 2}...` - Two dates in a message will result in the returning of that contractor's schedule between said dates",
     Commands.HELP : "`help` - This command explains how to interact with the bot as a non-admin + a note for admins",
-    Commands.INSTANCE_CREATE : "`instance create {" + '/'.join(MACHINE_IMAGES.keys()) + "}` - This creates an ec2 instance and returns the IP address unless an instance for the user already exist",
-    Commands.INSTANCE_DESTROY :"`instance destroy` - Destroys the instance created unless no existence exists",
-    Commands.INSTANCE_EXTEND :"`instance extend` - Extends the lifetime of the instance created to 14 days in the future",
-    Commands.INSTANCE_SET_PUBKEY :"`instance pubkey` + {attached key file} - Sets the consultant's public key which they can use to SSH into instances. The key should be attached as a file to the message",
-    Commands.RESOLVE_WORKSPACE : "`resolve_workspace [worskpace_name] [repo] { --branch branch-name } { --keycode workspace_keycode } { --url workspace_url }` - this command needs a workspace_name, a repo location (either a git clone url or the name e.g. IncludeSecurity/myProject), if the workspace already exists, a keycode or invite URL is needed, a branch name can be provided to clone a specific branch ", 
 }
 
 # TODO: put this back into the commands class

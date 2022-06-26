@@ -4,7 +4,7 @@ from lib.commands import Commands, explain_command
 
 from lib.modules.databasemodule.database import *
 
-db = database.instance()
+# db = database.instance()
 
 
 def incorrect_arguments(attempted):
@@ -45,7 +45,6 @@ def did_not_understand():
     """Returns the response for when a non-admin message is not understood."""
 
     return "Command not understood. Please type \"help\" for information on what I can do!"
-
 
 def admin_not_recognized():
     """Returns the response for when an admin messaege is not understood"""

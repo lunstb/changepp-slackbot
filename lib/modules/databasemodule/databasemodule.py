@@ -1,7 +1,5 @@
 from typing import Dict
 from lib.modules.databasemodule.databaseresponse import *
-from lib.modules.mavenlinkmodule.mavenlink import get_user_id
-from lib.modules.mavenlinkmodule.mavenlinkresponses import no_such_maven
 from lib.modules.modulehelpers import *
 from lib.modules.moduletemplate import ModuleTemplate
 
@@ -66,56 +64,56 @@ class DatabaseModule(ModuleTemplate):
 
     def process_message(self, interpretation, client, req, email, db, admin) -> Dict:
         response = None
-        if interpretation["command"] == Commands.ADMIN_CREATE_USER:
-            parsed_slack_email = find_between(
-                interpretation["slack_email"], '|', '>')
-            if db.check_user_exists(slack_email=parsed_slack_email):
-                response = user_already_exists(parsed_slack_email)
-            else:
-                parsed_mavenlink_email = find_between(
-                    interpretation["mavenlink_email"], '|', '>')
-                if get_user_id(parsed_mavenlink_email) is None:
-                    response = no_such_maven(parsed_mavenlink_email)
-                else:
-                    mavenlink_id = get_user_id(parsed_mavenlink_email)
-                    db.insert_user(slack_email=parsed_slack_email,
-                                   mavenlink_id=mavenlink_id, is_admin=False)
-                    response = user_created(parsed_slack_email)
+        # if interpretation["command"] == Commands.ADMIN_CREATE_USER:
+        #     parsed_slack_email = find_between(
+        #         interpretation["slack_email"], '|', '>')
+        #     if db.check_user_exists(slack_email=parsed_slack_email):
+        #         response = user_already_exists(parsed_slack_email)
+        #     else:
+        #         parsed_mavenlink_email = find_between(
+        #             interpretation["mavenlink_email"], '|', '>')
+        #         if get_user_id(parsed_mavenlink_email) is None:
+        #             response = no_such_maven(parsed_mavenlink_email)
+        #         else:
+        #             mavenlink_id = get_user_id(parsed_mavenlink_email)
+        #             db.insert_user(slack_email=parsed_slack_email,
+        #                            mavenlink_id=mavenlink_id, is_admin=False)
+        #             response = user_created(parsed_slack_email)
 
-        elif interpretation["command"] == Commands.ADMIN_IS_ADMIN:
-            parsed_slack_email = find_between(
-                interpretation["slack_email"], '|', '>')
-            if not db.check_user_exists(slack_email=parsed_slack_email):
-                response = no_such_user(parsed_slack_email)
-            else:
-                response = admin_is_admin(
-                    interpretation["slack_email"],
-                    db.check_user_is_admin(slack_email=parsed_slack_email)
-                )
-        elif interpretation["command"] == Commands.ADMIN_DELETE_USER:
-            parsed_slack_email = find_between(
-                interpretation["slack_email"], '|', '>')
-            if not db.check_user_exists(slack_email=parsed_slack_email):
-                response = no_such_user(parsed_slack_email)
-            else:
-                db.remove_user(slack_email=parsed_slack_email)
-                response = admin_delete_user(parsed_slack_email)
+        # elif interpretation["command"] == Commands.ADMIN_IS_ADMIN:
+        #     parsed_slack_email = find_between(
+        #         interpretation["slack_email"], '|', '>')
+        #     if not db.check_user_exists(slack_email=parsed_slack_email):
+        #         response = no_such_user(parsed_slack_email)
+        #     else:
+        #         response = admin_is_admin(
+        #             interpretation["slack_email"],
+        #             db.check_user_is_admin(slack_email=parsed_slack_email)
+        #         )
+        # elif interpretation["command"] == Commands.ADMIN_DELETE_USER:
+        #     parsed_slack_email = find_between(
+        #         interpretation["slack_email"], '|', '>')
+        #     if not db.check_user_exists(slack_email=parsed_slack_email):
+        #         response = no_such_user(parsed_slack_email)
+        #     else:
+        #         db.remove_user(slack_email=parsed_slack_email)
+        #         response = admin_delete_user(parsed_slack_email)
 
-        elif interpretation["command"] == Commands.ADMIN_UPDATE_ADMIN:
-            parsed_slack_email = find_between(
-                interpretation["slack_email"], '|', '>')
-            if not db.check_user_exists(slack_email=parsed_slack_email):
-                response = no_such_user(parsed_slack_email)
-            else:
-                db.update_user_is_admin(
-                    slack_email=parsed_slack_email,
-                    is_admin=interpretation["is_admin"]
-                )
-                response = admin_update_admin(
-                    parsed_slack_email,
-                    interpretation["is_admin"]
-                )
-        elif interpretation["command"] == Commands.ADMIN_LIST_USERS:
-            response = admin_list_users(db)
+        # elif interpretation["command"] == Commands.ADMIN_UPDATE_ADMIN:
+        #     parsed_slack_email = find_between(
+        #         interpretation["slack_email"], '|', '>')
+        #     if not db.check_user_exists(slack_email=parsed_slack_email):
+        #         response = no_such_user(parsed_slack_email)
+        #     else:
+        #         db.update_user_is_admin(
+        #             slack_email=parsed_slack_email,
+        #             is_admin=interpretation["is_admin"]
+        #         )
+        #         response = admin_update_admin(
+        #             parsed_slack_email,
+        #             interpretation["is_admin"]
+        #         )
+        # elif interpretation["command"] == Commands.ADMIN_LIST_USERS:
+        #     response = admin_list_users(db)
 
         return response
