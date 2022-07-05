@@ -63,6 +63,9 @@ SlackBot:
 
 5. `internship add_company year`
 
+
+**New Idea:** Referrals
+
 ## Networking
 
 You can join a networking channel and then once a week you are randomly paired with another member of the channel to discuss things. An initial chat is setup between you and that other member with three prompts of conversation topics (eg. mock interview, resume critique, coding shtuff) plus one other randomly selected one from a list. The channel can be left at any time, at which point you will stop being randomly paired.
