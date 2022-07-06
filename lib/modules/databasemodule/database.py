@@ -13,6 +13,7 @@ Note that even though users are created using their mavenlink email, the only ti
 import datetime
 import logging
 import sqlite3
+import uuid
 
 
 class database:
@@ -53,24 +54,9 @@ class database:
         """Creates the user table, only used in setup """
 
         self.cur.execute(
-            "CREATE TABLE users (email TEXT, mavenlink_id TEXT, is_admin INTEGER, pubkey TEXT, instance_destruction_date TIMESTAMP)")
+            "CREATE TABLE users (email TEXT, first_name TEXT, last_name TEXT, user_type TEXT, graduation_year INTEGER, is_admin INTEGER)")
         self.con.commit()
         logging.info("User table created")
-
-    def drop_user_table(self):
-        """Drops the user table, only used in setup """
-
-        self.cur.execute("DROP TABLE users")
-        self.con.commit()
-        logging.info("Dropping user table")
-
-    def get_mavenlink_id(self, slack_email):
-        """Gets the mavenlink_id of a user from their slack email"""
-
-        self.cur.execute(
-            "SELECT mavenlink_id FROM users WHERE email is ?", (slack_email,))
-        return self.cur.fetchone()[0]
-
 
     def check_user_is_admin(self, slack_email):
         """Checks whether the user correlating to the supplied slack_email is an admin"""
@@ -86,40 +72,18 @@ class database:
             "UPDATE users SET is_admin = ? WHERE email is ?", (is_admin, slack_email))
         self.con.commit()
 
-    def get_user_pubkey(self, slack_email):
-        """Gets the public key for the supplied slack_email"""
-
-        self.cur.execute(
-            "SELECT pubkey FROM users WHERE email is ?", (slack_email,))
-        return self.cur.fetchone()[0]
-
-    def set_user_pubkey(self, slack_email, pubkey):
-        """Sets the default pubkey of the user with the supplied slack_email """
-
-        self.cur.execute(
-            "UPDATE users SET pubkey = ? WHERE email is ?", (pubkey, slack_email))
-        self.con.commit()
-        logging.debug(f"SSH pubkey of {slack_email} updated")
-
-    def get_all_user_pubkeys(self):
-        """Get all users in the db which have pubkeys"""
-
-        self.cur.execute(
-            "SELECT email, pubkey FROM users WHERE pubkey is NOT NULL")
-        return self.cur.fetchall()
-
-    def insert_user(self, slack_email, mavenlink_id, is_admin):
+    def insert_user(self, slack_email, first_name, last_name, user_type, graduation_year, is_admin):
         """Inserts a user into the database with the specified parameters """
 
-        self.cur.execute("INSERT INTO users VALUES (?,?,?,?,?)",
-                         (slack_email, mavenlink_id, is_admin, "", None))
+        self.cur.execute("INSERT INTO users VALUES (?,?,?,?,?,?)",
+                         (slack_email, first_name, last_name, user_type, graduation_year, is_admin))
         self.con.commit()
         logging.debug(f"User with slack email {slack_email} inserted into users table")
 
     def get_users(self):
         """Returns all of the users from the database """
 
-        self.cur.execute("SELECT mavenlink_id, email, is_admin FROM users")
+        self.cur.execute("SELECT email, is_admin FROM users")
         return self.cur.fetchall()
 
     def remove_user(self, slack_email):
@@ -135,29 +99,105 @@ class database:
             "SELECT is_admin FROM users WHERE email is ?", (slack_email,))
         return self.cur.fetchone() is not None
 
-    def get_instance_destruction_date(self, slack_email):
-        """Returns the date that the instance will be destroyed"""
+    def drop_user_table(self):
+        """Drops the user table, only used in setup """
 
-        self.cur.execute(
-            "SELECT instance_destruction_date FROM users WHERE email is ?", (slack_email,))
-
-        response = self.cur.fetchone()
-        return response[1]
-
-    def extend_instance_destruction_date(self, slack_email, days=3):
-        """Extends the destruction date of an instance to X days from now"""
-
-        new_deadline = datetime.datetime.now() + datetime.timedelta(days)
-        self.cur.execute(
-            "UPDATE users SET instance_destruction_date = ? WHERE email is ?", (new_deadline, slack_email,))
+        self.cur.execute("DROP TABLE users")
         self.con.commit()
+        logging.info("Dropping user table")
 
-        return new_deadline
-
-    def clear_instance_destruction_date(self, slack_email):
-        """Set the destruction date of a consultant's instance to NULL as they no longer have an active instance"""
+    def create_books_table(self):
+        """Creates the books table, only used in setup"""
 
         self.cur.execute(
-            "UPDATE users SET instance_destruction_date = ? WHERE email is ?", (None, slack_email,))
+            "CREATE TABLE books (ID TEXT, ISBN TEXT, name TEXT, original_owner_email TEXT, owner_email TEXT, last_transaction_date TIMESTAMP)"
+        )
         self.con.commit()
+        logging.info("Books table created")
+
+    def add_book(self, ISBN, email):
+        """Adds a book to the book table"""
+
+        # Generate ID
+        book_id = uuid.uuid4()
+
+        # Get name from ISBN using API
+        name = "Name pending"
+
+        self.cur.execute(
+            "INSERT INTO books VALUES (?, ?, ?, ?, ?)", (book_id, ISBN, name, email, email, None)
+        )
+        self.con.commit()
+        logging.info(f"Book with ISBN {ISBN} into books table")
+
+    def remove_book(self, book_id):
+        """Removes a book from the book table"""
+
+        self.cur.execute(
+            f"REMOVE FROM books WHERE book_id = {book_id}"
+        )
+        self.con.commit()
+        logging.info("Book removed from books table")
+
+    def trade_book(self, book_id, owner_email):
+        """Trades a book with book_id to owner_email"""
+
+        # I need to also update the transaction date
+
+        self.cur.execute(
+            f"UPDATE books SET owner_email = {owner_email} WHERE book_id = {book_id}"
+        )
+        self.con.commit()
+        logging.info("Book traded")
+
+    def drop_books_table(self):
+        """Drops the books table, only used in setup"""
+
+        self.cur.execute("DROP TABLE books")
+        self.con.commit()
+        logging.info("Dropping books table")
+
+    def create_resume_table(self):
+        """Creates the resume table, only used in setup"""
+
+        self.cur.execute(
+            "CREATE TABLE resume (ID TEXT, user_email TEXT, AWS_link TEXT)"
+        )
+        self.con.commit()
+        logging.info("Resume table created")
+
+    def insert_resume(self, user_email, AWS_link):
+        """Inserts a resume"""
+
+        resume_id = uuid.uuid4()
+
+        self.cur.execute(
+            "INSERT INTO resume VALUES (?, ?, ?)", (resume_id, user_email, AWS_link)
+        )
+        self.con.commit()
+        logging.info(f"Resume inserted with AWS link {AWS_link}")
+
+    def drop_resume_table(self):
+        """Drops the resume table, only used in setup"""
+
+        self.cur.execute("DROP TABLE resume")
+        self.con.commit()
+        logging.info("Dropping books table")
+
+    def create_networking_table(self):
+        """Creates the networking table, only used in setup"""
+
+        self.cur.execute(
+            "CREATE TABLE networking (user_email TEXT, list TEXT)"
+        )
+        self.con.commit()
+        logging.info("Networking table created")
+
+    def drop_networking_table(self):
+        """Drops the networking table, only used in setup"""
+
+        self.cur.execute("DROP TABLE networking")
+        self.con.commit()
+        logging.info("Dropping networking table")
+
 

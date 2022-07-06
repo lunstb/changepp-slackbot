@@ -1,33 +1,51 @@
+import json
+
 from lib.constants import *
+from lib.modules.databasemodule.database import *
 from pathlib import Path
 
 
-def runSetup():
+def run_setup():
     admin_slack_email = ""
-    admin_mavenlink_email = ""
+    first_name = ""
+    last_name = ""
+    user_type = ""
+    graduation_year = 0
 
+    with open(SECRETS_JSON, "r") as read_file:
+        data = json.load(read_file)
+        admin_slack_email = data["ADMIN_SLACK_EMAIL"]
+        first_name = data["FIRST_NAME"]
+        last_name = data["LAST_NAME"]
+        user_type = data["USER_TYPE"]
+        graduation_year = data["GRADUATION_YEAR"]
 
     # Make sure that a database file exists
-    # users_file = Path(USERS_DB)
-    # if users_file.is_file():
-    #     logging.debug("Database file exists")
-    # else:
-    #     f = open(USERS_DB, "w+")
-    #     f.close()
-    #     logging.debug("Database file created")
+    users_file = Path(DB_NAME)
+    if users_file.is_file():
+        logging.debug("Database file exists")
+    else:
+        f = open(DB_NAME, "w+")
+        f.close()
+        logging.debug("Database file created")
 
     # Now connect to the database
-    # db = database.instance()
+    db = database.instance()
 
     # # Check if a table actually exists in the database, if not, make one
-    # if db.user_table_exists():
-    #     return
+    if db.user_table_exists():
+        return
 
     # # Now create everything
-    # db.create_user_table()
-    # if get_user_id(admin_mavenlink_email) is None:
-    #     logging.error("Hmmm... The Mavenlink email you provided didn't have a user id")
-    #     exit()
-    # db.insert_user(slack_email = admin_slack_email, mavenlink_id = get_user_id(admin_mavenlink_email), is_admin = True)
+    db.create_user_table()
+    db.create_books_table()
+    db.create_resume_table()
+    db.create_networking_table()
+    db.insert_user(slack_email=admin_slack_email,
+                   first_name=first_name,
+                   last_name=last_name,
+                   user_type=user_type,
+                   graduation_year=graduation_year,
+                   is_admin=True)
 
     logging.info("Setup is done, the database should be ready!")
