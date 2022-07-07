@@ -4,10 +4,10 @@ from typing import Dict
 
 from lib.commands import Commands
 from lib.formulateresponse import *
-
+from slack_sdk.socket_mode import SocketModeClient
 
 class ModuleTemplate(ABC):
-    def handle_input(self, client, req, db, admin, mavenlink_id) -> bool:
+    def handle_input(self, client: SocketModeClient, req, db, admin) -> bool:
         """"""
 
         # This retrieves the email of whoever sent the message
@@ -22,7 +22,6 @@ class ModuleTemplate(ABC):
             email,
             db,
             admin,
-            mavenlink_id
         )
 
         if interpretation is None:

@@ -27,7 +27,6 @@ class Commands(Enum):
     INSTANCE_EXTEND = 16
     INSTANCE_SET_PUBKEY = 17
 
-
     # And if the user is not set up:
     NOT_SET_UP = 18
 
@@ -36,6 +35,14 @@ class Commands(Enum):
 
     # sendsafely workspace commands
     RESOLVE_WORKSPACE = 20
+
+    # Accessible commands using the library command
+    LIBRARY_LIST_BOOKS = 21
+    LIBRARY_DONATE_BOOK = 22
+
+    # Accessible commands using the network command
+    NETWORK_ADD_ME = 23
+
 
 
 command_dispatch = {
@@ -47,10 +54,14 @@ command_dispatch = {
     Commands.ADMIN_HELP : "`admin help` - This returns a clarification on how to interact with the bot as an admin",
     Commands.ADMIN_LIST_USERS : "`admin list_users` - This returns a list of users with their admin status",
 
-    # These are commands accessible to a non-admin user
-    Commands.DATE_SINGLE : "`...{date 1}...` - A single date in a message will result in the returning of the contractor's schedule on that date and the following 2 months",
-    Commands.DATE_RANGE : "`...{date 1}...{date 2}...` - Two dates in a message will result in the returning of that contractor's schedule between said dates",
     Commands.HELP : "`help` - This command explains how to interact with the bot as a non-admin + a note for admins",
+
+    # Library commands
+    Commands.LIBRARY_LIST_BOOKS : "`library list_books` - This returns a list of all the books that are available for rent",
+    Commands.LIBRARY_DONATE_BOOK : "`library donate_book {ISBN}` - This allows you to donate a book to the library for people to borrow",
+
+    # Network commands
+    Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
 }
 
 # TODO: put this back into the commands class

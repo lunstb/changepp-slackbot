@@ -25,7 +25,7 @@ from lib.modules.databasemodule.databasemodule import DatabaseModule
 from threading import Event
 from lib.constants import *
 from lib.formulateresponse import *
-from lib.setup import runSetup
+from lib.setup import run_setup
 from lib.slack_connect import client
 from slack_sdk.socket_mode import SocketModeClient
 from slack_sdk.socket_mode.request import SocketModeRequest
@@ -33,32 +33,31 @@ from slack_sdk.socket_mode.request import SocketModeRequest
 modules = [DatabaseModule()]
 
 
-def catch_basic_responses(msg, email, db):
+def catch_basic_responses(msg: str, email, db: database):
     """This function """
 
-    # if not db.check_user_exists(email): TODO: no db setup yet
-    #     return account_not_set_up()
+    if not db.check_user_exists(email): # TODO: no db setup yet
+        return account_not_set_up()
 
     msg = msg.strip()
-    # if msg.startswith('admin '):
-    #     if not check_admin(email, db):
-    #         return denied_admin_access()
-    #     if 'help' in msg:
-    #         return admin_help()
+    if msg.startswith('admin '):
+        if not check_admin(email, db):
+            return denied_admin_access()
+        if 'help' in msg:
+            return admin_help()
 
     if 'help' in msg:
         return help_response()
 
 
-# def pre_process(msg, email, db):
-#     is_admin = False
-#     if msg.startswith('admin '):
-#         is_admin = True
+def pre_process(msg: str, email, db):
+    is_admin = False
+    if msg.startswith('admin '):
+        is_admin = True
 
-#     return {
-#         "is_admin": is_admin,
-#         "id": db.get_mavenlink_id(email)
-#     }
+    return {
+        "is_admin": is_admin,
+    }
 
 
 def process(client: SocketModeClient, req: SocketModeRequest):
@@ -79,24 +78,24 @@ def process(client: SocketModeClient, req: SocketModeRequest):
         email = client.web_client.users_info(user=req.payload["event"]["user"])[
             "user"]["profile"]["email"]
 
-        # logging.info(f"{email}->bot: {req.payload['event']['text']}")
+        logging.info(f"{email}->bot: {req.payload['event']['text']}")
 
-        # basic_response = catch_basic_responses(req.payload["event"]["text"], email, db=False)
+        basic_response = catch_basic_responses(req.payload["event"]["text"], email, db)
 
-        # if basic_response is not None:
-        #     response = basic_response
-        # else:
-        #     process_results = pre_process(req.payload["event"]["text"], email, db)
+        if basic_response is not None:
+            response = basic_response
+        else:
+            process_results = pre_process(req.payload["event"]["text"], email, db)
 
-        #     for module in modules:
-        #         found_command = module.handle_input(client, req, db, process_results["is_admin"], process_results["id"])
-        #         if found_command:
-        #             return
+            for module in modules:
+                found_command = module.handle_input(client, req, db, process_results["is_admin"])
+                if found_command:
+                    return
 
-        #     if 'admin' in req.payload["event"]["text"]:
-        #         response = admin_not_recognized()
-        #     else:
-        #         response = did_not_understand()
+            if 'admin' in req.payload["event"]["text"]:
+                response = admin_not_recognized()
+            else:
+                response = did_not_understand()
 
         # FIXME: will delete this later when we have a database
         response = did_not_understand()
@@ -106,10 +105,10 @@ def process(client: SocketModeClient, req: SocketModeRequest):
 
 
 # Create db if it doesn't exist
-# runSetup()
+run_setup()
 
 # Connect to db
-# db = database.instance()
+db = database.instance()
 
 # Add a new listener to receive messages from Slack
 # You can add more listeners like this

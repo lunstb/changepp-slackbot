@@ -2,3 +2,4 @@ slackclient
 python-dotenv
 slack_sdk
 datefinder
+requests

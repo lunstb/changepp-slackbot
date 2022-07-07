@@ -15,6 +15,8 @@ import logging
 import sqlite3
 import uuid
 
+from lib.modules.modulehelpers import get_book_name_from_isbn
+
 
 class database:
     _instance = None
@@ -115,14 +117,11 @@ class database:
         self.con.commit()
         logging.info("Books table created")
 
-    def add_book(self, ISBN, email):
+    def add_book(self, ISBN, name, email):
         """Adds a book to the book table"""
 
         # Generate ID
         book_id = uuid.uuid4()
-
-        # Get name from ISBN using API
-        name = "Name pending"
 
         self.cur.execute(
             "INSERT INTO books VALUES (?, ?, ?, ?, ?)", (book_id, ISBN, name, email, email, None)
@@ -149,6 +148,13 @@ class database:
         )
         self.con.commit()
         logging.info("Book traded")
+
+    def get_books(self):
+        """Returns all of the books from the database with
+         isbn, name, original ownder, and last transaction date fields"""
+
+        self.cur.execute("SELECT ISBN, name, owner_email, last_transaction_date FROM books")
+        return self.cur.fetchall()
 
     def drop_books_table(self):
         """Drops the books table, only used in setup"""
@@ -186,12 +192,21 @@ class database:
 
     def create_networking_table(self):
         """Creates the networking table, only used in setup"""
-
+        # todo: more fields to be determined
         self.cur.execute(
             "CREATE TABLE networking (user_email TEXT, list TEXT)"
         )
         self.con.commit()
         logging.info("Networking table created")
+
+    def insert_user_to_networking(self, user_email, list=""):
+        """Inserts a user to the networking table"""
+        # todo: not sure what list stands for, so it's defaulted to empty
+        self.cur.execute(
+            "INSERT INTO networking VALUES (?, ?)", (user_email, list)
+        )
+        self.con.commit()
+        logging.info(f"User {user_email} inserted to networking table")
 
     def drop_networking_table(self):
         """Drops the networking table, only used in setup"""

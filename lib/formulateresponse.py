@@ -12,6 +12,11 @@ def incorrect_arguments(attempted):
 
     return f"It seems like you entered the wrong number of commands. Here's a reminder on how to use that command:\n {explain_command(attempted)}"
 
+def invalid_book_isbn():
+    """Returns the response for when an invalid isbn is entered"""
+
+    return "The ISBN you entered is invalid, please try again"
+
 
 def account_not_set_up():
     """Returns the response for any user whose account is not setup (is not in the database) """

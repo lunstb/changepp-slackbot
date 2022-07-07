@@ -1,3 +1,6 @@
+from lib.modules.databasemodule.database import database
+
+
 def user_created(slack_email):
     """Returns the response for when a new user is created with the specified slack email"""
 
@@ -50,3 +53,33 @@ def admin_list_users(db):
     #     response += f"{name} with the slack email {email} {'is an admin' if (is_admin == 1) else 'is not an admin'}\n"
 
     return "Here is a list of users with their admin status:\n"
+
+def book_with_isbn_not_found(isbn):
+    """Returns the response for when a user tries to interact with a book with an ISBN that does not exist in our API"""
+
+    return f"Could not find book with ISBN {isbn}"
+
+def book_with_isbn_donated(isbn):
+    """Returns the response for when a book is successfully donated"""
+
+    return f"Book with ISBN {isbn} has been donated"
+
+def library_list_books(db: database):
+    """Generates and returns the response for when a user asks for a list of books"""
+
+    books_db = db.get_books()
+
+    if not books_db:
+        return "There are no books in the library"
+
+    response = "Here is a list of books:\n"
+    for book in books_db:
+        (isbn, name, owner_email, last_transaction_date) = book
+        response += f"{name} with the ISBN {isbn} currently owned by {owner_email} since {last_transaction_date}\n"
+
+    return "Here is a list of books:\n"
+
+def network_add_me(email):
+    """Returns the response for when a user adds themselves to the network"""
+
+    return f"You have been added to the network with the email {email}"

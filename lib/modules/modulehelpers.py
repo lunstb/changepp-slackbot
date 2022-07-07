@@ -1,4 +1,5 @@
 import datefinder
+import requests
 from lib.commands import Commands
 
 
@@ -11,8 +12,21 @@ def get_dates(msg):
     dates = []
     for match in matches:
         dates.append(match)
-
     return dates
+
+def get_book_name_from_isbn(isbn: str):
+    """This function returns the book info from the isbn
+    Example request:
+    https://www.googleapis.com/books/v1/volumes?q=isbn:0984782869"""
+    
+    # make a get request to google books api
+    response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}")
+    json_response = response.json()
+
+    if not json_response:
+        return None
+
+    return json_response["items"][0]["volumeInfo"]["title"]
 
 
 def catch_incorrect_arguments(command):

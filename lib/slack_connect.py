@@ -28,11 +28,6 @@ def get_channel_id_by_email(email):
         return None
 
 
-# with open(SECRETS_JSON, "r") as read_file:
-#     data = json.load(read_file)
-#     slack_app_token = data["SLACK_APP_TOKEN"]
-#     slack_bot_token = data["SLACK_BOT_TOKEN"]
-
 print("app token: " + os.getenv("SLACK_APP_TOKEN"))
 print("bot token: " + os.getenv("SLACK_BOT_TOKEN"))
 
