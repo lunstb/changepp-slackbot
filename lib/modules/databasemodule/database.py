@@ -172,6 +172,16 @@ class database:
         self.con.commit()
         logging.info("Resume table created")
 
+    def get_resumes(id=None):
+        """Returns all of the resumes from the database"""
+        
+        if id is None:
+            self.cur.execute("SELECT * FROM resume")
+            return self.cur.fetchall()
+        else:
+            self.cur.execute(f"SELECT * FROM resume WHERE ID = {id}")
+            return self.cur.fetchone()
+
     def insert_resume(self, user_email, AWS_link):
         """Inserts a resume"""
 
