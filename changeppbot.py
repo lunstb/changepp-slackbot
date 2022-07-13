@@ -36,7 +36,7 @@ modules = [DatabaseModule()]
 def catch_basic_responses(msg: str, email, db: database):
     """This function """
 
-    if not db.check_user_exists(email): # TODO: no db setup yet
+    if not db.check_user_exists(email):
         return account_not_set_up()
 
     msg = msg.strip()
@@ -97,8 +97,6 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             else:
                 response = did_not_understand()
 
-        # FIXME: will delete this later when we have a database
-        response = did_not_understand()
 
         logging.info(f"bot->{email} response: {response}")
         client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)

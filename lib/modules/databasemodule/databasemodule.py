@@ -6,7 +6,7 @@ from lib.modules.moduletemplate import ModuleTemplate
 
 class DatabaseModule(ModuleTemplate):
 
-    def interpret_message(self, msg, email, db, admin) -> Dict:
+    def interpret_message(self, msg: str, email, db, admin) -> Dict:
         commands = msg["text"].split()
 
         if admin:
