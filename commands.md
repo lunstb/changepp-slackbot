@@ -62,3 +62,15 @@ SlackBot:
 4. `internship add_resume`
 
 5. `inernship add_company year`
+
+## Resume Module
+
+View resumes (list)
+
+View resume (individual)
+
+Upload resume
+
+## Networking Module
+
+Join Networking
