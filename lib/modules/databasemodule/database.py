@@ -179,7 +179,7 @@ class database:
             self.cur.execute("SELECT * FROM resume")
             return self.cur.fetchall()
         else:
-            self.cur.execute(f"SELECT * FROM resume WHERE ID = {id}")
+            self.cur.execute(f"SELECT * FROM resume WHERE user_email = {id}")
             return self.cur.fetchone()
 
     def insert_resume(self, user_email, AWS_link):
@@ -192,6 +192,15 @@ class database:
         )
         self.con.commit()
         logging.info(f"Resume inserted with AWS link {AWS_link}")
+
+    def remove_resume(self, email):
+        """Removes a resume from the resume table"""
+
+        self.cur.execute(
+            f"REMOVE FROM resume WHERE user_email = {email}"
+        )
+        self.con.commit()
+        logging.info("Resume removed from books table")
 
     def drop_resume_table(self):
         """Drops the resume table, only used in setup"""

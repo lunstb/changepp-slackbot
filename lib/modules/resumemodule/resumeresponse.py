@@ -10,6 +10,16 @@ def resume_not_added(error):
 
     return "Resume not added: " + error
 
+def resume_removed():
+    """Returns the response for when a resume is successfully removed"""
+
+    return "Resume removed."
+
+def resume_not_removed(error):
+    """Returns the response for when a resume is not successfully removed"""
+
+    return "Resume not removed: " + error
+
 def list_resumes(db: database, id=None):
 
     # Currently, we save the company ID, resume URL, and email in the database. The example says that 
