@@ -12,7 +12,7 @@ class ResumeModule(ModuleTemplate):
         commands = msg["text"].split()
 
         if commands[0] == 'internship':
-            commands = commands[1:0]
+            commands = commands[1:]
             if len(commands) == 0:
                 return
 
