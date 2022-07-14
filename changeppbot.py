@@ -22,6 +22,8 @@ logging.basicConfig(
 
 from lib.modules.modulehelpers import check_admin
 from lib.modules.databasemodule.databasemodule import DatabaseModule
+from lib.modules.networkmodule.networkmodule import NetworkModule
+from lib.modules.librarymodule.librarymodule import LibraryModule
 from threading import Event
 from lib.constants import *
 from lib.formulateresponse import *
@@ -30,7 +32,7 @@ from lib.slack_connect import client
 from slack_sdk.socket_mode import SocketModeClient
 from slack_sdk.socket_mode.request import SocketModeRequest
 
-modules = [DatabaseModule()]
+modules = [DatabaseModule(), NetworkModule(), LibraryModule()]
 
 
 def catch_basic_responses(msg: str, email, db: database):
