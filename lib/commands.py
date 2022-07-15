@@ -56,6 +56,9 @@ command_dispatch = {
     Commands.ADMIN_LIST_USERS : "`admin list_users` - This returns a list of users with their admin status",
 
     Commands.HELP : "`help` - This command explains how to interact with the bot as a non-admin + a note for admins",
+    
+    # User commands
+    Commands.CREATE_USER : "`register <first_name> <last_name> <graduation_year>` - This creates a user with the specified slack and all required credential fields",
 
     # Library commands
     Commands.LIBRARY_LIST_BOOKS : "`library list_books` - This returns a list of all the books that are available for rent",
