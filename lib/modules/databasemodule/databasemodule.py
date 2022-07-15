@@ -61,10 +61,28 @@ class DatabaseModule(ModuleTemplate):
                 return {
                     "command": Commands.ADMIN_LIST_USERS
                 }
+        elif commands[0] == "register": ## TODO: I saw no reason to create new module since this is user related
+            commands = commands[1:]
+            if len(commands) != 3:
+                return catch_incorrect_arguments(Commands.CREATE_USER)
+
+            return {
+                "command": Commands.CREATE_USER,
+                "slack_email": email,
+                "first_name": commands[0],
+                "last_name": commands[1],
+                "user_type": "user",
+                "graduation_year": commands[2],
+                "is_admin": False
+            }
             
 
     def process_message(self, interpretation, client, req, email, db: database, admin) -> Dict:
         response = None
+
+        if interpretation["command"] == Commands.CREATE_USER:
+            db.insert_user(interpretation["slack_email"], interpretation["first_name"], interpretation["last_name"], interpretation["user_type"], interpretation["graduation_year"], interpretation["is_admin"])
+            response = user_created(interpretation["slack_email"])
         
         # if interpretation["command"] == Commands.ADMIN_CREATE_USER:
         #     parsed_slack_email = find_between(

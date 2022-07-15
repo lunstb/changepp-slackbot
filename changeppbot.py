@@ -13,6 +13,8 @@ import logging
 # https://stackoverflow.com/questions/20240464/python-logging-file-is-not-working-when-using-logging-basicconfig/63868063
 from slack_sdk.socket_mode.response import SocketModeResponse
 
+from lib.modules.moduletemplate import ModuleTemplate
+
 logging.basicConfig(
     # filename='includebot.log',
     level=logging.INFO,
@@ -38,10 +40,12 @@ modules = [DatabaseModule(), NetworkModule(), LibraryModule()]
 def catch_basic_responses(msg: str, email, db: database):
     """This function """
 
+    if msg.startswith('register '):
+        return None
+
     if not db.check_user_exists(email):
         return account_not_set_up()
 
-    msg = msg.strip()
     if msg.startswith('admin '):
         if not check_admin(email, db):
             return denied_admin_access()

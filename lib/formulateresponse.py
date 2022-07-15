@@ -21,7 +21,8 @@ def invalid_book_isbn():
 def account_not_set_up():
     """Returns the response for any user whose account is not setup (is not in the database) """
 
-    return "Your account has not yet been set up yet to interact with Include Bot, please contact an admin"
+    return "Your account has not been set up yet! Let's get you started.\n Send the following command and substitute in your credentials:\n`register <first_name> <last_name> <graduation_year>`\n*Example:* \n>register Salomon Dushimirimana 2024 \n"
+
 
 
 def denied_admin_access():

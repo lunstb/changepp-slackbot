@@ -17,31 +17,32 @@ class Commands(Enum):
     ADMIN_LIST_USERS = 8
 
     # These are commands accessible to a non-admin user
-    ADMIN_NOT_AUTHORIZED = 9
-    DATE_SINGLE = 10
-    DATE_RANGE = 11
-    NOT_RECOGNIZED = 12
-    HELP = 13
-    INSTANCE_CREATE = 14
-    INSTANCE_DESTROY = 15
-    INSTANCE_EXTEND = 16
-    INSTANCE_SET_PUBKEY = 17
+    CREATE_USER = 9
+    ADMIN_NOT_AUTHORIZED = 10
+    DATE_SINGLE = 11
+    DATE_RANGE = 12
+    NOT_RECOGNIZED = 13
+    HELP = 14
+    INSTANCE_CREATE = 15
+    INSTANCE_DESTROY = 16
+    INSTANCE_EXTEND = 17
+    INSTANCE_SET_PUBKEY = 18
 
     # And if the user is not set up:
-    NOT_SET_UP = 18
+    NOT_SET_UP = 19
 
     # If the user enters the wrong number of arguments for a command
-    INCORRECT_ARGUMENTS = 19
+    INCORRECT_ARGUMENTS = 20
 
     # sendsafely workspace commands
-    RESOLVE_WORKSPACE = 20
+    RESOLVE_WORKSPACE = 21
 
     # Accessible commands using the library command
-    LIBRARY_LIST_BOOKS = 21
-    LIBRARY_DONATE_BOOK = 22
+    LIBRARY_LIST_BOOKS = 22
+    LIBRARY_DONATE_BOOK = 23
 
     # Accessible commands using the network command
-    NETWORK_ADD_ME = 23
+    NETWORK_ADD_ME = 24
 
 
 
