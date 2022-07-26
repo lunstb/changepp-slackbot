@@ -68,9 +68,8 @@ def pre_process(msg: str, email, db):
 
 def process(client: SocketModeClient, req: SocketModeRequest):
     """This function handles different events from the Slack API and is the starting point for everything that IncludeBot does"""
-
-    print("\n\n\nReceived request: " + str(req))
-
+    logging.info(f"Received request: {req}")
+    
     if req.type == "events_api":
         # Acknowledge the request anyway
         response = SocketModeResponse(envelope_id=req.envelope_id)

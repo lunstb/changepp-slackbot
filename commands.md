@@ -61,7 +61,7 @@ SlackBot:
 
 4. `internship add_resume`
 
-5. `inernship add_company year`
+5. `internship add_company year`
 
 ## Resume Module
 

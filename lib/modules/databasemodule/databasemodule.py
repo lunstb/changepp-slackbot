@@ -61,7 +61,7 @@ class DatabaseModule(ModuleTemplate):
                 return {
                     "command": Commands.ADMIN_LIST_USERS
                 }
-        elif commands[0] == "register": ## TODO: I saw no reason to create new module since this is user related
+        elif commands[0] == "register": ## TODO: potentially move user management to new module
             commands = commands[1:]
             if len(commands) != 3:
                 return catch_incorrect_arguments(Commands.CREATE_USER)
