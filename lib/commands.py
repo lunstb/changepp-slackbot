@@ -1,6 +1,4 @@
 """This contains the enums for the different possible commands"""
-
-from lib.modules.terraformmodule.terraform import *
 from enum import Enum
 
 
@@ -19,25 +17,33 @@ class Commands(Enum):
     ADMIN_LIST_USERS = 8
 
     # These are commands accessible to a non-admin user
-    ADMIN_NOT_AUTHORIZED = 9
-    DATE_SINGLE = 10
-    DATE_RANGE = 11
-    NOT_RECOGNIZED = 12
-    HELP = 13
-    INSTANCE_CREATE = 14
-    INSTANCE_DESTROY = 15
-    INSTANCE_EXTEND = 16
-    INSTANCE_SET_PUBKEY = 17
-
+    CREATE_USER = 9
+    ADMIN_NOT_AUTHORIZED = 10
+    DATE_SINGLE = 11
+    DATE_RANGE = 12
+    NOT_RECOGNIZED = 13
+    HELP = 14
+    INSTANCE_CREATE = 15
+    INSTANCE_DESTROY = 16
+    INSTANCE_EXTEND = 17
+    INSTANCE_SET_PUBKEY = 18
 
     # And if the user is not set up:
-    NOT_SET_UP = 18
+    NOT_SET_UP = 19
 
     # If the user enters the wrong number of arguments for a command
-    INCORRECT_ARGUMENTS = 19
+    INCORRECT_ARGUMENTS = 20
 
     # sendsafely workspace commands
-    RESOLVE_WORKSPACE = 20
+    RESOLVE_WORKSPACE = 21
+
+    # Accessible commands using the library command
+    LIBRARY_LIST_BOOKS = 22
+    LIBRARY_DONATE_BOOK = 23
+
+    # Accessible commands using the network command
+    NETWORK_ADD_ME = 24
+
 
 
 command_dispatch = {
@@ -49,15 +55,17 @@ command_dispatch = {
     Commands.ADMIN_HELP : "`admin help` - This returns a clarification on how to interact with the bot as an admin",
     Commands.ADMIN_LIST_USERS : "`admin list_users` - This returns a list of users with their admin status",
 
-    # These are commands accessible to a non-admin user
-    Commands.DATE_SINGLE : "`...{date 1}...` - A single date in a message will result in the returning of the contractor's schedule on that date and the following 2 months",
-    Commands.DATE_RANGE : "`...{date 1}...{date 2}...` - Two dates in a message will result in the returning of that contractor's schedule between said dates",
     Commands.HELP : "`help` - This command explains how to interact with the bot as a non-admin + a note for admins",
-    Commands.INSTANCE_CREATE : "`instance create {" + '/'.join(MACHINE_IMAGES.keys()) + "}` - This creates an ec2 instance and returns the IP address unless an instance for the user already exist",
-    Commands.INSTANCE_DESTROY :"`instance destroy` - Destroys the instance created unless no existence exists",
-    Commands.INSTANCE_EXTEND :"`instance extend` - Extends the lifetime of the instance created to 14 days in the future",
-    Commands.INSTANCE_SET_PUBKEY :"`instance pubkey` + {attached key file} - Sets the consultant's public key which they can use to SSH into instances. The key should be attached as a file to the message",
-    Commands.RESOLVE_WORKSPACE : "`resolve_workspace [worskpace_name] [repo] { --branch branch-name } { --keycode workspace_keycode } { --url workspace_url }` - this command needs a workspace_name, a repo location (either a git clone url or the name e.g. IncludeSecurity/myProject), if the workspace already exists, a keycode or invite URL is needed, a branch name can be provided to clone a specific branch ", 
+    
+    # User commands
+    Commands.CREATE_USER : "`register <first_name> <last_name> <graduation_year>` - This creates a user with the specified slack and all required credential fields",
+
+    # Library commands
+    Commands.LIBRARY_LIST_BOOKS : "`library list_books` - This returns a list of all the books that are available for rent",
+    Commands.LIBRARY_DONATE_BOOK : "`library donate_book {ISBN}` - This allows you to donate a book to the library for people to borrow",
+
+    # Network commands
+    Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
 }
 
 # TODO: put this back into the commands class

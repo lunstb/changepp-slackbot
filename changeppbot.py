@@ -13,6 +13,8 @@ import logging
 # https://stackoverflow.com/questions/20240464/python-logging-file-is-not-working-when-using-logging-basicconfig/63868063
 from slack_sdk.socket_mode.response import SocketModeResponse
 
+from lib.modules.moduletemplate import ModuleTemplate
+
 logging.basicConfig(
     # filename='includebot.log',
     level=logging.INFO,
@@ -21,28 +23,29 @@ logging.basicConfig(
 )
 
 from lib.modules.modulehelpers import check_admin
-from lib.modules.mavenlinkmodule.mavenlinkmodule import MavenLinkModule
-from lib.modules.terraformmodule.terraformmodule import TerraformModule
 from lib.modules.databasemodule.databasemodule import DatabaseModule
-from lib.modules.sendsafelymodule.sendsafelymodule import SendSafelyModule
+from lib.modules.networkmodule.networkmodule import NetworkModule
+from lib.modules.librarymodule.librarymodule import LibraryModule
 from threading import Event
 from lib.constants import *
 from lib.formulateresponse import *
-from lib.setup import runSetup
+from lib.setup import run_setup
 from lib.slack_connect import client
 from slack_sdk.socket_mode import SocketModeClient
 from slack_sdk.socket_mode.request import SocketModeRequest
 
-modules = [MavenLinkModule(), TerraformModule(), DatabaseModule(), SendSafelyModule()]
+modules = [DatabaseModule(), NetworkModule(), LibraryModule()]
 
 
-def catch_basic_responses(msg, email, db):
+def catch_basic_responses(msg: str, email, db: database):
     """This function """
+
+    if msg.startswith('register '):
+        return None
 
     if not db.check_user_exists(email):
         return account_not_set_up()
 
-    msg = msg.strip()
     if msg.startswith('admin '):
         if not check_admin(email, db):
             return denied_admin_access()
@@ -53,20 +56,20 @@ def catch_basic_responses(msg, email, db):
         return help_response()
 
 
-def pre_process(msg, email, db):
+def pre_process(msg: str, email, db):
     is_admin = False
     if msg.startswith('admin '):
         is_admin = True
 
     return {
         "is_admin": is_admin,
-        "id": db.get_mavenlink_id(email)
     }
 
 
 def process(client: SocketModeClient, req: SocketModeRequest):
     """This function handles different events from the Slack API and is the starting point for everything that IncludeBot does"""
-
+    logging.info(f"Received request: {req}")
+    
     if req.type == "events_api":
         # Acknowledge the request anyway
         response = SocketModeResponse(envelope_id=req.envelope_id)
@@ -90,7 +93,7 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             process_results = pre_process(req.payload["event"]["text"], email, db)
 
             for module in modules:
-                found_command = module.handle_input(client, req, db, process_results["is_admin"], process_results["id"])
+                found_command = module.handle_input(client, req, db, process_results["is_admin"])
                 if found_command:
                     return
 
@@ -99,12 +102,13 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             else:
                 response = did_not_understand()
 
+
         logging.info(f"bot->{email} response: {response}")
         client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
 
 
 # Create db if it doesn't exist
-runSetup()
+run_setup()
 
 # Connect to db
 db = database.instance()
