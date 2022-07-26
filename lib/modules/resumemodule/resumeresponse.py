@@ -29,9 +29,17 @@ def list_resumes(db: database, id=None):
     """Returns the response for when a user asks for a list of resumes"""
 
     response = "Here is a list of resumes:\n"
+    
     resumes_db = db.get_resumes(id)
+    if not resumes_db and not id:
+        return "There are no resumes in the database"
+
+    if not db.get_resumes(id):
+        return "There are no resumes in the database with that email"
+
+    response = "Here is a list of resumes:\n"
     for resume in resumes_db:
-        (id, email, url) = resume
-        response += f"{id} - {url} - {email}\n"
+        (email, url) = resume
+        response += f"{email}'s Resume: {url}\n"
     
     return response

@@ -1,6 +1,8 @@
 """This contains the enums for the different possible commands"""
 from enum import Enum
 
+from lib.modules.resumemodule.resumeresponse import list_resumes
+
 
 
 
@@ -43,6 +45,11 @@ class Commands(Enum):
     # Accessible commands using the network command
     NETWORK_ADD_ME = 23
 
+    # Accessible commands using the resume command
+    LIST_RESUMES = 24
+    ADD_RESUME = 25
+    REMOVE_RESUME = 26
+
 
 
 command_dispatch = {
@@ -62,6 +69,11 @@ command_dispatch = {
 
     # Network commands
     Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
+
+    # Resumes commands
+    Commands.LIST_RESUMES : "`list_resumes` - This returns a list of all the resumes that are available to view",
+    Commands.ADD_RESUME : "`add_resume {url}` - This adds a resume to the database",
+    Commands.REMOVE_RESUME : "`remove_resume {id}` - This removes a resume from the database",
 }
 
 # TODO: put this back into the commands class
