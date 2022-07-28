@@ -30,6 +30,9 @@ def get_book_name_from_isbn(isbn: str):
     if not json_response:
         return None
 
+    if json_response["totalItems"] == 0: # if there are no results
+        return None
+
     return json_response["items"][0]["volumeInfo"]["title"]
 
 

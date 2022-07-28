@@ -28,12 +28,10 @@ def user_already_exists(slack_email):
 
     return f"A user with the email {slack_email} already exists so that user will not be created"
 
-
 def no_such_user(user_email):
     """Returns the response for when an admin tries to interact with a user who does not yet exist in the database"""
 
     return f"You tried to enter a command and specified a user {user_email} but no such user exists"
-
 
 def admin_list_users(db):
     """Generates and returns the response for when an admin asks for a list of users"""
@@ -53,6 +51,45 @@ def admin_list_users(db):
     #     response += f"{name} with the slack email {email} {'is an admin' if (is_admin == 1) else 'is not an admin'}\n"
 
     return "Here is a list of users with their admin status:\n"
+
+def book_with_isbn_not_owned_or_requested(isbn):
+    """Returns the response for when a user tries to cancel borrow request on a book with an ISBN that is not owned or requested"""
+
+    return f"I am sorry, but you did not request or own a book with ISBN {isbn}. Try again!"
+
+def book_with_isbn_requested(isbn, name):
+    """Returns the response for when a user requests a book with an ISBN that exists in our database"""
+
+    return f"You have requested {name} with the ISBN {isbn}. Please wait for the owner to accept your request. \n" \
+              f"You will be notified when the owner accepts your request\n" \
+                f"To cancel your request: `library cancel {isbn}`"
+
+def approve_request_of_book_with_isbn(isbn, requester_email):
+    """Returns the response for when a book owner needs to approve a request for a book with an ISBN"""
+
+    return f"Book with ISBN {isbn} has been requested by {requester_email}.\nPlease approve the request by typing `library confirm {isbn}`\n" \
+                f"To cancel the request: `library cancel {isbn}`"
+
+def book_with_isbn_not_requested(isbn):
+    """Returns the response for when a user tries to approve a request for a book with an ISBN that has not been requested"""
+
+    return f"Book with ISBN {isbn} has not been requested. Please try again"
+
+def book_borrow_request_with_isbn_approved(isbn, owner_email):
+    """Returns the response for when a book owner approves a request for a book with provided ISBN"""
+
+    return f"Book with ISBN {isbn} has been approved by {owner_email}"
+
+def book_with_isbn_not_owned(isbn):
+    """Returns the response for when a user tries to confirm a book with an ISBN that does not exist in their library"""
+
+    return f"I am sorry, but you do not own a book with ISBN {isbn}. Try the options below:\n- Try again with your book's" + \
+    "ISBN\n- Type `library list_books` to see a list of books you own\n- Type `help` for more information"
+
+def book_borrow_request_with_isbn_cancelled(book_isbn):
+    """Returns the response for when a user cancels a borrow request for a book with given ISBN"""
+
+    return f"Book with ISBN {book_isbn} has been cancelled"
 
 def book_with_isbn_not_found(isbn):
     """Returns the response for when a user tries to interact with a book with an ISBN that does not exist in our API"""
@@ -77,7 +114,20 @@ def library_list_books(db: database):
         (isbn, name, owner_email, last_transaction_date) = book
         response += f"{name} with the ISBN {isbn} currently owned by {owner_email} since {last_transaction_date}\n"
 
-    return "Here is a list of books:\n"
+    return response
+
+def library_list_book_transactions(db: database, book_isbn):
+    """Generates and returns the response for when a user asks for a list of book transactions"""
+
+    transactions_db = db.get_transaction_history(book_isbn)
+
+    if not transactions_db:
+        return "There are no book transactions in the library"
+
+    response = "Here is a list of book transactions:\n"
+    for transaction in transactions_db:
+        (book_isbn, description, transaction_date) = transaction
+        response += f"{book_isbn}: {description} on {transaction_date}\n"
 
 def network_add_me(email):
     """Returns the response for when a user adds themselves to the network"""

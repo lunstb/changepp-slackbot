@@ -1,10 +1,6 @@
 """This contains the enums for the different possible commands"""
 from enum import Enum
 
-
-
-
-
 class Commands(Enum):
     # These are all commands accessible to an admin user
     ADMIN_CREATE_USER = 1
@@ -40,9 +36,13 @@ class Commands(Enum):
     # Accessible commands using the library command
     LIBRARY_LIST_BOOKS = 22
     LIBRARY_DONATE_BOOK = 23
+    LIBRARY_BORROW_BOOK = 24
+    LIBRARY_CONFIRM_TRANSACTION = 25
+    LIBRARY_CANCEL_TRANSACTION = 26
+    LIBRARY_TRANSACTION_HISTORY = 27
 
     # Accessible commands using the network command
-    NETWORK_ADD_ME = 24
+    NETWORK_ADD_ME = 28
 
 
 
@@ -62,7 +62,11 @@ command_dispatch = {
 
     # Library commands
     Commands.LIBRARY_LIST_BOOKS : "`library list_books` - This returns a list of all the books that are available for rent",
-    Commands.LIBRARY_DONATE_BOOK : "`library donate_book {ISBN}` - This allows you to donate a book to the library for people to borrow",
+    Commands.LIBRARY_DONATE_BOOK : "`library donate_book <ISBN>` - This allows you to donate a book to the library for people to borrow",
+    Commands.LIBRARY_BORROW_BOOK : "`library borrow_book <ISBN>` - This allows you to borrow a book from the library and sets up a conversation with the owner to confirm",
+    Commands.LIBRARY_CONFIRM_TRANSACTION : "`library confirm <ISBN>` - This allows book owner to confirm the borrow transaction",
+    Commands.LIBRARY_CANCEL_TRANSACTION : "`library cancel <ISBN>` - This allows book owner or requester to cancel the borrow transaction",
+
 
     # Network commands
     Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
