@@ -23,7 +23,12 @@ SlackBot:
 | How is Berke so Cool                 | DAW | Adam Hollander                |
 | Whatever Happened to Easy Interviews | BKL | Izzy Hood                     |
 
-2. `library borrow_book BOOK_ID (USER_EMAIL)`
+
+2. `library donate_book ISBN`
+
+Adds specified book to library. 
+
+3. `library borrow_book BOOK_ID (USER_EMAIL)`
 
 The `borrow_book` command is passed a `BOOK_ID` and (optional) `USER_EMAIL`. The slackbot then sets up a conversation between person and owner of book with ID of transaction. Owner of book confirms transaction via `library confirm TRANSACTION_ID`
 
@@ -31,12 +36,9 @@ The `borrow_book` command is passed a `BOOK_ID` and (optional) `USER_EMAIL`. The
 
 Salomon: library borrow_book ABC
 
+4. `library approve_request ISBN`
 
-
-
-3. `library donate_book ISBN`
-
-Adds specified book to library. 
+Approvies borrow request between the onwer of the book and the requester
 
 ## Internship Functionality
 
