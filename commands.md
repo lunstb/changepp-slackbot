@@ -35,10 +35,17 @@ The `borrow_book` command is passed a `BOOK_ISBN`. The slackbot then sets up a c
 **EXAMPLE**
 
 Salomon: library borrow_book ABC
+4. `library cancel BOOK_ISBN`
+
+Cancels borrow request by the user 
 
 4. `library confirm ISBN`
 
-Approvies borrow request between the onwer of the book and the requester
+Approves borrow request between the onwer of the book and the requester
+
+5. `library transaction_history ISBN`
+
+Shows the transaction history of a given book and who currently owns it
 
 ## Internship Functionality
 
