@@ -15,9 +15,13 @@ def get_dates(msg):
     return dates
 
 def get_book_name_from_isbn(isbn: str):
-    """This function returns the book info from the isbn
+    """
+    This function returns the book info from the isbn
     Example request:
-    https://www.googleapis.com/books/v1/volumes?q=isbn:0984782869"""
+    https://www.googleapis.com/books/v1/volumes?q=isbn:0984782869
+
+    Docs: https://developers.google.com/books/docs/overview
+    """
     
     # make a get request to google books api
     response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}")

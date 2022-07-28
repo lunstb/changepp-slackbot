@@ -21,7 +21,8 @@ def invalid_book_isbn():
 def account_not_set_up():
     """Returns the response for any user whose account is not setup (is not in the database) """
 
-    return "Your account has not yet been set up yet to interact with Include Bot, please contact an admin"
+    return "Your account has not been set up yet! Let's get you started.\n Send the following command and substitute in your credentials:\n`register <first_name> <last_name> <graduation_year>`\n*Example:* \n>register Salomon Dushimirimana 2024 \n"
+
 
 
 def denied_admin_access():
@@ -34,14 +35,11 @@ def help_response():
     """Returns the response for a user asking for help"""
 
     return "It seems like you asked for help on how to interact with me:\n" \
-           f"- {explain_command(Commands.DATE_SINGLE)}\n" \
-           f"- {explain_command(Commands.DATE_RANGE)}\n" \
+           f"- {explain_command(Commands.CREATE_USER)}\n" \
+           f"- {explain_command(Commands.LIBRARY_LIST_BOOKS)}\n" \
            "- `admin {anything}` - This returns a message telling the user they are not an admin\n" \
-           f"- {explain_command(Commands.INSTANCE_CREATE)}\n" \
-           f"- {explain_command(Commands.INSTANCE_DESTROY)}\n" \
-           f"- {explain_command(Commands.INSTANCE_EXTEND)}\n" \
-           f"- {explain_command(Commands.INSTANCE_SET_PUBKEY)}\n" \
-           f"- {explain_command(Commands.RESOLVE_WORKSPACE)}\n" \
+           f"- {explain_command(Commands.LIBRARY_DONATE_BOOK)}\n" \
+           f"- {explain_command(Commands.NETWORK_ADD_ME)}\n" \
            "- `{anything else}` - Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
            "If you're an admin type \"admin help\" for more information!"
 

@@ -20,14 +20,10 @@ def run_setup():
         user_type = data["USER_TYPE"]
         graduation_year = data["GRADUATION_YEAR"]
 
-    # Make sure that a database file exists
     users_file = Path(DB_NAME)
-    if users_file.is_file():
-        logging.debug("Database file exists")
-    else:
-        f = open(DB_NAME, "w+")
-        f.close()
-        logging.debug("Database file created")
+
+    # If the database file doesn't exist, create it
+    users_file.parent.mkdir(parents=True, exist_ok=True)
 
     # Now connect to the database
     db = database.instance()

@@ -74,6 +74,7 @@ class database:
             "UPDATE users SET is_admin = ? WHERE email is ?", (is_admin, slack_email))
         self.con.commit()
 
+    # FIXME: do we need user_type and is_admin?
     def insert_user(self, slack_email, first_name, last_name, user_type, graduation_year, is_admin):
         """Inserts a user into the database with the specified parameters """
 

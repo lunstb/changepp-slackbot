@@ -28,9 +28,6 @@ def get_channel_id_by_email(email):
         return None
 
 
-print("app token: " + os.getenv("SLACK_APP_TOKEN"))
-print("bot token: " + os.getenv("SLACK_BOT_TOKEN"))
-
 # Initialize SocketModeClient with an app-level token + WebClient
 client = SocketModeClient(
     # This app-level token will be used only for establishing a connection
