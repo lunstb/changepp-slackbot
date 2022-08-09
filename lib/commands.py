@@ -45,11 +45,12 @@ class Commands(Enum):
 
     # Accessible commands using the network command
     NETWORK_ADD_ME = 24
+    NETWORK_TALK = 25
 
     # Accessible commands using the resume command
-    LIST_RESUMES = 24
-    ADD_RESUME = 25
-    REMOVE_RESUME = 26
+    LIST_RESUMES = 26
+    ADD_RESUME = 27
+    REMOVE_RESUME = 28
 
 
 
@@ -73,6 +74,7 @@ command_dispatch = {
 
     # Network commands
     Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
+    Commands.NETWORK_TALK : "`talk` - This allows you to talk to other users in the network",
 
     # Resumes commands
     Commands.LIST_RESUMES : "`list_resumes` - This returns a list of all the resumes that are available to view",

@@ -15,3 +15,6 @@ def networking_question3():
 
 def networking_question4():
     return "What do you think is the key to success?"
+
+def networking_questions():
+    return [networking_question1(), networking_question2(), networking_question3(), networking_question4()]
