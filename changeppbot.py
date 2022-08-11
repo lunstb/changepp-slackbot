@@ -52,7 +52,7 @@ def catch_basic_responses(msg: str, email, db: database):
         if 'help' in msg:
             return admin_help()
 
-    if 'help' in msg:
+    if 'help' == msg.strip():
         return help_response()
 
 

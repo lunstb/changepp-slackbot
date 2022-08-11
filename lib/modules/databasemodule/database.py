@@ -10,7 +10,7 @@ The database consists of a single users table with the properties email, mavenli
 
 Note that even though users are created using their mavenlink email, the only time that email is relevant is on the creation because after that only the mavenlink id is used"""
 
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 import datetime
 import logging
 import sqlite3
@@ -177,7 +177,7 @@ class database:
         """Adds a book to the book table"""
 
         self.cur.execute(
-            "INSERT INTO books (ISBN, name, original_owner_email, owner_email, request_email, last_transaction_date) VALUES (?, ?, ?, ?, ?, ?)"
+            "INSERT INTO books (ISBN, name, original_owner_email, owner_email, request_email, last_transaction_date) VALUES (?, ?, ?, ?, ?, ?)",
             (ISBN, name, email, email, null, datetime.datetime.now())
         )
         self.con.commit()
@@ -225,7 +225,7 @@ class database:
         """
 
         self.cur.execute(
-            f"INSERT INTO transaction_history (book_isbn, description, transaction_date) VALUES (?, ?, ?)"
+            f"INSERT INTO transaction_history (book_isbn, description, transaction_date) VALUES (?, ?, ?)",
             (book_isbn, description, datetime.datetime.now())
         )
         self.con.commit
