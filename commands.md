@@ -40,13 +40,17 @@ Salomon: library borrow_book ABC
 
 Cancels borrow request by the user 
 
-4. `library confirm ISBN`
+5. `library confirm ISBN`
 
 Approves borrow request between the onwer of the book and the requester
 
-5. `library transaction_history ISBN`
+6. `library transaction_history ISBN`
 
 Shows the transaction history of a given book and who currently owns it
+
+7. `library help`
+
+Returns commands with descriptions for interacting with the library module
 
 ## Internship Functionality
 
