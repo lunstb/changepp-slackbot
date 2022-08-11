@@ -63,6 +63,13 @@ class LibraryModule(ModuleTemplate):
                     "command": Commands.LIBRARY_TRANSACTION_HISTORY,
                     "book_isbn": commands[1]
                 }
+            elif commands[0] == "help":
+                if len(commands) != 1:
+                    return catch_incorrect_arguments(Commands.LIBRARY_HELP)
+
+                return {
+                    "command": Commands.LIBRARY_HELP
+                }
 
 
     def process_message(self, interpretation: dict, client: SocketModeClient, req, email, db: database, admin) -> Dict:
@@ -140,4 +147,7 @@ class LibraryModule(ModuleTemplate):
             else:
                 response = library_list_book_transactions(book["ISBN"])
 
+        elif interpretation["command"] == Commands.LIBRARY_HELP:
+            response = library_help()
+            
         return response

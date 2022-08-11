@@ -40,9 +40,10 @@ class Commands(Enum):
     LIBRARY_CONFIRM_TRANSACTION = 25
     LIBRARY_CANCEL_TRANSACTION = 26
     LIBRARY_TRANSACTION_HISTORY = 27
+    LIBRARY_HELP = 28
 
     # Accessible commands using the network command
-    NETWORK_ADD_ME = 28
+    NETWORK_ADD_ME = 29
 
 
 
@@ -66,6 +67,8 @@ command_dispatch = {
     Commands.LIBRARY_BORROW_BOOK : "`library borrow_book <ISBN>` - This allows you to borrow a book from the library and sets up a conversation with the owner to confirm",
     Commands.LIBRARY_CONFIRM_TRANSACTION : "`library confirm <ISBN>` - This allows book owner to confirm the borrow transaction",
     Commands.LIBRARY_CANCEL_TRANSACTION : "`library cancel <ISBN>` - This allows book owner or requester to cancel the borrow transaction",
+    Commands.LIBRARY_TRANSACTION_HISTORY: "`library transaction_history <ISBN>` - This returns transactions related to a specific book",
+    Commands.LIBRARY_HELP: "`library help` - This returns a clarification on how to interact with the bot's library module",
 
 
     # Network commands

@@ -43,6 +43,18 @@ def help_response():
            "- `{anything else}` - Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
            "If you're an admin type \"admin help\" for more information!"
 
+def library_help():
+    """Returns the response for when a user asks for help with the library module"""
+
+    return f"Interacting with the Include Bot as a library user requires a lot of precision in commands. Here are all of the command options:\n" \
+        f"- {explain_command(Commands.LIBRARY_LIST_BOOKS)}\n" \
+        f"- {explain_command(Commands.LIBRARY_DONATE_BOOK)}\n" \
+        f"- {explain_command(Commands.LIBRARY_BORROW_BOOK)}\n" \
+        f"- {explain_command(Commands.LIBRARY_CONFIRM_TRANSACTION)}\n" \
+        f"- {explain_command(Commands.LIBRARY_CANCEL_TRANSACTION)}\n" \
+        f"- {explain_command(Commands.LIBRARY_TRANSACTION_HISTORY)}\n" \
+        f"- {explain_command(Commands.LIBRARY_HELP)}\n" \
+        
 
 def did_not_understand():
     """Returns the response for when a non-admin message is not understood."""
