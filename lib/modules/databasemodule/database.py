@@ -138,9 +138,7 @@ class database:
     def get_book_by_isbn(self, book_isbn):
         """Returns the book with the supplied isbn"""
 
-        self.cur.execute(
-            f"SELECT * FROM books WHERE ISBN = '{book_isbn}'"
-        )
+        self.cur.execute("SELECT * FROM books WHERE ISBN is ?", (book_isbn,))
         return self.cur.fetchone()
 
     def request_book(self, book_isbn, user_email):

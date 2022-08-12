@@ -77,7 +77,7 @@ class LibraryModule(ModuleTemplate):
             response = library_list_books(db)
         elif interpretation["command"] == Commands.LIBRARY_DONATE_BOOK:
             # Get name from ISBN using API
-            isbn = interpretation["book_isbn"]
+            isbn = extract_isbn_from_phone_number_format(interpretation["book_isbn"])
             name = get_book_name_from_isbn(isbn)
             if name is None:
                 response = book_with_isbn_not_found(isbn)
@@ -87,65 +87,85 @@ class LibraryModule(ModuleTemplate):
                 response = book_with_isbn_donated(isbn)
 
         elif interpretation["command"] == Commands.LIBRARY_BORROW_BOOK:
-            book = db.get_book_by_isbn(interpretation["book_isbn"])
+            isbn = extract_isbn_from_phone_number_format(interpretation["book_isbn"])
+            book = db.get_book_by_isbn(isbn)
             if book is None:
                 response = book_with_isbn_not_found(interpretation["book_isbn"])
             else:
-                db.request_book(book["ISBN"], email)
-                response = book_with_isbn_requested(book["ISBN"], book["name"])
+                book_name = book[2]
+                book_owner_email = book[4]
 
-                db.add_transaction_history_entry(book["ISBN"], f"{email} requested {book['name']}")
+                db.request_book(isbn, email)
+                response = book_with_isbn_requested(isbn, book_name)
+
+                db.add_transaction_history_entry(isbn, f"{email} requested {book_name}")
 
                 # send message to owner_email that the user has requested the book for approval
-                user = client.web_client.users_lookupByEmail(email=book["owner_email"])
-                client.web_client.chat_postMessage(channel=user["user"]["id"], text=approve_request_of_book_with_isbn(book["ISBN"], email))
+                user = client.web_client.users_lookupByEmail(email=book_owner_email)
+                client.web_client.chat_postMessage(channel=user["user"]["id"], text=approve_request_of_book_with_isbn(isbn, email))
 
         elif interpretation["command"] == Commands.LIBRARY_CONFIRM_TRANSACTION:
-            book = db.get_book_by_isbn(interpretation["book_isbn"])
+            isbn = extract_isbn_from_phone_number_format(interpretation["book_isbn"])
+            book = db.get_book_by_isbn(isbn)
             if book is None:
-                response = book_with_isbn_not_found(book["ISBN"])
-            elif book["owner_email"] != email:
-                response = book_with_isbn_not_owned(book["ISBN"])
-            elif book["request_email"] is None:
-                response = book_with_isbn_not_requested(book["ISBN"])
+                response = book_with_isbn_not_found(interpretation["book_isbn"])
+                return response 
+
+            book_name = book[2]
+            book_owner_email = book[4] 
+            book_request_email = book[5]
+
+            if book_owner_email != email:
+                response = book_with_isbn_not_owned(interpretation["book_isbn"])
+            elif book_request_email is None:
+                response = book_with_isbn_not_requested(interpretation["book_isbn"])
             else:
-                prev_owner_email = book["owner_email"]
+                prev_owner_email = book_owner_email
 
-                db.approve_book_request(book["ISBN"], book["request_email"])
-                response = book_borrow_request_with_isbn_approved(book["ISBN"], prev_owner_email)
+                db.approve_book_request(isbn, book_request_email)
+                response = book_borrow_request_with_isbn_approved(isbn, prev_owner_email)
 
-                db.add_transaction_history_entry(book["ISBN"], f"{email} approved {book['name']}")
+                db.add_transaction_history_entry(isbn, f"{email} approved {book_name}")
 
                 # send message to the new onwer that the book request has been approved
-                user = client.web_client.users_lookupByEmail(email=book["owner_email"])
+                user = client.web_client.users_lookupByEmail(email=book_owner_email)
                 client.web_client.chat_postMessage(channel=user["user"]["id"],
-                 text=response)
+                text=response)
 
         elif interpretation["command"] == Commands.LIBRARY_CANCEL_TRANSACTION:
-            book = db.get_book_by_isbn(interpretation["book_isbn"])
+            isbn = extract_isbn_from_phone_number_format(interpretation["book_isbn"])
+            book = db.get_book_by_isbn(isbn)
             if book is None:
                 response = book_with_isbn_not_found(book["ISBN"])
-            elif book["owner_email"] != email and book["request_email"] != email:
+                return response
+            
+            book_name = book[2]
+            book_owner_email = book[4]
+            book_request_email = book[5]
+
+            if book_owner_email != email and book_request_email != email:
                 response = book_with_isbn_not_owned_or_requested(book["ISBN"])
-            elif book["request_email"] is None:
+            elif book_request_email is None:
                 response = book_with_isbn_not_requested(book["ISBN"])
             else:
-                db.cancel_book_request(book["ISBN"])
-                response = book_borrow_request_with_isbn_cancelled(book["ISBN"])
+                
+                db.cancel_book_request(isbn)
+                response = book_borrow_request_with_isbn_cancelled(isbn)
 
-                db.add_transaction_history_entry(book["ISBN"], f"{email} cancelled {book['name']}")
+                db.add_transaction_history_entry(isbn, f"{email} cancelled {book_name}")
 
                 # send message to the new onwer that the book request has been cancelled
-                user = client.web_client.users_lookupByEmail(email=book["owner_email"])
+                user = client.web_client.users_lookupByEmail(email=book_owner_email)
                 client.web_client.chat_postMessage(channel=user["user"]["id"],
                  text=response)
 
         elif interpretation["command"] == Commands.LIBRARY_TRANSACTION_HISTORY:
-            book = db.get_book_by_isbn(interpretation["book_isbn"])
+            isbn = extract_isbn_from_phone_number_format(interpretation["book_isbn"])
+            book = db.get_book_by_isbn(isbn)
             if book is None:
-                response = book_with_isbn_not_found(book["ISBN"])
+                response = book_with_isbn_not_found(interpretation["book_isbn"])
             else:
-                response = library_list_book_transactions(book["ISBN"])
+                response = library_list_book_transactions(isbn)
 
         elif interpretation["command"] == Commands.LIBRARY_HELP:
             response = library_help()

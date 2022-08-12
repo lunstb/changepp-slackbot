@@ -14,6 +14,13 @@ def get_dates(msg):
         dates.append(match)
     return dates
 
+def extract_isbn_from_phone_number_format(phone_number: str) -> str:
+    """Slack may format provided isbn like a phone number, such as <tel:0984782869|0984782869>.
+    This function extracts the isbn from a phone number"""
+    
+    isbn_num = phone_number.split("|")[-1]
+    return isbn_num if len(isbn_num) == 10 else isbn_num[:-1]
+
 def get_book_name_from_isbn(isbn: str):
     """
     This function returns the book info from the isbn

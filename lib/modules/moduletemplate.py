@@ -29,7 +29,6 @@ class ModuleTemplate(ABC):
             return False
 
         if interpretation["command"] == Commands.INCORRECT_ARGUMENTS:
-            print("incorrect arguments")
             response = incorrect_arguments(interpretation["attempted"])
         else:
             response = self.process_message(interpretation, client, req, email, db, admin)
@@ -41,7 +40,6 @@ class ModuleTemplate(ABC):
             raise Exception(f"Recognized command \"{interpretation['command']}\" does not have programmed response in its module")
 
         logging.info(f"bot->{email} response: {response}")
-        print(response)
         client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
         return True
 
