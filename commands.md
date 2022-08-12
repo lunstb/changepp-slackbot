@@ -30,7 +30,7 @@ Adds specified book to library.
 
 3. `library borrow_book BOOK_ISBN`
 
-The `borrow_book` command is passed a `BOOK_ISBN`. The slackbot then sets up a conversation between person and owner of book with ID of transaction. Owner of book confirms transaction via `library confirm ISBN`
+The `borrow_book` command is passed a `BOOK_ISBN`. The slackbot then separately emails the owner of the book, and the owner can either confirm or cancel the request. The borrow will be notified if any action is taken by the owner.
 
 **EXAMPLE**
 
