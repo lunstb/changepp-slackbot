@@ -47,12 +47,12 @@ class Commands(Enum):
     LIBRARY_HELP = 28
 
     # Accessible commands using the network command
-    NETWORK_ADD_ME = 24
+    NETWORK_ADD_ME = 29
 
     # Accessible commands using the resume command
-    LIST_RESUMES = 24
-    ADD_RESUME = 25
-    REMOVE_RESUME = 26
+    LIST_RESUMES = 30
+    ADD_RESUME = 31
+    REMOVE_RESUME = 32
 
 command_dispatch = {
     Commands.ADMIN_CREATE_USER : "`admin create_user {slack email} {mavenlink email}` - This creates a user with the specified slack and mavenlink emails",
