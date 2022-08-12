@@ -136,7 +136,7 @@ class LibraryModule(ModuleTemplate):
             isbn = extract_isbn_from_phone_number_format(interpretation["book_isbn"])
             book = db.get_book_by_isbn(isbn)
             if book is None:
-                response = book_with_isbn_not_found(book["ISBN"])
+                response = book_with_isbn_not_found(interpretation["book_isbn"])
                 return response
             
             book_name = book[2]
@@ -144,9 +144,9 @@ class LibraryModule(ModuleTemplate):
             book_request_email = book[5]
 
             if book_owner_email != email and book_request_email != email:
-                response = book_with_isbn_not_owned_or_requested(book["ISBN"])
+                response = book_with_isbn_not_owned_or_requested(interpretation["book_isbn"])
             elif book_request_email is None:
-                response = book_with_isbn_not_requested(book["ISBN"])
+                response = book_with_isbn_not_requested(interpretation["book_isbn"])
             else:
                 
                 db.cancel_book_request(isbn)

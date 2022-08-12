@@ -73,7 +73,7 @@ def approve_request_of_book_with_isbn(isbn, requester_email):
 def book_with_isbn_not_requested(isbn):
     """Returns the response for when a user tries to approve a request for a book with an ISBN that has not been requested"""
 
-    return f"Book with ISBN {isbn} has not been requested. Please try again"
+    return f"Book with ISBN {isbn} has not been requested. Please try again :)"
 
 def book_borrow_request_with_isbn_approved(isbn, owner_email):
     """Returns the response for when a book owner approves a request for a book with provided ISBN"""

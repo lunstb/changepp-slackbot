@@ -166,7 +166,7 @@ class database:
         """Cancels the book request for the book with the supplied isbn"""
 
         self.cur.execute(
-            f"UPDATE books SET request_email = {None} WHERE ISBN = '{book_isbn}'"
+            f"UPDATE books SET request_email = ? WHERE ISBN = ?", (None, book_isbn)
         )
         self.con.commit()
 
