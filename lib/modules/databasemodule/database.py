@@ -184,7 +184,7 @@ class database:
         """Removes a book from the book table"""
 
         self.cur.execute(
-            f"REMOVE FROM books WHERE book_id = {book_id}"
+            f"DELETE FROM books WHERE book_id = {book_id}"
         )
         self.con.commit()
         logging.info("Book removed from books table")
@@ -243,22 +243,38 @@ class database:
         """Creates the resume table, only used in setup"""
 
         self.cur.execute(
-            "CREATE TABLE resume (ID TEXT, user_email TEXT, AWS_link TEXT)"
+            "CREATE TABLE resume (user_email TEXT, AWS_link TEXT, PRIMARY KEY (user_email))"
         )
         self.con.commit()
         logging.info("Resume table created")
 
+    def get_resumes(self, id=None):
+        """Returns all of the resumes from the database"""
+        
+        if id is None:
+            self.cur.execute("SELECT * FROM resume")
+            return self.cur.fetchall()
+        else:
+            self.cur.execute(f"SELECT 1 FROM resume WHERE user_email = '{id}'")
+            return self.cur.fetchall()
+
     def insert_resume(self, user_email, AWS_link):
         """Inserts a resume"""
 
-        resume_id = uuid.uuid4()
-
         self.cur.execute(
-            "INSERT INTO resume VALUES (?, ?, ?)", (resume_id,
-                                                    user_email, AWS_link)
+            "INSERT INTO resume (user_email, AWS_link) VALUES (?, ?)", (user_email, AWS_link)
         )
         self.con.commit()
         logging.info(f"Resume inserted with AWS link {AWS_link}")
+
+    def remove_resume(self, email):
+        """Removes a resume from the resume table"""
+
+        self.cur.execute(
+            f"DELETE FROM resume WHERE user_email = '{email}'"
+        )
+        self.con.commit()
+        logging.info("Resume removed from books table")
 
     def drop_resume_table(self):
         """Drops the resume table, only used in setup"""

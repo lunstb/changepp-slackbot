@@ -3,3 +3,6 @@ python-dotenv
 slack_sdk
 datefinder
 requests
+boto3
+download aws cli from https://awscli.amazonaws.com/AWSCLIV2.msi - message me for aws access key stuff
+PyPDF2

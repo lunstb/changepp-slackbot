@@ -1,6 +1,10 @@
 """This contains the enums for the different possible commands"""
 from enum import Enum
 
+from lib.modules.resumemodule.resumeresponse import list_resumes
+
+
+
 class Commands(Enum):
     # These are all commands accessible to an admin user
     ADMIN_CREATE_USER = 1
@@ -43,9 +47,12 @@ class Commands(Enum):
     LIBRARY_HELP = 28
 
     # Accessible commands using the network command
-    NETWORK_ADD_ME = 29
+    NETWORK_ADD_ME = 24
 
-
+    # Accessible commands using the resume command
+    LIST_RESUMES = 24
+    ADD_RESUME = 25
+    REMOVE_RESUME = 26
 
 command_dispatch = {
     Commands.ADMIN_CREATE_USER : "`admin create_user {slack email} {mavenlink email}` - This creates a user with the specified slack and mavenlink emails",
@@ -73,6 +80,11 @@ command_dispatch = {
 
     # Network commands
     Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
+
+    # Resumes commands
+    Commands.LIST_RESUMES : "`list_resumes` - This returns a list of all the resumes that are available to view",
+    Commands.ADD_RESUME : "`add_resume {url}` - This adds a resume to the database",
+    Commands.REMOVE_RESUME : "`remove_resume {id}` - This removes a resume from the database",
 }
 
 # TODO: put this back into the commands class
