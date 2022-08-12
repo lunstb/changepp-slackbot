@@ -73,6 +73,7 @@ class LibraryModule(ModuleTemplate):
 
 
     def process_message(self, interpretation: dict, client: SocketModeClient, req, email, db: database, admin) -> Dict:
+        # todo: don't allow donating a book twice by the same user, send a corresponding message
         if interpretation["command"] == Commands.LIBRARY_LIST_BOOKS:
             response = library_list_books(db)
         elif interpretation["command"] == Commands.LIBRARY_DONATE_BOOK:
@@ -128,7 +129,7 @@ class LibraryModule(ModuleTemplate):
                 db.add_transaction_history_entry(isbn, f"{email} approved {book_name}")
 
                 # send message to the new onwer that the book request has been approved
-                user = client.web_client.users_lookupByEmail(email=book_owner_email)
+                user = client.web_client.users_lookupByEmail(email=book_request_email)
                 client.web_client.chat_postMessage(channel=user["user"]["id"],
                 text=response)
 
@@ -155,7 +156,7 @@ class LibraryModule(ModuleTemplate):
                 db.add_transaction_history_entry(isbn, f"{email} cancelled {book_name}")
 
                 # send message to the new onwer that the book request has been cancelled
-                user = client.web_client.users_lookupByEmail(email=book_owner_email)
+                user = client.web_client.users_lookupByEmail(email=book_request_email)
                 client.web_client.chat_postMessage(channel=user["user"]["id"],
                  text=response)
 

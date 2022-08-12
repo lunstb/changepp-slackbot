@@ -84,7 +84,7 @@ def book_with_isbn_not_owned(isbn):
     """Returns the response for when a user tries to confirm a book with an ISBN that does not exist in their library"""
 
     return f"I am sorry, but you do not own a book with ISBN {isbn}. Try the options below:\n- Try again with your book's" + \
-    "ISBN\n- Type `library list_books` to see a list of books you own\n- Type `help` for more information"
+    " ISBN\n- Type `library list_books` to see a list of books you own\n- Type `help library` for more information"
 
 def book_borrow_request_with_isbn_cancelled(book_isbn):
     """Returns the response for when a user cancels a borrow request for a book with given ISBN"""

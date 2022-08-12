@@ -158,7 +158,7 @@ class database:
         """
 
         self.cur.execute(
-            f"UPDATE books SET owner_email = '{request_email}', request_email = {None} WHERE ISBN = '{book_isbn}'"
+            f"UPDATE books SET owner_email = ?, request_email = ? WHERE ISBN = ?", (request_email, None, book_isbn)
         )
         self.con.commit()
 
