@@ -94,7 +94,7 @@ def book_borrow_request_with_isbn_cancelled(book_isbn):
 def book_with_isbn_not_found(isbn):
     """Returns the response for when a user tries to interact with a book with an ISBN that does not exist in our API"""
 
-    return f"Could not find book with ISBN {isbn}"
+    return f"Sorry, I could'nt find book with ISBN: {isbn}. Please try again with a valid ISBN :("
 
 def book_with_isbn_donated(isbn):
     """Returns the response for when a book is successfully donated"""
@@ -109,10 +109,10 @@ def library_list_books(db: database):
     if not books_db:
         return "There are no books in the library"
 
-    response = "Here is a list of books:\n"
+    response = "Here is a list of available books:\n"
     for book in books_db:
         (isbn, name, owner_email, last_transaction_date) = book
-        response += f"{name} with the ISBN {isbn} currently owned by {owner_email} since {last_transaction_date}\n"
+        response += f"\n>- {name} with the ISBN `{isbn}` currently owned by {owner_email} since `{last_transaction_date}`"
 
     return response
 

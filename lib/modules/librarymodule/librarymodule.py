@@ -89,7 +89,7 @@ class LibraryModule(ModuleTemplate):
         elif interpretation["command"] == Commands.LIBRARY_BORROW_BOOK:
             book = db.get_book_by_isbn(interpretation["book_isbn"])
             if book is None:
-                response = book_with_isbn_not_found(book["ISBN"])
+                response = book_with_isbn_not_found(interpretation["book_isbn"])
             else:
                 db.request_book(book["ISBN"], email)
                 response = book_with_isbn_requested(book["ISBN"], book["name"])
