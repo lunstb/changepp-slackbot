@@ -106,7 +106,7 @@ class LibraryModule(ModuleTemplate):
                 response = book_with_isbn_not_found(book["ISBN"])
             elif book["owner_email"] != email:
                 response = book_with_isbn_not_owned(book["ISBN"])
-            elif book["request_email"] == null:
+            elif book["request_email"] is None:
                 response = book_with_isbn_not_requested(book["ISBN"])
             else:
                 prev_owner_email = book["owner_email"]
@@ -127,7 +127,7 @@ class LibraryModule(ModuleTemplate):
                 response = book_with_isbn_not_found(book["ISBN"])
             elif book["owner_email"] != email and book["request_email"] != email:
                 response = book_with_isbn_not_owned_or_requested(book["ISBN"])
-            elif book["request_email"] == null:
+            elif book["request_email"] is None:
                 response = book_with_isbn_not_requested(book["ISBN"])
             else:
                 db.cancel_book_request(book["ISBN"])

@@ -10,13 +10,10 @@ The database consists of a single users table with the properties email, mavenli
 
 Note that even though users are created using their mavenlink email, the only time that email is relevant is on the creation because after that only the mavenlink id is used"""
 
-# from asyncio.windows_events import NULL
 import datetime
 import logging
 import sqlite3
 import uuid
-
-from sqlalchemy import null
 
 from lib.modules.modulehelpers import get_book_name_from_isbn
 
@@ -40,9 +37,11 @@ class database:
         """Initializes the database and ensures that a database file exists"""
 
         logging.debug("Attempting to connect to sqlite database")
-        self.con = sqlite3.connect("data/users.db", detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False)
+        self.con = sqlite3.connect(
+            "data/users.db", detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False)
         self.cur = self.con.cursor()
-        logging.debug("Successfully connected to sqlite database, now making sure that there is a table")
+        logging.debug(
+            "Successfully connected to sqlite database, now making sure that there is a table")
         if not self.user_table_exists():
             logging.error("Database not initialized")
         else:
@@ -84,7 +83,8 @@ class database:
         self.cur.execute("INSERT INTO users VALUES (?,?,?,?,?,?)",
                          (slack_email, first_name, last_name, user_type, graduation_year, is_admin))
         self.con.commit()
-        logging.debug(f"User with slack email {slack_email} inserted into users table")
+        logging.debug(
+            f"User with slack email {slack_email} inserted into users table")
 
     def get_users(self):
         """Returns all of the users from the database """
@@ -154,13 +154,13 @@ class database:
     def approve_book_request(self, book_isbn, request_email):
         """
         Approves the book request from the user with the supplied email.
-         
-        Sets the owner_email to the request_email, and sets the request_email to null to 
+
+        Sets the owner_email to the request_email, and sets the request_email to None to 
         indicate that the request is complete.
         """
 
         self.cur.execute(
-            f"UPDATE books SET owner_email = '{request_email}', request_email = {null} WHERE ISBN = '{book_isbn}'"
+            f"UPDATE books SET owner_email = '{request_email}', request_email = {None} WHERE ISBN = '{book_isbn}'"
         )
         self.con.commit()
 
@@ -168,17 +168,16 @@ class database:
         """Cancels the book request for the book with the supplied isbn"""
 
         self.cur.execute(
-            f"UPDATE books SET request_email = {null} WHERE ISBN = '{book_isbn}'"
+            f"UPDATE books SET request_email = {None} WHERE ISBN = '{book_isbn}'"
         )
         self.con.commit()
 
-    
     def add_book(self, ISBN, name, email):
         """Adds a book to the book table"""
 
         self.cur.execute(
             "INSERT INTO books (ISBN, name, original_owner_email, owner_email, request_email, last_transaction_date) VALUES (?, ?, ?, ?, ?, ?)",
-            (ISBN, name, email, email, null, datetime.datetime.now())
+            (ISBN, name, email, email, None, datetime.datetime.now())
         )
         self.con.commit()
         logging.info(f"Book with ISBN {ISBN} into books table")
@@ -192,12 +191,12 @@ class database:
         self.con.commit()
         logging.info("Book removed from books table")
 
-
     def get_books(self):
         """Returns all of the books from the database with
          isbn, name, original ownder, and last transaction date fields"""
 
-        self.cur.execute("SELECT ISBN, name, owner_email, last_transaction_date FROM books")
+        self.cur.execute(
+            "SELECT ISBN, name, owner_email, last_transaction_date FROM books")
         return self.cur.fetchall()
 
     def drop_books_table(self):
@@ -229,18 +228,18 @@ class database:
             (book_isbn, description, datetime.datetime.now())
         )
         self.con.commit
-        logging.info(f"Transaction history entry added for book with isbn {book_isbn}")
+        logging.info(
+            f"Transaction history entry added for book with isbn {book_isbn}")
 
     def get_transaction_history(self, book_isbn):
         """
         Returns the transaction history for the book with the supplied isbn ascendingly by transaction date
         """
-            
+
         self.cur.execute(
             f"SELECT * FROM transaction_history WHERE book_isbn = '{book_isbn}' ORDER BY transaction_date ASC"
         )
         return self.cur.fetchall()
-
 
     def create_resume_table(self):
         """Creates the resume table, only used in setup"""
@@ -257,7 +256,8 @@ class database:
         resume_id = uuid.uuid4()
 
         self.cur.execute(
-            "INSERT INTO resume VALUES (?, ?, ?)", (resume_id, user_email, AWS_link)
+            "INSERT INTO resume VALUES (?, ?, ?)", (resume_id,
+                                                    user_email, AWS_link)
         )
         self.con.commit()
         logging.info(f"Resume inserted with AWS link {AWS_link}")
@@ -293,5 +293,3 @@ class database:
         self.cur.execute("DROP TABLE networking")
         self.con.commit()
         logging.info("Dropping networking table")
-
-
