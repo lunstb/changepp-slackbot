@@ -1,10 +1,6 @@
 """This contains the enums for the different possible commands"""
 from enum import Enum
 
-from lib.modules.resumemodule.resumeresponse import list_resumes
-
-
-
 class Commands(Enum):
     # These are all commands accessible to an admin user
     ADMIN_CREATE_USER = 1
