@@ -15,7 +15,7 @@ import logging
 import sqlite3
 import uuid
 
-#from lib.modules.modulehelpers import get_book_name_from_isbn
+from lib.modules.modulehelpers import get_book_name_from_isbn
 
 
 class database:
@@ -37,9 +37,11 @@ class database:
         """Initializes the database and ensures that a database file exists"""
 
         logging.debug("Attempting to connect to sqlite database")
-        self.con = sqlite3.connect("data/users.db", detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False)
+        self.con = sqlite3.connect(
+            "data/users.db", detect_types=sqlite3.PARSE_DECLTYPES, check_same_thread=False)
         self.cur = self.con.cursor()
-        logging.debug("Successfully connected to sqlite database, now making sure that there is a table")
+        logging.debug(
+            "Successfully connected to sqlite database, now making sure that there is a table")
         if not self.user_table_exists():
             logging.error("Database not initialized")
         else:
@@ -81,7 +83,8 @@ class database:
         self.cur.execute("INSERT INTO users VALUES (?,?,?,?,?,?)",
                          (slack_email, first_name, last_name, user_type, graduation_year, is_admin))
         self.con.commit()
-        logging.debug(f"User with slack email {slack_email} inserted into users table")
+        logging.debug(
+            f"User with slack email {slack_email} inserted into users table")
 
     def get_users(self):
         """Returns all of the users from the database """
@@ -110,22 +113,69 @@ class database:
         logging.info("Dropping user table")
 
     def create_books_table(self):
-        """Creates the books table, only used in setup"""
+        """
+        Creates the books table and transaction_history table, only used in setup
+
+        The book is always under loan if the original_ower is not the current owner.
+        When requested by another user, we hold that user's email in the request_email field,
+        and when the owner_email user approves the borrow request, we set the owner_email field 
+        to the request_email field. So, the possible states are: 
+        Initial state: original_owner_email == owner_email, and request_email == None
+        Under loan: original_owner_email != owner_email
+        Borrow transaction in progress: owner_email != request_email && request_email not None
+        Borrow transaction approved: ower_email == request_email & request_email == None
+        Book returned: original_owner_email == owner_email
+        """
 
         self.cur.execute(
-            "CREATE TABLE books (ID TEXT, ISBN TEXT, name TEXT, original_owner_email TEXT, owner_email TEXT, last_transaction_date TIMESTAMP)"
+            "CREATE TABLE books (ID INTEGER PRIMARY KEY AUTOINCREMENT, ISBN TEXT, name TEXT, original_owner_email TEXT, owner_email TEXT, request_email TEXT, last_transaction_date TIMESTAMP)"
         )
         self.con.commit()
         logging.info("Books table created")
 
+        self.create_transaction_history_table()
+
+    def get_book_by_isbn(self, book_isbn):
+        """Returns the book with the supplied isbn"""
+
+        self.cur.execute("SELECT * FROM books WHERE ISBN is ?", (book_isbn,))
+        return self.cur.fetchone()
+
+    def request_book(self, book_isbn, user_email):
+        """Requests the book with the supplied isbn from the user with the supplied email"""
+
+        self.cur.execute(
+            f"UPDATE books SET request_email = '{user_email}' WHERE ISBN = '{book_isbn}'"
+        )
+        self.con.commit()
+
+    def approve_book_request(self, book_isbn, request_email):
+        """
+        Approves the book request from the user with the supplied email.
+
+        Sets the owner_email to the request_email, and sets the request_email to None to 
+        indicate that the request is complete.
+        """
+
+        self.cur.execute(
+            f"UPDATE books SET owner_email = ?, request_email = ? WHERE ISBN = ?", (request_email, None, book_isbn)
+        )
+        self.con.commit()
+
+    def cancel_book_request(self, book_isbn):
+        """Cancels the book request for the book with the supplied isbn"""
+
+        self.cur.execute(
+            f"UPDATE books SET request_email = ? WHERE ISBN = ?", (None, book_isbn)
+        )
+        self.con.commit()
+
     def add_book(self, ISBN, name, email):
         """Adds a book to the book table"""
 
-        # Generate ID
-        book_id = uuid.uuid4()
-
         self.cur.execute(
-            "INSERT INTO books VALUES (?, ?, ?, ?, ?)", (book_id, ISBN, name, email, email, None)
+            "INSERT INTO books (ISBN, name, original_owner_email, owner_email, request_email, last_transaction_date) VALUES (?, ?, ?, ?, ?, ?)",
+            (ISBN, name, email, email, None, datetime.datetime.now())
         )
         self.con.commit()
         logging.info(f"Book with ISBN {ISBN} into books table")
@@ -139,22 +189,12 @@ class database:
         self.con.commit()
         logging.info("Book removed from books table")
 
-    def trade_book(self, book_id, owner_email):
-        """Trades a book with book_id to owner_email"""
-
-        # I need to also update the transaction date
-
-        self.cur.execute(
-            f"UPDATE books SET owner_email = {owner_email} WHERE book_id = {book_id}"
-        )
-        self.con.commit()
-        logging.info("Book traded")
-
     def get_books(self):
         """Returns all of the books from the database with
          isbn, name, original ownder, and last transaction date fields"""
 
-        self.cur.execute("SELECT ISBN, name, owner_email, last_transaction_date FROM books")
+        self.cur.execute(
+            "SELECT ISBN, name, owner_email, last_transaction_date FROM books")
         return self.cur.fetchall()
 
     def drop_books_table(self):
@@ -163,6 +203,41 @@ class database:
         self.cur.execute("DROP TABLE books")
         self.con.commit()
         logging.info("Dropping books table")
+
+    def create_transaction_history_table(self):
+        """
+        Creates table for books transaction history using book isbn as foreign/reference key
+        """
+
+        # create table with auto incrementing primary key
+        self.cur.execute(
+            "CREATE TABLE transaction_history (ID INTEGER PRIMARY KEY AUTOINCREMENT, book_isbn TEXT, description TEXT, transaction_date TIMESTAMP)"
+        )
+        self.con.commit()
+        logging.info("Transaction history table created")
+
+    def add_transaction_history_entry(self, book_isbn, description):
+        """
+        Adds a transaction history entry to the table for the book with the supplied isbn
+        """
+
+        self.cur.execute(
+            f"INSERT INTO transaction_history (book_isbn, description, transaction_date) VALUES (?, ?, ?)",
+            (book_isbn, description, datetime.datetime.now())
+        )
+        self.con.commit
+        logging.info(
+            f"Transaction history entry added for book with isbn {book_isbn}")
+
+    def get_transaction_history(self, book_isbn):
+        """
+        Returns the transaction history for the book with the supplied isbn ascendingly by transaction date
+        """
+
+        self.cur.execute(
+            f"SELECT * FROM transaction_history WHERE book_isbn = '{book_isbn}' ORDER BY transaction_date ASC"
+        )
+        return self.cur.fetchall()
 
     def create_resume_table(self):
         """Creates the resume table, only used in setup"""
@@ -232,5 +307,3 @@ class database:
         self.cur.execute("DROP TABLE networking")
         self.con.commit()
         logging.info("Dropping networking table")
-
-

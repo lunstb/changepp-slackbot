@@ -34,15 +34,25 @@ def denied_admin_access():
 def help_response():
     """Returns the response for a user asking for help"""
 
-    return "It seems like you asked for help on how to interact with me:\n" \
-           f"- {explain_command(Commands.CREATE_USER)}\n" \
-           f"- {explain_command(Commands.LIBRARY_LIST_BOOKS)}\n" \
-           "- `admin {anything}` - This returns a message telling the user they are not an admin\n" \
-           f"- {explain_command(Commands.LIBRARY_DONATE_BOOK)}\n" \
-           f"- {explain_command(Commands.NETWORK_ADD_ME)}\n" \
+    return "It seems like you asked for help on how to interact with me.\n" \
+            "\nType:\n - `library help` for library module help commands.\n" \
+            "Below are different commands on how to interact with the supported admin, library, network, resume, and internship functionalities: \n" \
+            f"\n{library_help()}\n" \
            "- `{anything else}` - Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
            "If you're an admin type \"admin help\" for more information!"
 
+def library_help():
+    """Returns the response for when a user asks for help with the library module"""
+
+    return f"Here are all of the command options for interacting with the library module:\n" \
+        f"- {explain_command(Commands.LIBRARY_LIST_BOOKS)}\n" \
+        f"- {explain_command(Commands.LIBRARY_DONATE_BOOK)}\n" \
+        f"- {explain_command(Commands.LIBRARY_BORROW_BOOK)}\n" \
+        f"- {explain_command(Commands.LIBRARY_CONFIRM_TRANSACTION)}\n" \
+        f"- {explain_command(Commands.LIBRARY_CANCEL_TRANSACTION)}\n" \
+        f"- {explain_command(Commands.LIBRARY_TRANSACTION_HISTORY)}\n" \
+        f"- {explain_command(Commands.LIBRARY_HELP)}\n" \
+        
 
 def did_not_understand():
     """Returns the response for when a non-admin message is not understood."""
