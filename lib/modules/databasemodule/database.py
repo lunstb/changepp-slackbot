@@ -219,7 +219,7 @@ class database:
         """Creates the networking table, only used in setup"""
         # todo: more fields to be determined
         self.cur.execute(
-            "CREATE TABLE networking (user_id TEXT, is_alum TEXT, list TEXT)"
+            "CREATE TABLE networking (user_id TEXT, is_alum TEXT, list TEXT, PRIMARY KEY (user_id))"
         )
         self.con.commit()
         logging.info("Networking table created")
@@ -246,7 +246,7 @@ class database:
         self.cur.execute(
             f"SELECT is_alum FROM networking WHERE user_id = '{user_id}'"
         )
-        return self.cur.fetchone()[0] == "True"
+        return self.cur.fetchone()[0]
 
     def get_last(self, user_id):
         """Returns the last user the user was matched with"""
@@ -254,3 +254,4 @@ class database:
         self.cur.execute(
             f"SELECT list FROM networking WHERE user_id = '{user_id}'"
         )
+        return self.cur.fetchone()[0]

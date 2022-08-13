@@ -74,7 +74,6 @@ command_dispatch = {
 
     # Network commands
     Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
-    Commands.NETWORK_TALK : "`talk` - This allows you to talk to other users in the network",
 
     # Resumes commands
     Commands.LIST_RESUMES : "`list_resumes` - This returns a list of all the resumes that are available to view",
