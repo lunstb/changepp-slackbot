@@ -37,7 +37,9 @@ def help_response():
     return "It seems like you asked for help on how to interact with me.\n" \
             "\nType:\n - `library help` for library module help commands.\n" \
             "Below are different commands on how to interact with the supported admin, library, network, resume, and internship functionalities: \n" \
-            f"\n{library_help()}\n" \
+            f" Type `library help` for library module help commands.\n" \
+            f" Type `network help` for network module help commands.\n" \
+            f" Type `resume help` for resume module help commands.\n" \
            "- `{anything else}` - Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
            "If you're an admin type \"admin help\" for more information!"
 
@@ -52,6 +54,14 @@ def library_help():
         f"- {explain_command(Commands.LIBRARY_CANCEL_TRANSACTION)}\n" \
         f"- {explain_command(Commands.LIBRARY_TRANSACTION_HISTORY)}\n" \
         f"- {explain_command(Commands.LIBRARY_HELP)}\n" \
+
+def resume_help():
+    """Returns the response for when a user asks for help with the resume module"""
+
+    return f"Here are all of the command options for interacting with the resume module:\n" \
+        f"- {explain_command(Commands.LIST_RESUMES)}\n" \
+        f"- {explain_command(Commands.ADD_RESUME)}\n" \
+        f"- {explain_command(Commands.REMOVE_RESUME)}\n"         
         
 
 def did_not_understand():
