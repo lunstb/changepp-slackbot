@@ -5,6 +5,7 @@ import requests
 import io
 from botocore.exceptions import ClientError
 from lib.modules.modulehelpers import *
+from lib.formulateresponse import *
 from lib.modules.moduletemplate import ModuleTemplate
 from lib.modules.resumemodule.resumeresponse import *
 import os
@@ -51,6 +52,11 @@ class ResumeModule(ModuleTemplate):
                     "command": Commands.REMOVE_RESUME
                 }
 
+            if commands[0] == 'help':
+                return {
+                    "command": Commands.RESUME_HELP
+                }
+
     def process_message(self, interpretation, client, req, email, db: database, admin) -> Dict:
         response = None
 
@@ -77,4 +83,7 @@ class ResumeModule(ModuleTemplate):
                 response = resume_removed()
             except ClientError as e:
                 response = resume_not_removed(e.response['Error']['Message'])
+
+        if interpretation["command"] == Commands.RESUME_HELP:
+            response = resume_help()
         return response

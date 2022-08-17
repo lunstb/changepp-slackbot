@@ -49,6 +49,7 @@ class Commands(Enum):
     LIST_RESUMES = 30
     ADD_RESUME = 31
     REMOVE_RESUME = 32
+    RESUME_HELP = 33
 
 command_dispatch = {
     Commands.ADMIN_CREATE_USER : "`admin create_user {slack email} {mavenlink email}` - This creates a user with the specified slack and mavenlink emails",
@@ -81,6 +82,7 @@ command_dispatch = {
     Commands.LIST_RESUMES : "`list_resumes` - This returns a list of all the resumes that are available to view",
     Commands.ADD_RESUME : "`add_resume {url}` - This adds a resume to the database",
     Commands.REMOVE_RESUME : "`remove_resume {id}` - This removes a resume from the database",
+    Commands.RESUME_HELP : "`resume help` - This returns a clarification on how to interact with the bot's resumes module",
 }
 
 # TODO: put this back into the commands class
