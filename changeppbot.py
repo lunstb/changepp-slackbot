@@ -106,8 +106,9 @@ def process(client: SocketModeClient, req: SocketModeRequest):
 
         logging.info(f"bot->{email} response: {response}")
         client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
-
-
+    # team_join event is sent when a user joins a team
+    elif req.type == "team_join":
+        return    
 # Create db if it doesn't exist
 run_setup()
 
