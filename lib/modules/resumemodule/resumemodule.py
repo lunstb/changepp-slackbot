@@ -62,7 +62,7 @@ class ResumeModule(ModuleTemplate):
                 content = requests.get(req.payload['event']['files'][0]['url_private'], headers=headers, allow_redirects=True).content
                 # Check if PDF is valid:
                 PyPDF2.PdfFileReader(io.BytesIO(content))
-                s3.upload_fileobj(io.BytesIO(content), "changeppresumebot", f"{email}.pdf")
+                s3.upload_fileobj(io.BytesIO(content), os.getenv("S3_BUCKET_NAME"), f"{email}.pdf")
                 if not db.get_resumes(email):
                     db.insert_resume(email, f"https://changeppresumebot.s3.amazonaws.com/{email}.pdf")
                 response = resume_added()
@@ -72,7 +72,7 @@ class ResumeModule(ModuleTemplate):
             if not db.get_resumes(email):
                 response = resume_not_removed()
             try:
-                s3.delete_object(Bucket="changeppresumebot", Key=email)
+                s3.delete_object(Bucket=os.getenv("S3_BUCKET_NAME"), Key=email)
                 db.remove_resume(email)
                 response = resume_removed()
             except ClientError as e:
