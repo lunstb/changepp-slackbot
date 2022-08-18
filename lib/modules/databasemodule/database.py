@@ -281,7 +281,7 @@ class database:
 
         self.cur.execute("DROP TABLE resume")
         self.con.commit()
-        logging.info("Dropping books table")
+        logging.info("Dropping resume table")
 
     def create_networking_table(self):
         """Creates the networking table, only used in setup"""

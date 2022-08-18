@@ -1,5 +1,10 @@
 from lib.modules.databasemodule.database import database
 
+def resume_resources():
+    """Returns the response for when a user asks for resources on resumes"""
+
+    return "edit this little diddy if you want"
+
 def resume_added():
     """Returns the response for when a resume is successfully added"""
 

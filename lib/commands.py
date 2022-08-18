@@ -49,6 +49,7 @@ class Commands(Enum):
     LIST_RESUMES = 30
     ADD_RESUME = 31
     REMOVE_RESUME = 32
+    RESUME_RESOURCES  = 33
 
 command_dispatch = {
     Commands.ADMIN_CREATE_USER : "`admin create_user {slack email} {mavenlink email}` - This creates a user with the specified slack and mavenlink emails",
@@ -78,9 +79,10 @@ command_dispatch = {
     Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
 
     # Resumes commands
-    Commands.LIST_RESUMES : "`list_resumes` - This returns a list of all the resumes that are available to view",
-    Commands.ADD_RESUME : "`add_resume {url}` - This adds a resume to the database",
-    Commands.REMOVE_RESUME : "`remove_resume {id}` - This removes a resume from the database",
+    Commands.LIST_RESUMES : "`resume list` - This returns a list of all the resumes that are available to view",
+    Commands.ADD_RESUME : "`resume add {url}` - This adds a resume to the database",
+    Commands.REMOVE_RESUME : "`resume remove` - This removes your resume from the database",
+    Commands.RESUME_RESOURCES : "`resume resources` - This returns a list of all the resources that are available to view",
 }
 
 # TODO: put this back into the commands class
