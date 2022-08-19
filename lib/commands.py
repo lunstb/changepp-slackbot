@@ -51,6 +51,11 @@ class Commands(Enum):
     REMOVE_RESUME = 32
     RESUME_RESOURCES  = 33
 
+    # Accessible commands using the intern command
+    INTERN_ADD_ME = 34
+    INTERN_REMOVE = 35
+    INTERN_LIST = 36
+
 command_dispatch = {
     Commands.ADMIN_CREATE_USER : "`admin create_user {slack email} {mavenlink email}` - This creates a user with the specified slack and mavenlink emails",
     Commands.ADMIN_IS_ADMIN : "`admin is_admin {email}` - This returns whether the specified email is an admin account or not",
@@ -83,6 +88,11 @@ command_dispatch = {
     Commands.ADD_RESUME : "`resume add {url}` - This adds a resume to the database",
     Commands.REMOVE_RESUME : "`resume remove` - This removes your resume from the database",
     Commands.RESUME_RESOURCES : "`resume resources` - This returns a list of all the resources that are available to view",
+
+    # Intern commands - see if when you add user, check if email in resume database and add url if so
+    Commands.INTERN_ADD_ME : "`intern add {company} {position} {accepting_referrals?(true/false)}` - This adds an intern to the database",
+    Commands.INTERN_REMOVE : "`intern remove` - This removes your intern from the database",
+    Commands.INTERN_LIST : "`intern list` - This returns a list of all the interns that are available to view",
 }
 
 # TODO: put this back into the commands class
