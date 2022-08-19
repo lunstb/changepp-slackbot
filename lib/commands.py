@@ -44,17 +44,19 @@ class Commands(Enum):
 
     # Accessible commands using the network command
     NETWORK_ADD_ME = 29
+    NETWORK_HELP = 30
 
     # Accessible commands using the resume command
-    LIST_RESUMES = 30
-    ADD_RESUME = 31
-    REMOVE_RESUME = 32
-    RESUME_RESOURCES  = 33
+    LIST_RESUMES = 31
+    ADD_RESUME = 32
+    REMOVE_RESUME = 33
+    RESUME_RESOURCES  = 34
 
     # Accessible commands using the intern command
-    INTERN_ADD_ME = 34
-    INTERN_REMOVE = 35
-    INTERN_LIST = 36
+    INTERN_ADD_ME = 35
+    INTERN_REMOVE = 36
+    INTERN_LIST = 37
+    INTERN_HELP = 38
 
 command_dispatch = {
     Commands.ADMIN_CREATE_USER : "`admin create_user {slack email} {mavenlink email}` - This creates a user with the specified slack and mavenlink emails",
@@ -82,6 +84,7 @@ command_dispatch = {
 
     # Network commands
     Commands.NETWORK_ADD_ME : "`network add_me` - This adds you to the network",
+    Commands.NETWORK_HELP : "`network help` - This returns a clarification on how to interact with the bot's network module",
 
     # Resumes commands
     Commands.LIST_RESUMES : "`resume list` - This returns a list of all the resumes that are available to view",
@@ -93,6 +96,7 @@ command_dispatch = {
     Commands.INTERN_ADD_ME : "`intern add {company} {position} {accepting_referrals?(true/false)}` - This adds an intern to the database",
     Commands.INTERN_REMOVE : "`intern remove` - This removes your intern from the database",
     Commands.INTERN_LIST : "`intern list` - This returns a list of all the interns that are available to view",
+    Commands.INTERN_HELP : "`intern help` - This returns a clarification on how to interact with the bot's intern module",
 }
 
 # TODO: put this back into the commands class

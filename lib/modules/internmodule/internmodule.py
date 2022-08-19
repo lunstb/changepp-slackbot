@@ -6,9 +6,7 @@ from lib.modules.modulehelpers import *
 from lib.modules.moduletemplate import ModuleTemplate
 from lib.modules.internmodule.internresponse import *
 from lib.modules.databasemodule.database import database
-import os
-import requests
-import json
+from lib.formulateresponse import *
 
 
 env_path = Path('.') / '.env'
@@ -46,6 +44,10 @@ class InternModule(ModuleTemplate):
                     }
                 else:
                     return catch_incorrect_arguments(Commands.INTERN_LIST)
+            if commands[0] == 'help':
+                return {
+                    "command": Commands.INTERN_HELP
+                }
     
     def process_message(self, interpretation, client, req, email, db: database, admin) -> Dict:
         if interpretation["command"] == Commands.INTERN_ADD_ME:
@@ -56,3 +58,5 @@ class InternModule(ModuleTemplate):
             return removed_intern()
         if interpretation["command"] == Commands.INTERN_LIST:
             return list_interns(db, interpretation["id"])
+        if interpretation["command"] == Commands.INTERN_HELP:
+            return intern_help()
