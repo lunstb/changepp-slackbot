@@ -255,7 +255,10 @@ class database:
             self.cur.execute("SELECT * FROM resume")
             return self.cur.fetchall()
         else:
-            self.cur.execute(f"SELECT 1 FROM resume WHERE user_email = '{id}'")
+            if 'mailto:' in id:
+                id = id.replace('<mailto:', '')
+                id = id[:id.find('|')]
+            self.cur.execute(f"SELECT * FROM resume WHERE user_email = '{id}'")
             return self.cur.fetchall()
 
     def insert_resume(self, user_email, AWS_link):
@@ -274,7 +277,7 @@ class database:
             f"DELETE FROM resume WHERE user_email = '{email}'"
         )
         self.con.commit()
-        logging.info("Resume removed from books table")
+        logging.info("Resume removed from resume table")
 
     def drop_resume_table(self):
         """Drops the resume table, only used in setup"""
@@ -307,3 +310,55 @@ class database:
         self.cur.execute("DROP TABLE networking")
         self.con.commit()
         logging.info("Dropping networking table")
+    
+    def create_intern_table(self):
+        """Creates the resume table, only used in setup"""
+
+        self.cur.execute(
+            "CREATE TABLE intern (user_name TEXT, user_email TEXT, company TEXT, position TEXT, refs TEXT, PRIMARY KEY (user_email))"
+        )
+        self.con.commit()
+        logging.info("Intern table created")
+    
+    def get_interns(self, id=None):
+        """Returns all of the interns from the database"""
+        
+        if id is None:
+            self.cur.execute("SELECT * FROM intern")
+            return self.cur.fetchall()
+        else:
+            self.cur.execute(f"SELECT * FROM intern WHERE user_email = '{id}'")
+            return self.cur.fetchall()
+
+    def insert_intern(self, user_email, company, position, refs):
+        """Inserts a intern into the intern table"""
+        
+        self.cur.execute(f"SELECT * FROM users WHERE email = '{user_email}'")
+        self_info = self.cur.fetchone()
+        name = f"{self_info[1]} {self_info[2]}"
+
+        self.cur.execute(
+            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?)", (name, user_email, company, position, refs)
+        )
+        self.con.commit()
+        logging.info(f"You have been added to the intern table")
+
+    def remove_intern(self, id):
+        """Removes a intern from the intern table"""
+
+        if 'mailto:' in id:
+                id = id.replace('<mailto:', '')
+                id = id[:id.find('|')]
+
+        self.cur.execute(
+            f"DELETE FROM intern WHERE user_email = '{id}'"
+        )
+        self.con.commit()
+        logging.info("Intern removed from intern table")
+
+    def drop_intern_table(self):
+        """Drops the intern table, only used in setup"""
+
+        self.cur.execute("DROP TABLE intern")
+        self.con.commit()
+        logging.info("Dropping intern table")
