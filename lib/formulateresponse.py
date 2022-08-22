@@ -52,6 +52,19 @@ def library_help():
         f"- {explain_command(Commands.LIBRARY_CANCEL_TRANSACTION)}\n" \
         f"- {explain_command(Commands.LIBRARY_TRANSACTION_HISTORY)}\n" \
         f"- {explain_command(Commands.LIBRARY_HELP)}\n" \
+
+def welcome_message():
+    """Returns the response for when a user first connects to the bot"""
+
+    return "Welcome to change++!\n" \
+        "My name is Laurenbot, and I am here to assist you through various functionalities mentioned below.\n" \
+        "- `Networking`: Once you opt in, you'll be paired with another change++ member on a once-in-two-weeks" \
+            " basis with random networking prompts to discuss. Text `Networking help` for more.\n" \
+        "- `Resume`: View and access shared resumes from fellow members, and you can also share your own resume. " \
+            "Text `Resume help` for more.\n"\
+        "- `Library`: Donate and exchange books with fellow members. Text `library help` for more.\n"\
+        "Type `help` to see a list of commands that I understand.\n" \
+        
         
 
 def did_not_understand():

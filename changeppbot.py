@@ -66,6 +66,11 @@ def pre_process(msg: str, email, db):
         "is_admin": is_admin,
     }
 
+def send_response(client: SocketModeClient, req: SocketModeRequest, response: str, email: str) -> None:
+    """Sends response to the user"""
+    logging.info(f"bot->{email} response: {response}")
+    client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
+
 
 def process(client: SocketModeClient, req: SocketModeRequest):
     """This function handles different events from the Slack API and is the starting point for everything that IncludeBot does"""
@@ -82,7 +87,12 @@ def process(client: SocketModeClient, req: SocketModeRequest):
 
         # This retrieves the email of whoever sent the message
         email = client.web_client.users_info(user=req.payload["event"]["user"])[
-            "user"]["profile"]["email"]
+        "user"]["profile"]["email"]
+
+        # if team_join event, send welcome message to new user
+        if req.payload["event"]["type"] == "team_join":
+            send_response(client, req, welcome_message(), email)
+            return
 
         logging.info(f"{email}->bot: {req.payload['event']['text']}")
 
@@ -103,12 +113,8 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             else:
                 response = did_not_understand()
 
-
-        logging.info(f"bot->{email} response: {response}")
-        client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
-    # team_join event is sent when a user joins a team
-    elif req.type == "team_join":
-        return    
+        send_response(client, req, response, email)
+                
 # Create db if it doesn't exist
 run_setup()
 
