@@ -11,6 +11,8 @@ import requests
 import json
 import numpy as np
 
+CHANNEL_ID = "C03QSC88Y4E"
+
 
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
@@ -32,7 +34,7 @@ class NetworkingModule(ModuleTemplate):
         if interpretation["command"] == Commands.NETWORK_ADD_ME:
             user = req.payload['event']['user']
             try:
-                data = {'channel': 'C03QSC88Y4E', 'users': user}
+                data = {'channel': CHANNEL_ID, 'users': user}
                 header = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
                 issues = requests.post('https://slack.com/api/conversations.invite', data=data, headers=header).content
                 if json.loads(issues.decode('utf-8'))['ok']:

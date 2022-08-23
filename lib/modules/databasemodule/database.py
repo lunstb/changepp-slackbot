@@ -219,7 +219,7 @@ class database:
         """Creates the networking table, only used in setup"""
         # todo: more fields to be determined
         self.cur.execute(
-            "CREATE TABLE networking (user_id TEXT, is_alum TEXT, list TEXT, PRIMARY KEY (user_id))"
+            "CREATE TABLE networking (user_id TEXT, is_alum TEXT, last TEXT, PRIMARY KEY (user_id))"
         )
         self.con.commit()
         logging.info("Networking table created")
@@ -247,6 +247,17 @@ class database:
             f"SELECT is_alum FROM networking WHERE user_id = '{user_id}'"
         )
         return self.cur.fetchone()[0]
+    
+    def networking_update_last(self, user_id, last):
+        """Updates last connected user for a user"""
+
+        self.cur.execute(
+            f"UPDATE networking SET last = '{last}' WHERE user_id = '{user_id}'"
+        )
+
+        self.cur.execute(
+            f"UPDATE networking SET last = '{user_id}' WHERE user_id = '{last}'"
+        )
 
     def get_last(self, user_id):
         """Returns the last user the user was matched with"""
