@@ -66,7 +66,7 @@ def pre_process(msg: str, email, db):
         "is_admin": is_admin,
     }
 
-def send_response(client: SocketModeClient, req: SocketModeRequest, response: str, email: str) -> None:
+def send_response(client: SocketModeClient, req: SocketModeRequest, response: str, email: str = "") -> None:
     """Sends response to the user"""
     logging.info(f"bot->{email} response: {response}")
     client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
@@ -89,7 +89,7 @@ def process(client: SocketModeClient, req: SocketModeRequest):
 
         # if team_join event, send welcome message to new user
         if req.payload["event"]["type"] == "team_join":
-            send_response(client, req, welcome_message(), email)
+            send_response(client, req, welcome_message())
             return
 
         # This retrieves the email of whoever sent the message
