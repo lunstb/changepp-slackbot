@@ -85,6 +85,8 @@ View resume (individual)
 
 Upload resume
 
+View resume resources
+
 ## Networking Module
 
 Join Networking

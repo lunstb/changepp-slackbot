@@ -37,6 +37,7 @@ def run_setup():
     db.create_books_table()
     db.create_resume_table()
     db.create_networking_table()
+    db.create_intern_table()
     db.insert_user(slack_email=admin_slack_email,
                    first_name=first_name,
                    last_name=last_name,

@@ -27,6 +27,7 @@ from lib.modules.databasemodule.databasemodule import DatabaseModule
 from lib.modules.resumemodule.resumemodule import ResumeModule
 from lib.modules.networkingmodule.networkingmodule import NetworkingModule
 from lib.modules.librarymodule.librarymodule import LibraryModule
+from lib.modules.internmodule.internmodule import InternModule
 from threading import Event
 from lib.constants import *
 from lib.formulateresponse import *
@@ -35,7 +36,7 @@ from lib.slack_connect import client
 from slack_sdk.socket_mode import SocketModeClient
 from slack_sdk.socket_mode.request import SocketModeRequest
 
-modules = [DatabaseModule(), ResumeModule(), NetworkingModule(), LibraryModule()]
+modules = [DatabaseModule(), ResumeModule(), NetworkingModule(), LibraryModule(), InternModule()]
 
 
 def catch_basic_responses(msg: str, email, db: database):

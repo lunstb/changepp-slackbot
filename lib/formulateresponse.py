@@ -35,9 +35,11 @@ def help_response():
     """Returns the response for a user asking for help"""
 
     return "It seems like you asked for help on how to interact with me.\n" \
-            "\nType:\n - `library help` for library module help commands.\n" \
             "Below are different commands on how to interact with the supported admin, library, network, resume, and internship functionalities: \n" \
-            f"\n{library_help()}\n" \
+            f" Type `library help` for library module help commands.\n" \
+            f" Type `network help` for network module help commands.\n" \
+            f" Type `resume help` for resume module help commands.\n" \
+            f" Type `internship help` for resume module help commands.\n" \
            "- `{anything else}` - Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
            "If you're an admin type \"admin help\" for more information!"
 
@@ -53,6 +55,31 @@ def library_help():
         f"- {explain_command(Commands.LIBRARY_TRANSACTION_HISTORY)}\n" \
         f"- {explain_command(Commands.LIBRARY_HELP)}\n" \
 
+def network_help():
+    """Returns the response for when a user asks for help with the library module"""
+
+    return f"Here are all of the command options for interacting with the network module:\n" \
+        f"- {explain_command(Commands.NETWORK_ADD_ME)}\n" \
+        f"- {explain_command(Commands.NETWORK_HELP)}\n" \
+
+def resume_help():
+    """Returns the response for when a user asks for help with the library module"""
+
+    return f"Here are all of the command options for interacting with the library module:\n" \
+        f"- {explain_command(Commands.LIST_RESUMES)}\n" \
+        f"- {explain_command(Commands.ADD_RESUME)}\n" \
+        f"- {explain_command(Commands.REMOVE_RESUME)}\n" \
+        f"- {explain_command(Commands.RESUME_RESOURCES)}\n" \
+
+def intern_help():
+    """Returns the response for when a user asks for help with the library module"""
+
+    return f"Here are all of the command options for interacting with the library module:\n" \
+        f"- {explain_command(Commands.INTERN_ADD_ME)}\n" \
+        f"- {explain_command(Commands.INTERN_REMOVE)}\n" \
+        f"- {explain_command(Commands.INTERN_LIST)}\n" \
+        f"- {explain_command(Commands.INTERN_HELP)}\n" \
+
 def welcome_message():
     """Returns the response for when a user first connects to the bot"""
 
@@ -64,8 +91,6 @@ def welcome_message():
             "Text `Resume help` for more.\n"\
         "- `Library`: Donate and exchange books with fellow members. Text `library help` for more.\n"\
         "Type `help` to see a list of commands that I understand.\n" \
-        
-        
 
 def did_not_understand():
     """Returns the response for when a non-admin message is not understood."""
