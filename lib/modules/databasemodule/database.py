@@ -224,11 +224,11 @@ class database:
         self.con.commit()
         logging.info("Networking table created")
 
-    def insert_user_to_networking(self, user_id, is_alum, list=""):
+    def insert_user_to_networking(self, user_id, is_alum, last=""):
         """Inserts a user to the networking table"""
         # todo: not sure what list stands for, so it's defaulted to empty
         self.cur.execute(
-            "INSERT INTO networking VALUES (?, ?, ?)", (user_id, is_alum, list)
+            "INSERT INTO networking VALUES (?, ?, ?)", (user_id, is_alum, last)
         )
         self.con.commit()
         logging.info(f"User {user_id} inserted to networking table, alum={is_alum}")
@@ -248,16 +248,19 @@ class database:
         )
         return self.cur.fetchone()[0]
     
-    def networking_update_last(self, user_id, last):
+    def networking_update_last(self, user_id, other_user_id):
         """Updates last connected user for a user"""
 
         self.cur.execute(
-            f"UPDATE networking SET last = '{last}' WHERE user_id = '{user_id}'"
+            f"UPDATE networking SET last = '{other_user_id}' WHERE user_id = '{user_id}'"
         )
 
         self.cur.execute(
-            f"UPDATE networking SET last = '{user_id}' WHERE user_id = '{last}'"
+            f"UPDATE networking SET last = '{user_id}' WHERE user_id = '{other_user_id}'"
         )
+        self.con.commit()
+
+        logging.info(f"Updated last users interacted with for {user_id}, {other_user_id}")
 
     def get_last(self, user_id):
         """Returns the last user the user was matched with"""

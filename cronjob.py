@@ -8,14 +8,13 @@ from dotenv import load_dotenv
 from pathlib import Path
 from aiohttp import ClientError
 from lib.modules.databasemodule.database import database
+from constants import *
 import logging
-db = database.instance()
-
-CHANNEL_ID = "C03QSC88Y4E"
-BOT_USER = 'U03QC4N6TDF'
 
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
+
+db = database.instance()
 
 def handle_extra_user(popped_user):
     popped_response = requests.post('https://slack.com/api/conversations.open', headers=header, data={"users": popped_user}).content
@@ -31,9 +30,9 @@ def handle_connection(first_user, second_user):
     curr_data = {'channel': json.loads(curr_response.decode('utf-8'))['channel']['id'], 'text': networking_questions()[np.random.randint(0, len(networking_questions()))]}
     curr_response = requests.post('https://slack.com/api/chat.postMessage', data=curr_data, headers=header).content
     if not json.loads(curr_response.decode('utf-8'))['ok']:
-        print( "Error: " + json.loads(curr_response.decode('utf-8'))['error'] )
+        logging.log( "Error: " + json.loads(curr_response.decode('utf-8'))['error'] )
 
-if __name__ == '__main__':
+def main():
     try:
         header = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
         # Gets list of users in Networking channel
@@ -82,3 +81,6 @@ if __name__ == '__main__':
             handle_connection(curr_user, other_user)
     except ClientError as e:
         logging.log(e)
+
+if __name__ == '__main__':
+    main()

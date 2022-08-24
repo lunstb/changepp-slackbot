@@ -7,12 +7,11 @@ from lib.modules.moduletemplate import ModuleTemplate
 from lib.modules.networkingmodule.networkingresponse import *
 from lib.modules.databasemodule.database import database
 import os
+from constants import *
 import requests
 import json
+from datetime import date
 import numpy as np
-
-CHANNEL_ID = "C03QSC88Y4E"
-
 
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
@@ -38,7 +37,7 @@ class NetworkingModule(ModuleTemplate):
                 header = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
                 issues = requests.post('https://slack.com/api/conversations.invite', data=data, headers=header).content
                 if json.loads(issues.decode('utf-8'))['ok']:
-                    db.insert_user_to_networking(user, True if db.get_user_year(email) <= 2021 else False)
+                    db.insert_user_to_networking(user, True if db.get_user_year(email) <= date.today().year else False)
                 return networking_success() if json.loads(issues.decode('utf-8'))['ok'] else networking_failure(json.loads(issues.decode('utf-8'))['error'])
             except ClientError as e:
                 return networking_failure(e)
