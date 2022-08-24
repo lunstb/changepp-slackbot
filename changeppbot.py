@@ -66,17 +66,10 @@ def pre_process(msg: str, email, db):
         "is_admin": is_admin,
     }
 
-def send_response(client: SocketModeClient, req: SocketModeRequest, response: str, email: str = "") -> None:
-    """Sends response to the user"""
-    logging.info(f"bot->{email} response: {response}")
-    client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
-
 
 def process(client: SocketModeClient, req: SocketModeRequest):
     """This function handles different events from the Slack API and is the starting point for everything that IncludeBot does"""
     logging.info(f"Received request: {req}")
-
-    print("payload: ", req.payload)
     
     if req.type == "events_api":
         # Acknowledge the request anyway
@@ -89,7 +82,7 @@ def process(client: SocketModeClient, req: SocketModeRequest):
 
         # if team_join event, send welcome message to new user
         if req.payload["event"]["type"] == "team_join":
-            send_response(client, req, welcome_message())
+            client.web_client.chat_postMessage(channel=req.payload["event"]["user"]["id"], text=welcome_message())
             return
 
         # This retrieves the email of whoever sent the message
@@ -115,7 +108,8 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             else:
                 response = did_not_understand()
 
-        send_response(client, req, response, email)
+        logging.info(f"bot->{email} response: {response}")
+        client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
                 
 # Create db if it doesn't exist
 run_setup()
