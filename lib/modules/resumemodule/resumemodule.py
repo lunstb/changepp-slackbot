@@ -5,6 +5,7 @@ import requests
 import io
 from botocore.exceptions import ClientError
 from lib.modules.modulehelpers import *
+from lib.formulateresponse import *
 from lib.modules.moduletemplate import ModuleTemplate
 from lib.modules.resumemodule.resumeresponse import *
 import os
@@ -28,7 +29,7 @@ class ResumeModule(ModuleTemplate):
             if len(commands) == 0:
                 return
 
-            if commands[0] == 'list_resumes':
+            if commands[0] == 'list':
                 if len(commands) > 2:
                     return catch_incorrect_arguments(Commands.LIST_RESUMES)
                 
@@ -37,23 +38,37 @@ class ResumeModule(ModuleTemplate):
                     "id": commands[1] if len(commands) == 2 else None
                 }
             
-            if commands[0] == 'add_resume':
+            if commands[0] == 'add':
                 if len(commands) != 1:
                     return catch_incorrect_arguments(Commands.ADD_RESUME)
                 return {
                     "command": Commands.ADD_RESUME
                 }
             
-            if commands[0] == 'remove_resume':
+            if commands[0] == 'remove':
                 if len(commands) != 1:
                     return catch_incorrect_arguments(Commands.REMOVE_RESUME)
                 return {
                     "command": Commands.REMOVE_RESUME
                 }
+            
+            if commands[0] == 'resources':
+                if len(commands) != 1:
+                    return catch_incorrect_arguments(Commands.RESUME_RESOURCES)
+                return {
+                    "command": Commands.RESUME_RESOURCES
+                }
+
+            if commands[0] == 'help':
+                return {
+                    "command": Commands.RESUME_HELP
+                }
 
     def process_message(self, interpretation, client, req, email, db: database, admin) -> Dict:
         response = None
 
+        if interpretation["command"] == Commands.RESUME_RESOURCES:
+            response = resume_resources()
         if interpretation["command"] == Commands.LIST_RESUMES:
             response = list_resumes(db, interpretation["id"])
         if interpretation["command"] == Commands.ADD_RESUME:
@@ -77,4 +92,7 @@ class ResumeModule(ModuleTemplate):
                 response = resume_removed()
             except ClientError as e:
                 response = resume_not_removed(e.response['Error']['Message'])
+
+        if interpretation["command"] == Commands.RESUME_HELP:
+            response = resume_help()
         return response

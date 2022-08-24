@@ -27,6 +27,7 @@ from lib.modules.databasemodule.databasemodule import DatabaseModule
 from lib.modules.resumemodule.resumemodule import ResumeModule
 from lib.modules.networkingmodule.networkingmodule import NetworkingModule
 from lib.modules.librarymodule.librarymodule import LibraryModule
+from lib.modules.internmodule.internmodule import InternModule
 from threading import Event
 from lib.constants import *
 from lib.formulateresponse import *
@@ -35,7 +36,7 @@ from lib.slack_connect import client
 from slack_sdk.socket_mode import SocketModeClient
 from slack_sdk.socket_mode.request import SocketModeRequest
 
-modules = [DatabaseModule(), ResumeModule(), NetworkingModule(), LibraryModule()]
+modules = [DatabaseModule(), ResumeModule(), NetworkingModule(), LibraryModule(), InternModule()]
 
 
 def catch_basic_responses(msg: str, email, db: database):
@@ -53,7 +54,7 @@ def catch_basic_responses(msg: str, email, db: database):
         if 'help' in msg:
             return admin_help()
 
-    if 'help' in msg:
+    if 'help' == msg.strip():
         return help_response()
 
 
@@ -80,9 +81,14 @@ def process(client: SocketModeClient, req: SocketModeRequest):
         if "bot_id" in req.payload["event"]:
             return
 
+        # if team_join event, send welcome message to new user
+        if req.payload["event"]["type"] == "team_join":
+            client.web_client.chat_postMessage(channel=req.payload["event"]["user"]["id"], text=welcome_message())
+            return
+
         # This retrieves the email of whoever sent the message
         email = client.web_client.users_info(user=req.payload["event"]["user"])[
-            "user"]["profile"]["email"]
+        "user"]["profile"]["email"]
 
         logging.info(f"{email}->bot: {req.payload['event']['text']}")
 
@@ -103,11 +109,9 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             else:
                 response = did_not_understand()
 
-
         logging.info(f"bot->{email} response: {response}")
         client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
-
-
+                
 # Create db if it doesn't exist
 run_setup()
 

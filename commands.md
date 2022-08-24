@@ -30,7 +30,7 @@ Adds specified book to library.
 
 3. `library borrow_book BOOK_ISBN`
 
-The `borrow_book` command is passed a `BOOK_ISBN`. The slackbot then sets up a conversation between person and owner of book with ID of transaction. Owner of book confirms transaction via `library confirm ISBN`
+The `borrow_book` command is passed a `BOOK_ISBN`. The slackbot then separately emails the owner of the book, and the owner can either confirm or cancel the request. The borrow will be notified if any action is taken by the owner.
 
 **EXAMPLE**
 
@@ -40,13 +40,17 @@ Salomon: library borrow_book ABC
 
 Cancels borrow request by the user 
 
-4. `library confirm ISBN`
+5. `library confirm ISBN`
 
 Approves borrow request between the onwer of the book and the requester
 
-5. `library transaction_history ISBN`
+6. `library transaction_history ISBN`
 
 Shows the transaction history of a given book and who currently owns it
+
+7. `library help`
+
+Returns commands with descriptions for interacting with the library module
 
 ## Internship Functionality
 
@@ -80,6 +84,8 @@ View resumes (list)
 View resume (individual)
 
 Upload resume
+
+View resume resources
 
 ## Networking Module
 
