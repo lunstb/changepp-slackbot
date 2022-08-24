@@ -35,9 +35,11 @@ def help_response():
     """Returns the response for a user asking for help"""
 
     return "It seems like you asked for help on how to interact with me.\n" \
-            "\nType:\n - `library help` for library module help commands.\n" \
             "Below are different commands on how to interact with the supported admin, library, network, resume, and internship functionalities: \n" \
-            f"\n{library_help()}\n{network_help()}\n{resume_help()}\n{intern_help()}\n" \
+            f" Type `library help` for library module help commands.\n" \
+            f" Type `network help` for network module help commands.\n" \
+            f" Type `resume help` for resume module help commands.\n" \
+            f" Type `internship help` for resume module help commands.\n" \
            "- `{anything else}` - Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
            "If you're an admin type \"admin help\" for more information!"
 
@@ -77,6 +79,18 @@ def intern_help():
         f"- {explain_command(Commands.INTERN_REMOVE)}\n" \
         f"- {explain_command(Commands.INTERN_LIST)}\n" \
         f"- {explain_command(Commands.INTERN_HELP)}\n" \
+
+def welcome_message():
+    """Returns the response for when a user first connects to the bot"""
+
+    return "Welcome to change++!\n" \
+        "My name is Laurenbot, and I am here to assist you through various functionalities mentioned below.\n" \
+        "- `Networking`: Once you opt in, you'll be paired with another change++ member on a once-in-two-weeks" \
+            " basis with random networking prompts to discuss. Text `Networking help` for more.\n" \
+        "- `Resume`: View and access shared resumes from fellow members, and you can also share your own resume. " \
+            "Text `Resume help` for more.\n"\
+        "- `Library`: Donate and exchange books with fellow members. Text `library help` for more.\n"\
+        "Type `help` to see a list of commands that I understand.\n" \
 
 def did_not_understand():
     """Returns the response for when a non-admin message is not understood."""
