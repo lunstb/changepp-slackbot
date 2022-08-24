@@ -82,8 +82,7 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             return
 
         # This retrieves the email of whoever sent the message
-        email = client.web_client.users_info(user=req.payload["event"]["user"])[
-            "user"]["profile"]["email"]
+        email = client.web_client.users_info(user=req.payload["event"]["user"])["user"]["profile"]["email"]
 
         logging.info(f"{email}->bot: {req.payload['event']['text']}")
 

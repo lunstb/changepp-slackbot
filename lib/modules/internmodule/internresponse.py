@@ -1,4 +1,13 @@
 from lib.modules.databasemodule.database import database
+import csv
+from pathlib import Path
+from dotenv import load_dotenv
+import os
+import requests
+import json
+
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)
 
 def added_intern():
     """Returns the response for when an intern is successfully added"""
@@ -20,40 +29,29 @@ def not_removed_intern(error):
 
     return "Intern not removed: " + error
 
-def list_interns(db: database, id=None):
-    """Returns the response for when a user asks for a list of interns"""
+def list_interns(db: database, channel_id):
+    """Returns a csv with intern data"""
 
-    # Currently, we save the company ID, resume URL, and email in the database. The example says that 
-    # the author's name is shown... how will we do this? Also, where will we store the company ID?
-    # Should we allow users to delete interns?
-    response = "Here is a list of interns:\n"
+    all_intern_info = db.return_all_interns()
+    with open("out.csv", "w", newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['Name', 'Email', 'Company', 'Position', 'Able to Give Referrals?', 'Resume'])
+        for i in all_intern_info:
+            self_resumes = db.get_resumes(i[1])
+            resume_link = ""
+            if self_resumes:
+                resume_link = self_resumes[0][1]
+            else:
+                resume_link = "N/A"
+            csv_writer.writerow([i[0], i[1], i[2], i[3], i[4], resume_link])
+    my_file = {'file' : ('out.csv', open('out.csv', 'rb'), 'csv')}
+    payload = {
+        'filename': 'intern_data.csv',
+        'channels': channel_id
+        }
+    r = requests.post("https://slack.com/api/files.upload", params=payload, files=my_file, headers={'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}).content
+    if json.loads(r.decode('utf-8'))["ok"]:
+        return
 
-    interns_db = db.get_interns(id)
-    if not interns_db and not id:
-        return "There are no interns in the database"
-
-    if not db.get_interns(id):
-        return "There are no interns in the database with that email"
-
-    response = "Here is a list of interns:\n"
-    for intern in interns_db:
-        (user_name, user_email, company, position, refs) = intern
-
-        self_resumes = db.get_resumes(user_email)
-        resume_link = ""
-        print(self_resumes)
-
-        if self_resumes:
-            resume_link = self_resumes[0][1]
-        else:
-            resume_link = "No resume found."
-
-        answer = ''
-        resume_answer = ''
-        if refs == "false":
-            answer = 'not '
-        if resume_link != "No resume found.":
-            resume_answer = 'Their resume can be found at ' + resume_link + '.'
-        response += f"{user_name} works at {company} as a {position} and is {answer}able to give references. " + resume_answer + f" Email them at {user_email}.\n"
-
-    return response
+    return "Something has gone wrong :cry:"
+    

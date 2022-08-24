@@ -37,10 +37,9 @@ class InternModule(ModuleTemplate):
                 else:
                     return catch_incorrect_arguments(Commands.INTERN_REMOVE)
             if commands[0] == 'list':
-                if len(commands) <= 2:
+                if len(commands) == 1:
                     return {
                         "command": Commands.INTERN_LIST,
-                        "id": commands[1] if len(commands) == 2 else None
                     }
                 else:
                     return catch_incorrect_arguments(Commands.INTERN_LIST)
@@ -57,6 +56,6 @@ class InternModule(ModuleTemplate):
             db.remove_intern(email)
             return removed_intern()
         if interpretation["command"] == Commands.INTERN_LIST:
-            return list_interns(db, interpretation["id"])
+            return list_interns(db, req.payload['event']['channel'])
         if interpretation["command"] == Commands.INTERN_HELP:
             return intern_help()

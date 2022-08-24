@@ -355,6 +355,15 @@ class database:
         )
         self.con.commit()
         logging.info("Intern removed from intern table")
+    
+    def return_all_interns(self):
+        """Returns all intern information in the table."""
+
+        self.cur.execute(
+            f"SELECT * FROM intern"
+        )
+
+        return self.cur.fetchall()
 
     def drop_intern_table(self):
         """Drops the intern table, only used in setup"""

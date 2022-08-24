@@ -40,7 +40,6 @@ class NetworkingModule(ModuleTemplate):
             try:
                 data = {'channel': 'C03QSC88Y4E', 'users': user, 'token': os.getenv('SLACK_BOT_TOKEN')}
                 issues = requests.post('https://slack.com/api/conversations.invite', headers={'token': os.getenv("SLACK_BOT_TOKEN")}, data=data).content
-                print(issues)
                 return networking_success() if json.loads(issues.decode('utf-8'))['ok'] else networking_failure(json.loads(issues.decode('utf-8'))['error'])
             except ClientError as e:
                 return e
