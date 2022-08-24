@@ -81,9 +81,14 @@ def process(client: SocketModeClient, req: SocketModeRequest):
         if "bot_id" in req.payload["event"]:
             return
 
+        # if team_join event, send welcome message to new user
+        if req.payload["event"]["type"] == "team_join":
+            client.web_client.chat_postMessage(channel=req.payload["event"]["user"]["id"], text=welcome_message())
+            return
+
         # This retrieves the email of whoever sent the message
         email = client.web_client.users_info(user=req.payload["event"]["user"])[
-            "user"]["profile"]["email"]
+        "user"]["profile"]["email"]
 
         logging.info(f"{email}->bot: {req.payload['event']['text']}")
 
@@ -104,11 +109,9 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             else:
                 response = did_not_understand()
 
-
         logging.info(f"bot->{email} response: {response}")
         client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
-
-
+                
 # Create db if it doesn't exist
 run_setup()
 
