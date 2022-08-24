@@ -16,6 +16,8 @@ load_dotenv(dotenv_path=env_path)
 
 db = database.instance()
 
+header = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
+
 def handle_extra_user(popped_user):
     popped_response = requests.post('https://slack.com/api/conversations.open', headers=header, data={"users": popped_user}).content
     popped_data = {'channel': json.loads(popped_response.decode('utf-8'))['channel']['id'], 'text': 'You are the odd one out... :cry:'}
@@ -34,7 +36,6 @@ def handle_connection(first_user, second_user):
 
 def main():
     try:
-        header = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
         # Gets list of users in Networking channel
         data = {'channel': CHANNEL_ID}
         rawusers = requests.get('https://slack.com/api/conversations.members', headers=header, params=data).content
