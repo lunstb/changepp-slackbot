@@ -7,8 +7,11 @@ from lib.modules.moduletemplate import ModuleTemplate
 from lib.modules.networkingmodule.networkingresponse import *
 from lib.modules.databasemodule.database import database
 import os
+from constants import *
 import requests
 import json
+from datetime import date
+import numpy as np
 from lib.formulateresponse import *
 
 
@@ -33,14 +36,17 @@ class NetworkingModule(ModuleTemplate):
                 return {
                     "command": Commands.NETWORK_HELP
                 }
-    
+            else:
+                return catch_incorrect_arguments(Commands.NETWORK_ADD_ME)
     def process_message(self, interpretation, client, req, email, db: database, admin) -> Dict:
         if interpretation["command"] == Commands.NETWORK_ADD_ME:
             user = req.payload['event']['user']
             try:
-                data = {'channel': 'C03QSC88Y4E', 'users': user, 'token': os.getenv('SLACK_BOT_TOKEN')}
-                issues = requests.post('https://slack.com/api/conversations.invite', headers={'token': os.getenv("SLACK_BOT_TOKEN")}, data=data).content
-                print(issues)
+                data = {'channel': CHANNEL_ID, 'users': user}
+                header = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
+                issues = requests.post('https://slack.com/api/conversations.invite', data=data, headers=header).content
+                if json.loads(issues.decode('utf-8'))['ok']:
+                    db.insert_user_to_networking(user, True if db.get_user_year(email) <= date.today().year else False)
                 return networking_success() if json.loads(issues.decode('utf-8'))['ok'] else networking_failure(json.loads(issues.decode('utf-8'))['error'])
             except ClientError as e:
                 return e
