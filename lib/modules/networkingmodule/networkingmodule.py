@@ -44,7 +44,7 @@ class NetworkingModule(ModuleTemplate):
             try:
                 data = {'channel': CHANNEL_ID, 'users': user}
                 header = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
-                issues = requests.post('https://slack.com/api/conversations.invite', data=data, headers=header).content
+                issues = requests.post(SLACK_URL + 'conversations.invite', data=data, headers=header).content
                 if json.loads(issues.decode('utf-8'))['ok']:
                     db.insert_user_to_networking(user, True if db.get_user_year(email) <= date.today().year else False)
                 return networking_success() if json.loads(issues.decode('utf-8'))['ok'] else networking_failure(json.loads(issues.decode('utf-8'))['error'])
