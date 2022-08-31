@@ -1,3 +1,5 @@
 .env
 secrets.json
 out.csv
+.vscode
+.idea

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import requests
 import json
+from constants import *
 
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
@@ -49,7 +50,7 @@ def list_interns(db: database, channel_id):
         'filename': 'intern_data.csv',
         'channels': channel_id
         }
-    r = requests.post("https://slack.com/api/files.upload", params=payload, files=my_file, headers={'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}).content
+    r = requests.post(SLACK_URL + "files.upload", params=payload, files=my_file, headers={'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}).content
     if json.loads(r.decode('utf-8'))["ok"]:
         return
 
