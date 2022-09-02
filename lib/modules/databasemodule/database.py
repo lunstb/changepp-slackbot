@@ -76,6 +76,13 @@ class database:
             "UPDATE users SET is_admin = ? WHERE email is ?", (is_admin, slack_email))
         self.con.commit()
 
+    def get_user_year(self, slack_email):
+        """Returns the graduation year of the user with the supplied slack_email"""
+
+        self.cur.execute(
+            "SELECT graduation_year FROM users WHERE email is ?", (slack_email,))
+        return self.cur.fetchone()[0]
+
     # FIXME: do we need user_type and is_admin?
     def insert_user(self, slack_email, first_name, last_name, user_type, graduation_year, is_admin):
         """Inserts a user into the database with the specified parameters """
@@ -255,7 +262,10 @@ class database:
             self.cur.execute("SELECT * FROM resume")
             return self.cur.fetchall()
         else:
-            self.cur.execute(f"SELECT 1 FROM resume WHERE user_email = '{id}'")
+            if 'mailto:' in id:
+                id = id.replace('<mailto:', '')
+                id = id[:id.find('|')]
+            self.cur.execute(f"SELECT * FROM resume WHERE user_email = '{id}'")
             return self.cur.fetchall()
 
     def insert_resume(self, user_email, AWS_link):
@@ -274,32 +284,32 @@ class database:
             f"DELETE FROM resume WHERE user_email = '{email}'"
         )
         self.con.commit()
-        logging.info("Resume removed from books table")
+        logging.info("Resume removed from resume table")
 
     def drop_resume_table(self):
         """Drops the resume table, only used in setup"""
 
         self.cur.execute("DROP TABLE resume")
         self.con.commit()
-        logging.info("Dropping books table")
+        logging.info("Dropping resume table")
 
     def create_networking_table(self):
         """Creates the networking table, only used in setup"""
         # todo: more fields to be determined
         self.cur.execute(
-            "CREATE TABLE networking (user_email TEXT, list TEXT)"
+            "CREATE TABLE networking (user_id TEXT, is_alum TEXT, last TEXT, PRIMARY KEY (user_id))"
         )
         self.con.commit()
         logging.info("Networking table created")
 
-    def insert_user_to_networking(self, user_email, list=""):
+    def insert_user_to_networking(self, user_id, is_alum, last=""):
         """Inserts a user to the networking table"""
         # todo: not sure what list stands for, so it's defaulted to empty
         self.cur.execute(
-            "INSERT INTO networking VALUES (?, ?)", (user_email, list)
+            "INSERT INTO networking VALUES (?, ?, ?)", (user_id, is_alum, last)
         )
         self.con.commit()
-        logging.info(f"User {user_email} inserted to networking table")
+        logging.info(f"User {user_id} inserted to networking table, alum={is_alum}")
 
     def drop_networking_table(self):
         """Drops the networking table, only used in setup"""
@@ -307,3 +317,93 @@ class database:
         self.cur.execute("DROP TABLE networking")
         self.con.commit()
         logging.info("Dropping networking table")
+    
+    def networking_is_alum(self, user_id):
+        """Returns whether or not the user is an alum"""
+
+        self.cur.execute(
+            f"SELECT is_alum FROM networking WHERE user_id = '{user_id}'"
+        )
+        return self.cur.fetchone()[0]
+    
+    def networking_update_last(self, user_id, other_user_id):
+        """Updates last connected user for a user"""
+
+        self.cur.execute(
+            f"UPDATE networking SET last = '{other_user_id}' WHERE user_id = '{user_id}'"
+        )
+
+        self.cur.execute(
+            f"UPDATE networking SET last = '{user_id}' WHERE user_id = '{other_user_id}'"
+        )
+        self.con.commit()
+
+        logging.info(f"Updated last users interacted with for {user_id}, {other_user_id}")
+
+    def get_last(self, user_id):
+        """Returns the last user the user was matched with"""
+
+        self.cur.execute(
+            f"SELECT list FROM networking WHERE user_id = '{user_id}'"
+        )
+        return self.cur.fetchone()[0]
+    def create_intern_table(self):
+        """Creates the resume table, only used in setup"""
+
+        self.cur.execute(
+            "CREATE TABLE intern (user_name TEXT, user_email TEXT, company TEXT, position TEXT, refs TEXT, PRIMARY KEY (user_email))"
+        )
+        self.con.commit()
+        logging.info("Intern table created")
+    
+    def get_interns(self, id=None):
+        """Returns all of the interns from the database"""
+        
+        if id is None:
+            self.cur.execute("SELECT * FROM intern")
+            return self.cur.fetchall()
+        else:
+            self.cur.execute(f"SELECT * FROM intern WHERE user_email = '{id}'")
+            return self.cur.fetchall()
+
+    def insert_intern(self, user_email, company, position, refs):
+        """Inserts a intern into the intern table"""
+        
+        self.cur.execute(f"SELECT * FROM users WHERE email = '{user_email}'")
+        self_info = self.cur.fetchone()
+        name = f"{self_info[1]} {self_info[2]}"
+
+        self.cur.execute(
+            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?)", (name, user_email, company, position, refs)
+        )
+        self.con.commit()
+        logging.info(f"You have been added to the intern table")
+
+    def remove_intern(self, id):
+        """Removes a intern from the intern table"""
+
+        if 'mailto:' in id:
+                id = id.replace('<mailto:', '')
+                id = id[:id.find('|')]
+
+        self.cur.execute(
+            f"DELETE FROM intern WHERE user_email = '{id}'"
+        )
+        self.con.commit()
+        logging.info("Intern removed from intern table")
+    
+    def return_all_interns(self):
+        """Returns all intern information in the table."""
+
+        self.cur.execute(
+            f"SELECT * FROM intern"
+        )
+
+        return self.cur.fetchall()
+
+    def drop_intern_table(self):
+        """Drops the intern table, only used in setup"""
+
+        self.cur.execute("DROP TABLE intern")
+        self.con.commit()
+        logging.info("Dropping intern table")
