@@ -51,12 +51,13 @@ class Commands(Enum):
     ADD_RESUME = 32
     REMOVE_RESUME = 33
     RESUME_RESOURCES  = 34
+    RESUME_HELP = 35
 
     # Accessible commands using the intern command
-    INTERN_ADD_ME = 35
-    INTERN_REMOVE = 36
-    INTERN_LIST = 37
-    INTERN_HELP = 38
+    INTERN_ADD_ME = 36
+    INTERN_REMOVE = 37
+    INTERN_LIST = 38
+    INTERN_HELP = 39
 
 command_dispatch = {
     Commands.ADMIN_CREATE_USER : "`admin create_user {slack email} {mavenlink email}` - This creates a user with the specified slack and mavenlink emails",
