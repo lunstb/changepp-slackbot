@@ -53,6 +53,7 @@ def library_help():
         f"- {explain_command(Commands.LIBRARY_CONFIRM_TRANSACTION)}\n" \
         f"- {explain_command(Commands.LIBRARY_CANCEL_TRANSACTION)}\n" \
         f"- {explain_command(Commands.LIBRARY_TRANSACTION_HISTORY)}\n" \
+        f"- {explain_command(Commands.LIBRARY_DELETE_BOOK)} - needs *Admin* access\n"\
         f"- {explain_command(Commands.LIBRARY_HELP)}\n" \
 
 def network_help():

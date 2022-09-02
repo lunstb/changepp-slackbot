@@ -58,7 +58,7 @@ class database:
         """Creates the user table, only used in setup """
 
         self.cur.execute(
-            "CREATE TABLE users (email TEXT, first_name TEXT, last_name TEXT, user_type TEXT, graduation_year INTEGER, is_admin INTEGER)")
+            "CREATE TABLE users (email TEXT, first_name TEXT, last_name TEXT, user_type TEXT, graduation_year INTEGER, is_admin BOOLEAN)")
         self.con.commit()
         logging.info("User table created")
 
@@ -83,7 +83,15 @@ class database:
             "SELECT graduation_year FROM users WHERE email is ?", (slack_email,))
         return self.cur.fetchone()[0]
 
-    # FIXME: do we need user_type and is_admin?
+    def get_user_by_email(self, email):
+        """
+        Returns the user with the supplied email
+        """
+
+        self.cur.execute(
+            "SELECT * FROM users WHERE email is ?", (email,))
+        return self.cur.fetchone()
+
     def insert_user(self, slack_email, first_name, last_name, user_type, graduation_year, is_admin):
         """Inserts a user into the database with the specified parameters """
 
@@ -186,6 +194,12 @@ class database:
         )
         self.con.commit()
         logging.info(f"Book with ISBN {ISBN} into books table")
+
+    def delete_book_with_isbn(self, ISBN):
+        """Deletes the book with the supplied isbn"""
+
+        self.cur.execute("DELETE FROM books WHERE ISBN is ?", (ISBN,))
+        self.con.commit()
 
     def remove_book(self, book_id):
         """Removes a book from the book table"""

@@ -70,10 +70,17 @@ class LibraryModule(ModuleTemplate):
                 return {
                     "command": Commands.LIBRARY_HELP
                 }
+            elif commands[0] == "delete":
+                if len(commands) != 2:
+                    return catch_incorrect_arguments(Commands.LIBRARY_DELETE_BOOK)
+
+                return {
+                    "command": Commands.LIBRARY_DELETE_BOOK,
+                    "book_isbn": commands[1]
+                }
 
 
     def process_message(self, interpretation: dict, client: SocketModeClient, req, email, db: database, admin) -> Dict:
-        # todo: don't allow donating a book twice by the same user, send a corresponding message
         if interpretation["command"] == Commands.LIBRARY_LIST_BOOKS:
             response = library_list_books(db)
         elif interpretation["command"] == Commands.LIBRARY_DONATE_BOOK:
@@ -167,6 +174,23 @@ class LibraryModule(ModuleTemplate):
                 response = book_with_isbn_not_found(interpretation["book_isbn"])
             else:
                 response = library_list_book_transactions(isbn)
+
+        elif interpretation["command"] == Commands.LIBRARY_DELETE_BOOK:
+            isbn = extract_isbn_from_phone_number_format(interpretation["book_isbn"])
+            book = db.get_book_by_isbn(isbn)
+            if book is None:
+                response = book_with_isbn_not_found(interpretation["book_isbn"])
+            else:
+                user = db.get_user_by_email(email)
+                if not user:
+                    return no_such_user(email)
+
+                if not user[-1]: # if not admin
+                    return user_not_admin(email)
+
+                db.delete_book_with_isbn(isbn)
+                response = book_with_isbn_deleted(isbn)
+
 
         elif interpretation["command"] == Commands.LIBRARY_HELP:
             response = library_help()

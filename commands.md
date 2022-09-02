@@ -48,6 +48,10 @@ Approves borrow request between the onwer of the book and the requester
 
 Shows the transaction history of a given book and who currently owns it
 
+7. `library delete ISBN`
+
+Allows admin users to delete books in the library, such as duplicates
+
 7. `library help`
 
 Returns commands with descriptions for interacting with the library module

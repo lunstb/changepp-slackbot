@@ -31,24 +31,20 @@ def user_already_exists(slack_email):
 def no_such_user(user_email):
     """Returns the response for when an admin tries to interact with a user who does not yet exist in the database"""
 
-    return f"You tried to enter a command and specified a user {user_email} but no such user exists"
+    return f"User with email {user_email} does not exist"
+
+def user_not_admin(user_email):
+    """Returns the response for when a user tries to interact with an admin command"""
+
+    return f"Sorry, {user_email} is not an admin. Please try again :)"
+
+def book_with_isbn_deleted(isbn):
+    """Returns the response for when a book is successfully deleted"""
+
+    return f"Book with ISBN {isbn} has been deleted."
 
 def admin_list_users(db):
     """Generates and returns the response for when an admin asks for a list of users"""
-
-    # users_db = db.get_users()
-    # users_mavenlink = get_users()
-
-    # mavenlink_to_name = {}
-    # for user in users_mavenlink:
-    #     mavenlink_to_name[users_mavenlink[user]["user_id"]
-    #     ] = users_mavenlink[user]["full_name"]
-
-    # response = "Here is a list of users with their admin status:\n"
-    # for user in users_db:
-    #     (mavenlink_id, email, is_admin) = user
-    #     name = mavenlink_to_name[mavenlink_id]
-    #     response += f"{name} with the slack email {email} {'is an admin' if (is_admin == 1) else 'is not an admin'}\n"
 
     return "Here is a list of users with their admin status:\n"
 
