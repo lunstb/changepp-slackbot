@@ -19,18 +19,18 @@ db = database.instance()
 header = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
 
 def handle_extra_user(popped_user):
-    popped_response = requests.post('https://slack.com/api/conversations.open', headers=header, data={"users": popped_user}).content
+    popped_response = requests.post(SLACK_URL + 'conversations.open', headers=header, data={"users": popped_user}).content
     popped_data = {'channel': json.loads(popped_response.decode('utf-8'))['channel']['id'], 'text': 'You are the odd one out... :cry:'}
-    popped_response = requests.post('https://slack.com/api/chat.postMessage', data=popped_data, headers=header).content
+    popped_response = requests.post(SLACK_URL + 'chat.postMessage', data=popped_data, headers=header).content
     if not json.loads(popped_response.decode('utf-8'))['ok']:
         logging.log("Error: " + json.loads(popped_response.decode('utf-8'))['error'] )
 
 def handle_connection(first_user, second_user):
     db.networking_update_last(first_user, second_user)
     curr_data = {'users': f"{first_user},{second_user}"}
-    curr_response = requests.post('https://slack.com/api/conversations.open', data=curr_data, headers=header).content
+    curr_response = requests.post(SLACK_URL + 'conversations.open', data=curr_data, headers=header).content
     curr_data = {'channel': json.loads(curr_response.decode('utf-8'))['channel']['id'], 'text': networking_questions()[np.random.randint(0, len(networking_questions()))]}
-    curr_response = requests.post('https://slack.com/api/chat.postMessage', data=curr_data, headers=header).content
+    curr_response = requests.post(SLACK_URL + 'chat.postMessage', data=curr_data, headers=header).content
     if not json.loads(curr_response.decode('utf-8'))['ok']:
         logging.log( "Error: " + json.loads(curr_response.decode('utf-8'))['error'] )
 
@@ -38,7 +38,7 @@ def main():
     try:
         # Gets list of users in Networking channel
         data = {'channel': CHANNEL_ID}
-        rawusers = requests.get('https://slack.com/api/conversations.members', headers=header, params=data).content
+        rawusers = requests.get(SLACK_URL + 'conversations.members', headers=header, params=data).content
         if not json.loads(rawusers.decode('utf-8'))['ok']:
             logging.log("Error: " + json.loads(rawusers.decode('utf-8'))['error'])
         users = json.loads(rawusers.decode('utf-8'))['members']
