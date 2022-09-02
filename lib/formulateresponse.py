@@ -56,25 +56,25 @@ def library_help():
         f"- {explain_command(Commands.LIBRARY_HELP)}\n" \
 
 def network_help():
-    """Returns the response for when a user asks for help with the library module"""
+    """Returns the response for when a user asks for help with the network module"""
 
     return f"Here are all of the command options for interacting with the network module:\n" \
         f"- {explain_command(Commands.NETWORK_ADD_ME)}\n" \
         f"- {explain_command(Commands.NETWORK_HELP)}\n" \
 
 def resume_help():
-    """Returns the response for when a user asks for help with the library module"""
+    """Returns the response for when a user asks for help with the resume module"""
 
-    return f"Here are all of the command options for interacting with the library module:\n" \
+    return f"Here are all of the command options for interacting with the resume module:\n" \
         f"- {explain_command(Commands.LIST_RESUMES)}\n" \
         f"- {explain_command(Commands.ADD_RESUME)}\n" \
         f"- {explain_command(Commands.REMOVE_RESUME)}\n" \
         f"- {explain_command(Commands.RESUME_RESOURCES)}\n" \
 
 def intern_help():
-    """Returns the response for when a user asks for help with the library module"""
+    """Returns the response for when a user asks for help with the intern module"""
 
-    return f"Here are all of the command options for interacting with the library module:\n" \
+    return f"Here are all of the command options for interacting with the intern module:\n" \
         f"- {explain_command(Commands.INTERN_ADD_ME)}\n" \
         f"- {explain_command(Commands.INTERN_REMOVE)}\n" \
         f"- {explain_command(Commands.INTERN_LIST)}\n" \
