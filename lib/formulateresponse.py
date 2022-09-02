@@ -36,12 +36,12 @@ def help_response():
 
     return "It seems like you asked for help on how to interact with me.\n" \
             "Below are different commands on how to interact with the supported admin, library, network, resume, and internship functionalities: \n" \
-            f" Type `library help` for library module help commands.\n" \
-            f" Type `network help` for network module help commands.\n" \
-            f" Type `resume help` for resume module help commands.\n" \
-            f" Type `intern help` for resume module help commands.\n" \
-           "- `{anything else}` - Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
-           "If you're an admin type \"admin help\" for more information!"
+            f"- Type `library help` for library module help commands.\n" \
+            f"- Type `network help` for network module help commands.\n" \
+            f"- Type `resume help` for resume module help commands.\n" \
+            f"- Type `intern help` for resume module help commands.\n" \
+           "- `{anything else}` Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
+           "If you're an admin type `admin help` for more information!"
 
 def library_help():
     """Returns the response for when a user asks for help with the library module"""
