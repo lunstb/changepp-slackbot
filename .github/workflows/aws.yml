@@ -33,7 +33,7 @@ on:
 
 env:
   AWS_REGION: us-east-2                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: changepp-slackbot           # set this to your Amazon ECR repository name
+  ECR_REPOSITORY: public.ecr.aws/c6l5n7m5/changepp-slackbot           # set this to your Amazon ECR repository name
   ECS_SERVICE: changepp-slackbot-service                 # set this to your Amazon ECS service name
   ECS_CLUSTER: default                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: first-run-task-definition # set this to the path to your Amazon ECS task definition
