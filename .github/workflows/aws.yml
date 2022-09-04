@@ -35,7 +35,7 @@ env:
   AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: changepp-slackbot-repo           # set this to your Amazon ECR repository name
   ECS_SERVICE: changepp-slackbot-service                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: changepp-slackbot-cluster                 # set this to your Amazon ECS cluster name
+  ECS_CLUSTER: default                 # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: ecs-task.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: changepp-slackbot           # set this to the name of the container in the
