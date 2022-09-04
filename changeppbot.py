@@ -5,6 +5,19 @@ MavenLink API - http://developer.mavenlink.com/
 
 And also here's where you can see and manage slack apps - https://api.slack.com/apps"""
 
+from slack_sdk.socket_mode.request import SocketModeRequest
+from slack_sdk.socket_mode import SocketModeClient
+from lib.slack_connect import client
+from lib.setup import run_setup
+from lib.formulateresponse import *
+from lib.constants import *
+from threading import Event
+from lib.modules.internmodule.internmodule import InternModule
+from lib.modules.librarymodule.librarymodule import LibraryModule
+from lib.modules.networkingmodule.networkingmodule import NetworkingModule
+from lib.modules.resumemodule.resumemodule import ResumeModule
+from lib.modules.databasemodule.databasemodule import DatabaseModule
+from lib.modules.modulehelpers import check_admin
 import logging
 
 # Setup logging file
@@ -16,27 +29,15 @@ from slack_sdk.socket_mode.response import SocketModeResponse
 from lib.modules.moduletemplate import ModuleTemplate
 
 logging.basicConfig(
-    # filename='includebot.log',
+    filename='changeppbot.log',
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
 )
 
-from lib.modules.modulehelpers import check_admin
-from lib.modules.databasemodule.databasemodule import DatabaseModule
-from lib.modules.resumemodule.resumemodule import ResumeModule
-from lib.modules.networkingmodule.networkingmodule import NetworkingModule
-from lib.modules.librarymodule.librarymodule import LibraryModule
-from lib.modules.internmodule.internmodule import InternModule
-from threading import Event
-from lib.constants import *
-from lib.formulateresponse import *
-from lib.setup import run_setup
-from lib.slack_connect import client
-from slack_sdk.socket_mode import SocketModeClient
-from slack_sdk.socket_mode.request import SocketModeRequest
 
-modules = [DatabaseModule(), ResumeModule(), NetworkingModule(), LibraryModule(), InternModule()]
+modules = [DatabaseModule(), ResumeModule(), NetworkingModule(),
+           LibraryModule(), InternModule()]
 
 
 def catch_basic_responses(msg: str, email, db: database):
@@ -71,7 +72,7 @@ def pre_process(msg: str, email, db):
 def process(client: SocketModeClient, req: SocketModeRequest):
     """This function handles different events from the Slack API and is the starting point for everything that IncludeBot does"""
     logging.info(f"Received request: {req}")
-    
+
     if req.type == "events_api":
         # Acknowledge the request anyway
         response = SocketModeResponse(envelope_id=req.envelope_id)
@@ -83,23 +84,28 @@ def process(client: SocketModeClient, req: SocketModeRequest):
 
         # if team_join event, send welcome message to new user
         if req.payload["event"]["type"] == "team_join":
-            client.web_client.chat_postMessage(channel=req.payload["event"]["user"]["id"], text=welcome_message())
+            client.web_client.chat_postMessage(
+                channel=req.payload["event"]["user"]["id"], text=welcome_message())
             return
 
         # This retrieves the email of whoever sent the message
-        email = client.web_client.users_info(user=req.payload["event"]["user"])["user"]["profile"]["email"]
+        email = client.web_client.users_info(user=req.payload["event"]["user"])[
+            "user"]["profile"]["email"]
 
         logging.info(f"{email}->bot: {req.payload['event']['text']}")
 
-        basic_response = catch_basic_responses(req.payload["event"]["text"], email, db)
+        basic_response = catch_basic_responses(
+            req.payload["event"]["text"], email, db)
 
         if basic_response is not None:
             response = basic_response
         else:
-            process_results = pre_process(req.payload["event"]["text"], email, db)
+            process_results = pre_process(
+                req.payload["event"]["text"], email, db)
 
             for module in modules:
-                found_command = module.handle_input(client, req, db, process_results["is_admin"])
+                found_command = module.handle_input(
+                    client, req, db, process_results["is_admin"])
                 if found_command:
                     return
 
@@ -109,8 +115,10 @@ def process(client: SocketModeClient, req: SocketModeRequest):
                 response = did_not_understand()
 
         logging.info(f"bot->{email} response: {response}")
-        client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
-                
+        client.web_client.chat_postMessage(
+            channel=req.payload["event"]["channel"], text=response)
+
+
 # Create db if it doesn't exist
 run_setup()
 
