@@ -79,8 +79,7 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         echo "Finished building image"
         echo $ECR_REGISTRY
-        echo ${{ secrets.AWS_ACCESS_KEY_ID }}
-        echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        echo ${{ steps.login-ecr.outputs }}
         echo ${{ env.AWS_REGION }}
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
