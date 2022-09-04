@@ -23,20 +23,34 @@ SlackBot:
 | How is Berke so Cool                 | DAW | Adam Hollander                |
 | Whatever Happened to Easy Interviews | BKL | Izzy Hood                     |
 
-2. `library borrow_book BOOK_ID (USER_EMAIL)`
 
-The `borrow_book` command is passed a `BOOK_ID` and (optional) `USER_EMAIL`. The slackbot then sets up a conversation between person and owner of book with ID of transaction. Owner of book confirms transaction via `library confirm TRANSACTION_ID`
+2. `library donate_book ISBN`
+
+Adds specified book to library. 
+
+3. `library borrow_book BOOK_ISBN`
+
+The `borrow_book` command is passed a `BOOK_ISBN`. The slackbot then separately emails the owner of the book, and the owner can either confirm or cancel the request. The borrow will be notified if any action is taken by the owner.
 
 **EXAMPLE**
 
 Salomon: library borrow_book ABC
 
+4. `library cancel BOOK_ISBN`
 
+Cancels borrow request by the user 
 
+5. `library confirm ISBN`
 
-3. `library donate_book ISBN`
+Approves borrow request between the onwer of the book and the requester
 
-Adds specified book to library. 
+6. `library transaction_history ISBN`
+
+Shows the transaction history of a given book and who currently owns it
+
+7. `library help`
+
+Returns commands with descriptions for interacting with the library module
 
 ## Internship Functionality
 
@@ -71,6 +85,16 @@ View resume (individual)
 
 Upload resume
 
+View resume resources
+
 ## Networking Module
 
 Join Networking
+
+**New Idea:** Referrals
+
+## Networking
+
+You can join a networking channel and then once a week you are randomly paired with another member of the channel to discuss things. An initial chat is setup between you and that other member with three prompts of conversation topics (eg. mock interview, resume critique, coding shtuff) plus one other randomly selected one from a list. The channel can be left at any time, at which point you will stop being randomly paired.
+
+1. `network`

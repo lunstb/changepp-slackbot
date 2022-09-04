@@ -13,6 +13,8 @@ import logging
 # https://stackoverflow.com/questions/20240464/python-logging-file-is-not-working-when-using-logging-basicconfig/63868063
 from slack_sdk.socket_mode.response import SocketModeResponse
 
+from lib.modules.moduletemplate import ModuleTemplate
+
 logging.basicConfig(
     # filename='includebot.log',
     level=logging.INFO,
@@ -22,6 +24,10 @@ logging.basicConfig(
 
 from lib.modules.modulehelpers import check_admin
 from lib.modules.databasemodule.databasemodule import DatabaseModule
+from lib.modules.resumemodule.resumemodule import ResumeModule
+from lib.modules.networkingmodule.networkingmodule import NetworkingModule
+from lib.modules.librarymodule.librarymodule import LibraryModule
+from lib.modules.internmodule.internmodule import InternModule
 from threading import Event
 from lib.constants import *
 from lib.formulateresponse import *
@@ -30,23 +36,25 @@ from lib.slack_connect import client
 from slack_sdk.socket_mode import SocketModeClient
 from slack_sdk.socket_mode.request import SocketModeRequest
 
-modules = [DatabaseModule()]
+modules = [DatabaseModule(), ResumeModule(), NetworkingModule(), LibraryModule(), InternModule()]
 
 
 def catch_basic_responses(msg: str, email, db: database):
     """This function """
 
-    if not db.check_user_exists(email): # TODO: no db setup yet
+    if msg.startswith('register '):
+        return None
+
+    if not db.check_user_exists(email):
         return account_not_set_up()
 
-    msg = msg.strip()
     if msg.startswith('admin '):
         if not check_admin(email, db):
             return denied_admin_access()
         if 'help' in msg:
             return admin_help()
 
-    if 'help' in msg:
+    if 'help' == msg.strip():
         return help_response()
 
 
@@ -62,9 +70,8 @@ def pre_process(msg: str, email, db):
 
 def process(client: SocketModeClient, req: SocketModeRequest):
     """This function handles different events from the Slack API and is the starting point for everything that IncludeBot does"""
-
-    print("\n\n\nReceived request: " + str(req))
-
+    logging.info(f"Received request: {req}")
+    
     if req.type == "events_api":
         # Acknowledge the request anyway
         response = SocketModeResponse(envelope_id=req.envelope_id)
@@ -74,9 +81,13 @@ def process(client: SocketModeClient, req: SocketModeRequest):
         if "bot_id" in req.payload["event"]:
             return
 
+        # if team_join event, send welcome message to new user
+        if req.payload["event"]["type"] == "team_join":
+            client.web_client.chat_postMessage(channel=req.payload["event"]["user"]["id"], text=welcome_message())
+            return
+
         # This retrieves the email of whoever sent the message
-        email = client.web_client.users_info(user=req.payload["event"]["user"])[
-            "user"]["profile"]["email"]
+        email = client.web_client.users_info(user=req.payload["event"]["user"])["user"]["profile"]["email"]
 
         logging.info(f"{email}->bot: {req.payload['event']['text']}")
 
@@ -97,13 +108,9 @@ def process(client: SocketModeClient, req: SocketModeRequest):
             else:
                 response = did_not_understand()
 
-        # FIXME: will delete this later when we have a database
-        response = did_not_understand()
-
         logging.info(f"bot->{email} response: {response}")
         client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=response)
-
-
+                
 # Create db if it doesn't exist
 run_setup()
 

@@ -1,0 +1,3 @@
+CHANNEL_ID = "C03QSC88Y4E"
+BOT_USER = "U03QC4N6TDF"
+SLACK_URL = 'https://slack.com/api/'

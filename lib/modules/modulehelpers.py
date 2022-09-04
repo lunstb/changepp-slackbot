@@ -14,16 +14,30 @@ def get_dates(msg):
         dates.append(match)
     return dates
 
+def extract_isbn_from_phone_number_format(phone_number: str) -> str:
+    """Slack may format provided isbn like a phone number, such as <tel:0984782869|0984782869>.
+    This function extracts the isbn from a phone number"""
+    
+    isbn_num = phone_number.split("|")[-1]
+    return isbn_num if len(isbn_num) == 10 else isbn_num[:-1]
+
 def get_book_name_from_isbn(isbn: str):
-    """This function returns the book info from the isbn
+    """
+    This function returns the book info from the isbn
     Example request:
-    https://www.googleapis.com/books/v1/volumes?q=isbn:0984782869"""
+    https://www.googleapis.com/books/v1/volumes?q=isbn:0984782869
+
+    Docs: https://developers.google.com/books/docs/overview
+    """
     
     # make a get request to google books api
     response = requests.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}")
     json_response = response.json()
 
     if not json_response:
+        return None
+
+    if json_response["totalItems"] == 0: # if there are no results
         return None
 
     return json_response["items"][0]["volumeInfo"]["title"]

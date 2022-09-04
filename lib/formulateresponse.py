@@ -21,7 +21,8 @@ def invalid_book_isbn():
 def account_not_set_up():
     """Returns the response for any user whose account is not setup (is not in the database) """
 
-    return "Your account has not yet been set up yet to interact with Include Bot, please contact an admin"
+    return "Your account has not been set up yet! Let's get you started.\n Send the following command and substitute in your credentials:\n`register <first_name> <last_name> <graduation_year>`\n*Example:* \n>register Salomon Dushimirimana 2024 \n"
+
 
 
 def denied_admin_access():
@@ -33,18 +34,63 @@ def denied_admin_access():
 def help_response():
     """Returns the response for a user asking for help"""
 
-    return "It seems like you asked for help on how to interact with me:\n" \
-           f"- {explain_command(Commands.DATE_SINGLE)}\n" \
-           f"- {explain_command(Commands.DATE_RANGE)}\n" \
-           "- `admin {anything}` - This returns a message telling the user they are not an admin\n" \
-           f"- {explain_command(Commands.INSTANCE_CREATE)}\n" \
-           f"- {explain_command(Commands.INSTANCE_DESTROY)}\n" \
-           f"- {explain_command(Commands.INSTANCE_EXTEND)}\n" \
-           f"- {explain_command(Commands.INSTANCE_SET_PUBKEY)}\n" \
-           f"- {explain_command(Commands.RESOLVE_WORKSPACE)}\n" \
-           "- `{anything else}` - Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
-           "If you're an admin type \"admin help\" for more information!"
+    return "It seems like you asked for help on how to interact with me.\n" \
+            "Below are different commands on how to interact with the supported admin, library, network, resume, and internship functionalities: \n" \
+            f"- Type `library help` for library module help commands.\n" \
+            f"- Type `network help` for network module help commands.\n" \
+            f"- Type `resume help` for resume module help commands.\n" \
+            f"- Type `intern help` for resume module help commands.\n" \
+           "- `{anything else}` Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
+           "If you're an admin type `admin help` for more information!"
 
+def library_help():
+    """Returns the response for when a user asks for help with the library module"""
+
+    return f"Here are all of the command options for interacting with the library module:\n" \
+        f"- {explain_command(Commands.LIBRARY_LIST_BOOKS)}\n" \
+        f"- {explain_command(Commands.LIBRARY_DONATE_BOOK)}\n" \
+        f"- {explain_command(Commands.LIBRARY_BORROW_BOOK)}\n" \
+        f"- {explain_command(Commands.LIBRARY_CONFIRM_TRANSACTION)}\n" \
+        f"- {explain_command(Commands.LIBRARY_CANCEL_TRANSACTION)}\n" \
+        f"- {explain_command(Commands.LIBRARY_TRANSACTION_HISTORY)}\n" \
+        f"- {explain_command(Commands.LIBRARY_HELP)}\n" \
+
+def network_help():
+    """Returns the response for when a user asks for help with the network module"""
+
+    return f"Here are all of the command options for interacting with the network module:\n" \
+        f"- {explain_command(Commands.NETWORK_ADD_ME)}\n" \
+        f"- {explain_command(Commands.NETWORK_HELP)}\n" \
+
+def resume_help():
+    """Returns the response for when a user asks for help with the resume module"""
+
+    return f"Here are all of the command options for interacting with the resume module:\n" \
+        f"- {explain_command(Commands.LIST_RESUMES)}\n" \
+        f"- {explain_command(Commands.ADD_RESUME)}\n" \
+        f"- {explain_command(Commands.REMOVE_RESUME)}\n" \
+        f"- {explain_command(Commands.RESUME_RESOURCES)}\n" \
+
+def intern_help():
+    """Returns the response for when a user asks for help with the intern module"""
+
+    return f"Here are all of the command options for interacting with the intern module:\n" \
+        f"- {explain_command(Commands.INTERN_ADD_ME)}\n" \
+        f"- {explain_command(Commands.INTERN_REMOVE)}\n" \
+        f"- {explain_command(Commands.INTERN_LIST)}\n" \
+        f"- {explain_command(Commands.INTERN_HELP)}\n" \
+
+def welcome_message():
+    """Returns the response for when a user first connects to the bot"""
+
+    return "Welcome to change++!\n" \
+        "My name is Laurenbot, and I am here to assist you through various functionalities mentioned below.\n" \
+        "- `Networking`: Once you opt in, you'll be paired with another change++ member on a once-in-two-weeks" \
+            " basis with random networking prompts to discuss. Text `Networking help` for more.\n" \
+        "- `Resume`: View and access shared resumes from fellow members, and you can also share your own resume. " \
+            "Text `Resume help` for more.\n"\
+        "- `Library`: Donate and exchange books with fellow members. Text `library help` for more.\n"\
+        "Type `help` to see a list of commands that I understand.\n" \
 
 def did_not_understand():
     """Returns the response for when a non-admin message is not understood."""
