@@ -165,7 +165,8 @@ class database:
         """
 
         self.cur.execute(
-            f"UPDATE books SET owner_email = ?, request_email = ? WHERE ISBN = ?", (request_email, None, book_isbn)
+            f"UPDATE books SET owner_email = ?, request_email = ? WHERE ISBN = ?", (
+                request_email, None, book_isbn)
         )
         self.con.commit()
 
@@ -173,7 +174,8 @@ class database:
         """Cancels the book request for the book with the supplied isbn"""
 
         self.cur.execute(
-            f"UPDATE books SET request_email = ? WHERE ISBN = ?", (None, book_isbn)
+            f"UPDATE books SET request_email = ? WHERE ISBN = ?", (
+                None, book_isbn)
         )
         self.con.commit()
 
@@ -259,13 +261,13 @@ class database:
         """Returns all of the resumes from the database"""
         
         if id is None:
-            self.cur.execute("SELECT * FROM resume")
+            self.cur.execute("SELECT user_email, AWS_link FROM resume")
             return self.cur.fetchall()
         else:
             if 'mailto:' in id:
                 id = id.replace('<mailto:', '')
                 id = id[:id.find('|')]
-            self.cur.execute(f"SELECT * FROM resume WHERE user_email = '{id}'")
+            self.cur.execute(f"SELECT user_email, AWS_link FROM resume WHERE user_email = '{id}'")
             return self.cur.fetchall()
 
     def insert_resume(self, user_email, AWS_link):
@@ -309,7 +311,8 @@ class database:
             "INSERT INTO networking VALUES (?, ?, ?)", (user_id, is_alum, last)
         )
         self.con.commit()
-        logging.info(f"User {user_id} inserted to networking table, alum={is_alum}")
+        logging.info(
+            f"User {user_id} inserted to networking table, alum={is_alum}")
 
     def drop_networking_table(self):
         """Drops the networking table, only used in setup"""
@@ -317,7 +320,7 @@ class database:
         self.cur.execute("DROP TABLE networking")
         self.con.commit()
         logging.info("Dropping networking table")
-    
+
     def networking_is_alum(self, user_id):
         """Returns whether or not the user is an alum"""
 
@@ -325,7 +328,7 @@ class database:
             f"SELECT is_alum FROM networking WHERE user_id = '{user_id}'"
         )
         return self.cur.fetchone()[0]
-    
+
     def networking_update_last(self, user_id, other_user_id):
         """Updates last connected user for a user"""
 
@@ -338,7 +341,8 @@ class database:
         )
         self.con.commit()
 
-        logging.info(f"Updated last users interacted with for {user_id}, {other_user_id}")
+        logging.info(
+            f"Updated last users interacted with for {user_id}, {other_user_id}")
 
     def get_last(self, user_id):
         """Returns the last user the user was matched with"""
@@ -347,6 +351,7 @@ class database:
             f"SELECT list FROM networking WHERE user_id = '{user_id}'"
         )
         return self.cur.fetchone()[0]
+
     def create_intern_table(self):
         """Creates the resume table, only used in setup"""
 
@@ -355,10 +360,10 @@ class database:
         )
         self.con.commit()
         logging.info("Intern table created")
-    
+
     def get_interns(self, id=None):
         """Returns all of the interns from the database"""
-        
+
         if id is None:
             self.cur.execute("SELECT * FROM intern")
             return self.cur.fetchall()
@@ -368,13 +373,14 @@ class database:
 
     def insert_intern(self, user_email, company, position, refs):
         """Inserts a intern into the intern table"""
-        
+
         self.cur.execute(f"SELECT * FROM users WHERE email = '{user_email}'")
         self_info = self.cur.fetchone()
         name = f"{self_info[1]} {self_info[2]}"
 
         self.cur.execute(
-            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?)", (name, user_email, company, position, refs)
+            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?)", (
+                name, user_email, company, position, refs)
         )
         self.con.commit()
         logging.info(f"You have been added to the intern table")
@@ -383,15 +389,15 @@ class database:
         """Removes a intern from the intern table"""
 
         if 'mailto:' in id:
-                id = id.replace('<mailto:', '')
-                id = id[:id.find('|')]
+            id = id.replace('<mailto:', '')
+            id = id[:id.find('|')]
 
         self.cur.execute(
             f"DELETE FROM intern WHERE user_email = '{id}'"
         )
         self.con.commit()
         logging.info("Intern removed from intern table")
-    
+
     def return_all_interns(self):
         """Returns all intern information in the table."""
 
