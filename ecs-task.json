@@ -10,7 +10,7 @@
 				"secretOptions": null,
 				"options": {
 					"awslogs-group": "/ecs/first-run-task-definition",
-					"awslogs-region": "us-east-2",
+					"awslogs-region": "us-east-1",
 					"awslogs-stream-prefix": "ecs"
 				}
 			},
