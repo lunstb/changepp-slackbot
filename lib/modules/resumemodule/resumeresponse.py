@@ -45,6 +45,6 @@ def list_resumes(db: database, id=None):
     response = "Here is a list of resumes:\n"
     for resume in resumes_db:
         (email, url) = resume
-        response += f"{email}'s Resume: {url}\n"
+        response += f"• {email}'s Resume: {url}\n"
     
     return response
