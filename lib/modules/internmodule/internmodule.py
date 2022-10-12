@@ -21,7 +21,6 @@ class InternModule(ModuleTemplate):
             commands = commands[1:]
             if commands[0] == 'add':
                 intern_commands = ' '.join(commands[1:]).split('"')
-                print(intern_commands)
                 intern_commands = [c.rstrip().lstrip() for c in intern_commands]
                 intern_commands = [c for c in intern_commands if c]
                 if len(intern_commands) == 3:
@@ -54,7 +53,6 @@ class InternModule(ModuleTemplate):
     
     def process_message(self, interpretation, client, req, email, db: database, admin) -> Dict:
         if interpretation["command"] == Commands.INTERN_ADD_ME:
-            print(interpretation["company"], interpretation["position"], interpretation["accepting_refs"])
             db.insert_intern(email, interpretation["company"], interpretation["position"], interpretation["accepting_refs"])
             return added_intern()
         if interpretation["command"] == Commands.INTERN_REMOVE:
