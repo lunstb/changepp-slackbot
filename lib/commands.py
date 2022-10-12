@@ -94,7 +94,7 @@ command_dispatch = {
     Commands.RESUME_RESOURCES : "`resume resources` - This returns a list of all the resources that are available to view",
 
     # Intern commands - see if when you add user, check if email in resume database and add url if so
-    Commands.INTERN_ADD_ME : "`intern add {company} {position} {accepting_referrals?(true/false)}` - This adds an intern to the database",
+    Commands.INTERN_ADD_ME : "`intern add "{company}" "{position}" {accepting_referrals?(true/false)}` - This adds an intern to the database. Remember to use quotes around company and position!",
     Commands.INTERN_REMOVE : "`intern remove` - This removes your intern from the database",
     Commands.INTERN_LIST : "`intern list` - This returns a list of all the interns that are available to view",
     Commands.INTERN_HELP : "`intern help` - This returns a clarification on how to interact with the bot's intern module",

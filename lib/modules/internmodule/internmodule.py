@@ -1,3 +1,4 @@
+from operator import concat
 from typing import Dict
 from pathlib import Path
 from aiohttp import ClientError
@@ -20,12 +21,14 @@ class InternModule(ModuleTemplate):
         if commands[0] == 'intern':
             commands = commands[1:]
             if commands[0] == 'add':
+                intern_commands = ''.join(commands[1:])
+                intern_commands = [c.strip() for c in intern_commands.split('"') if c.strip()]
                 if len(commands) == 4:
                     return {
                         "command": Commands.INTERN_ADD_ME,
-                        "company": commands[1],
-                        "position": commands[2],
-                        "accepting_refs": commands[3]
+                        "company": intern_commands[0],
+                        "position": intern_commands[1],
+                        "accepting_refs": intern_commands[2]
                     }
                 else:
                     return catch_incorrect_arguments(Commands.INTERN_ADD_ME)
