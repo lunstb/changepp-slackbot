@@ -89,7 +89,7 @@ command_dispatch = {
 
     # Resumes commands
     Commands.LIST_RESUMES : "`resume list` - This returns a list of all the resumes that are available to view",
-    Commands.ADD_RESUME : "`resume add {url}` - This adds a resume to the database",
+    Commands.ADD_RESUME : "`resume add <attach_resume>` - This adds a resume to the database",
     Commands.REMOVE_RESUME : "`resume remove` - This removes your resume from the database",
     Commands.RESUME_RESOURCES : "`resume resources` - This returns a list of all the resources that are available to view",
 
