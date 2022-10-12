@@ -68,6 +68,7 @@ def resume_help():
     return f"Here are all of the command options for interacting with the resume module:\n" \
         f"- {explain_command(Commands.LIST_RESUMES)}\n" \
         f"- {explain_command(Commands.ADD_RESUME)}\n" \
+        f"_*Note:* You are encouraged not to include your *GPA* in your resume._\n"\
         f"- {explain_command(Commands.REMOVE_RESUME)}\n" \
         f"- {explain_command(Commands.RESUME_RESOURCES)}\n" \
 
