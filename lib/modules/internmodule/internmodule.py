@@ -1,3 +1,4 @@
+from operator import concat
 from typing import Dict
 from pathlib import Path
 from aiohttp import ClientError
@@ -13,19 +14,21 @@ env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 
 class InternModule(ModuleTemplate):
-
     def interpret_message(self, msg, email, db, admin) -> Dict:
         commands = msg["text"].split()
 
         if commands[0] == 'intern':
             commands = commands[1:]
             if commands[0] == 'add':
-                if len(commands) == 4:
+                intern_commands = ' '.join(commands[1:]).split('"')
+                intern_commands = [c.rstrip().lstrip() for c in intern_commands]
+                intern_commands = [c for c in intern_commands if c]
+                if len(intern_commands) == 3:
                     return {
                         "command": Commands.INTERN_ADD_ME,
-                        "company": commands[1],
-                        "position": commands[2],
-                        "accepting_refs": commands[3]
+                        "company": intern_commands[0],
+                        "position": intern_commands[1],
+                        "accepting_refs": intern_commands[2]
                     }
                 else:
                     return catch_incorrect_arguments(Commands.INTERN_ADD_ME)
