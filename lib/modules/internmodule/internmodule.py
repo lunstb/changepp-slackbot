@@ -20,9 +20,8 @@ class InternModule(ModuleTemplate):
         if commands[0] == 'intern':
             commands = commands[1:]
             if commands[0] == 'add':
-                intern_commands = ' '.join(commands[1:]).split('"')
+                intern_commands = ' '.join(commands[1:]).split(',')
                 intern_commands = [c.rstrip().lstrip() for c in intern_commands]
-                intern_commands = [c for c in intern_commands if c]
                 if len(intern_commands) == 3:
                     return {
                         "command": Commands.INTERN_ADD_ME,
