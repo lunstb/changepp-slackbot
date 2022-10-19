@@ -379,7 +379,7 @@ class database:
         name = f"{self_info[1]} {self_info[2]}"
 
         self.cur.execute(
-            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?) ON CONFLICT(email) DO UPDATE SET user_name = ?, company = ?, position = ?, refs = ?", (
+            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?) ON CONFLICT(user_email) DO UPDATE SET user_name = ?, company = ?, position = ?, refs = ?", (
                 name, user_email, company, position, refs, name, company, position, refs)
         )
         self.con.commit()
