@@ -378,13 +378,13 @@ class database:
         self_info = self.cur.fetchone()
         name = f"{self_info[1]} {self_info[2]}"
 
+        # insert or update the intern if already exists
         self.cur.execute(
-            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?) ON CONFLICT(user_email) DO UPDATE SET user_name = ?, company = ?, position = ?, refs = ?", (
-                name, user_email, company, position, refs, name, company, position, refs)
+            "INSERT OR REPLACE INTO intern VALUES (?, ?, ?, ?, ?)", (name, user_email, company, position, refs)
         )
         self.con.commit()
-        logging.info(f"You have been added to the intern table")
-
+        logging.info(f"Intern inserted with email {user_email}")
+        
     def remove_intern(self, id):
         """Removes a intern from the intern table"""
 
