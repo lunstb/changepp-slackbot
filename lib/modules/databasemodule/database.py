@@ -379,8 +379,8 @@ class database:
         name = f"{self_info[1]} {self_info[2]}"
 
         self.cur.execute(
-            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?)", (
-                name, user_email, company, position, refs)
+            "INSERT INTO intern (user_name, user_email, company, position, refs) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE user_name = ?, company = ?, position = ?, refs = ?", (
+                name, user_email, company, position, refs, name, company, position, refs)
         )
         self.con.commit()
         logging.info(f"You have been added to the intern table")
