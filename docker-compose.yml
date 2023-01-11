@@ -1,9 +1,0 @@
-version: '3'
-services:
-  bot:
-    build: .
-    command: python /src/changeppbot.py
-    # volumes:
-    #   - .:/usr/src/app
-    ports:
-      - "443:443"

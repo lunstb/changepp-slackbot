@@ -67,3 +67,162 @@ salomon.dushimirimana@vanderbilt.edu's Resume: https://changeppresumebot.s3.amaz
 salomon.dushimirimana@vanderbilt.edu's Resume: https://changeplusplus-resumes.s3.amazonaws.com/salomon.dushimirimana@vanderbilt.edu.pdf
 
 2022-09-16 02:05:08 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x7f7e4a03b3a0>
+2022-10-19 18:31:57 INFO A new session has been established (session id: 1f51d4db-bfce-4045-bb4e-ca3d5526aec9)
+2022-10-19 18:31:57 INFO Starting to receive messages from a new connection (session id: 1f51d4db-bfce-4045-bb4e-ca3d5526aec9)
+2022-10-19 18:32:15 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x11a5aabe0>
+2022-10-19 18:32:15 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:32:15 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:32:15 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:32:15 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:32:16 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:32:16 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:32:16 ERROR Failed to run a request listener: no such table: intern
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/slack_sdk/socket_mode/client.py", line 143, in run_message_listeners
+    listener(self, request)  # type: ignore
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/changeppbot.py", line 107, in process
+    found_command = module.handle_input(
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/lib/modules/moduletemplate.py", line 34, in handle_input
+    response = self.process_message(interpretation, client, req, email, db, admin)
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/lib/modules/internmodule/internmodule.py", line 61, in process_message
+    return list_interns(db, req.payload['event']['channel'])
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/lib/modules/internmodule/internresponse.py", line 36, in list_interns
+    all_intern_info = db.return_all_interns()
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/lib/modules/databasemodule/database.py", line 411, in return_all_interns
+    self.cur.execute(
+sqlite3.OperationalError: no such table: intern
+2022-10-19 18:33:14 ERROR Database not initialized
+2022-10-19 18:33:14 INFO User table created
+2022-10-19 18:33:14 INFO Books table created
+2022-10-19 18:33:14 INFO Transaction history table created
+2022-10-19 18:33:14 INFO Resume table created
+2022-10-19 18:33:14 INFO Networking table created
+2022-10-19 18:33:14 INFO Intern table created
+2022-10-19 18:33:14 INFO Setup is done, the database should be ready!
+2022-10-19 18:33:15 INFO A new session has been established (session id: 82317e4e-2d82-491a-9d21-bcc9349f3758)
+2022-10-19 18:33:15 INFO Starting to receive messages from a new connection (session id: 82317e4e-2d82-491a-9d21-bcc9349f3758)
+2022-10-19 18:35:19 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6bbe0>
+2022-10-19 18:35:19 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern help
+2022-10-19 18:35:19 INFO bot->salomon.dushimirimana@vanderbilt.edu response: Your account has not been set up yet! Let's get you started.
+ Send the following command and substitute in your credentials:
+`register <first_name> <last_name> <graduation_year>`
+*Example:* 
+>register Salomon Dushimirimana 2024 
+
+2022-10-19 18:35:20 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6bbb0>
+2022-10-19 18:35:32 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b4f0>
+2022-10-19 18:35:32 INFO salomon.dushimirimana@vanderbilt.edu->bot: register Salomon Dushimirimana 2024
+2022-10-19 18:35:33 INFO salomon.dushimirimana@vanderbilt.edu->bot: register Salomon Dushimirimana 2024
+2022-10-19 18:35:33 INFO salomon.dushimirimana@vanderbilt.edu->bot message interpreted as: Commands.CREATE_USER
+2022-10-19 18:35:33 INFO bot->salomon.dushimirimana@vanderbilt.edu response: User created with the slack email salomon.dushimirimana@vanderbilt.edu as non admin
+2022-10-19 18:35:33 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b5e0>
+2022-10-19 18:35:40 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b4f0>
+2022-10-19 18:35:40 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:35:40 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:35:40 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:35:41 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:35:41 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:35:42 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:35:42 INFO salomon.dushimirimana@vanderbilt.edu->bot message interpreted as: Commands.INTERN_LIST
+2022-10-19 18:35:42 ERROR Failed to run a request listener: Recognized command "Commands.INTERN_LIST" does not have programmed response in its module
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/slack_sdk/socket_mode/client.py", line 143, in run_message_listeners
+    listener(self, request)  # type: ignore
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/changeppbot.py", line 107, in process
+    found_command = module.handle_input(
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/lib/modules/moduletemplate.py", line 40, in handle_input
+    raise Exception(f"Recognized command \"{interpretation['command']}\" does not have programmed response in its module")
+Exception: Recognized command "Commands.INTERN_LIST" does not have programmed response in its module
+2022-10-19 18:35:43 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b7f0>
+2022-10-19 18:35:43 ERROR Failed to run a request listener: 'email'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/slack_sdk/socket_mode/client.py", line 143, in run_message_listeners
+    listener(self, request)  # type: ignore
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/changeppbot.py", line 92, in process
+    email = client.web_client.users_info(user=req.payload["event"]["user"])[
+KeyError: 'email'
+2022-10-19 18:35:56 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b4f0>
+2022-10-19 18:35:57 INFO salomon.dushimirimana@vanderbilt.edu->bot: inter add Meta, Meta U SWE, true
+2022-10-19 18:35:57 INFO salomon.dushimirimana@vanderbilt.edu->bot: inter add Meta, Meta U SWE, true
+2022-10-19 18:35:57 INFO salomon.dushimirimana@vanderbilt.edu->bot: inter add Meta, Meta U SWE, true
+2022-10-19 18:35:57 INFO salomon.dushimirimana@vanderbilt.edu->bot: inter add Meta, Meta U SWE, true
+2022-10-19 18:35:58 INFO salomon.dushimirimana@vanderbilt.edu->bot: inter add Meta, Meta U SWE, true
+2022-10-19 18:35:58 INFO salomon.dushimirimana@vanderbilt.edu->bot: inter add Meta, Meta U SWE, true
+2022-10-19 18:35:58 INFO bot->salomon.dushimirimana@vanderbilt.edu response: Command not understood. Please type "help" for information on what I can do!
+2022-10-19 18:35:58 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6bbb0>
+2022-10-19 18:36:09 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b4f0>
+2022-10-19 18:36:09 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, true
+2022-10-19 18:36:09 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, true
+2022-10-19 18:36:09 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, true
+2022-10-19 18:36:10 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, true
+2022-10-19 18:36:10 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, true
+2022-10-19 18:36:10 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, true
+2022-10-19 18:36:10 INFO Intern inserted with email salomon.dushimirimana@vanderbilt.edu
+2022-10-19 18:36:10 INFO You have been added to the intern table
+2022-10-19 18:36:10 INFO salomon.dushimirimana@vanderbilt.edu->bot message interpreted as: Commands.INTERN_ADD_ME
+2022-10-19 18:36:10 INFO bot->salomon.dushimirimana@vanderbilt.edu response: Intern added.
+2022-10-19 18:36:11 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6bb80>
+2022-10-19 18:36:13 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b4f0>
+2022-10-19 18:36:13 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:14 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:14 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:14 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:14 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:14 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:15 INFO salomon.dushimirimana@vanderbilt.edu->bot message interpreted as: Commands.INTERN_LIST
+2022-10-19 18:36:15 ERROR Failed to run a request listener: Recognized command "Commands.INTERN_LIST" does not have programmed response in its module
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/slack_sdk/socket_mode/client.py", line 143, in run_message_listeners
+    listener(self, request)  # type: ignore
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/changeppbot.py", line 107, in process
+    found_command = module.handle_input(
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/lib/modules/moduletemplate.py", line 40, in handle_input
+    raise Exception(f"Recognized command \"{interpretation['command']}\" does not have programmed response in its module")
+Exception: Recognized command "Commands.INTERN_LIST" does not have programmed response in its module
+2022-10-19 18:36:15 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6bb80>
+2022-10-19 18:36:15 ERROR Failed to run a request listener: 'email'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/slack_sdk/socket_mode/client.py", line 143, in run_message_listeners
+    listener(self, request)  # type: ignore
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/changeppbot.py", line 92, in process
+    email = client.web_client.users_info(user=req.payload["event"]["user"])[
+KeyError: 'email'
+2022-10-19 18:36:28 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b4f0>
+2022-10-19 18:36:28 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, false
+2022-10-19 18:36:28 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, false
+2022-10-19 18:36:29 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, false
+2022-10-19 18:36:29 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, false
+2022-10-19 18:36:29 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, false
+2022-10-19 18:36:29 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern add Meta, Meta U SWE, false
+2022-10-19 18:36:29 INFO Intern inserted with email salomon.dushimirimana@vanderbilt.edu
+2022-10-19 18:36:29 INFO You have been added to the intern table
+2022-10-19 18:36:29 INFO salomon.dushimirimana@vanderbilt.edu->bot message interpreted as: Commands.INTERN_ADD_ME
+2022-10-19 18:36:29 INFO bot->salomon.dushimirimana@vanderbilt.edu response: Intern added.
+2022-10-19 18:36:30 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6bbb0>
+2022-10-19 18:36:34 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6b5e0>
+2022-10-19 18:36:34 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:35 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:35 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:35 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:35 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:35 INFO salomon.dushimirimana@vanderbilt.edu->bot: intern list
+2022-10-19 18:36:36 INFO salomon.dushimirimana@vanderbilt.edu->bot message interpreted as: Commands.INTERN_LIST
+2022-10-19 18:36:36 ERROR Failed to run a request listener: Recognized command "Commands.INTERN_LIST" does not have programmed response in its module
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/slack_sdk/socket_mode/client.py", line 143, in run_message_listeners
+    listener(self, request)  # type: ignore
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/changeppbot.py", line 107, in process
+    found_command = module.handle_input(
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/lib/modules/moduletemplate.py", line 40, in handle_input
+    raise Exception(f"Recognized command \"{interpretation['command']}\" does not have programmed response in its module")
+Exception: Recognized command "Commands.INTERN_LIST" does not have programmed response in its module
+2022-10-19 18:36:36 INFO Received request: <slack_sdk.socket_mode.request.SocketModeRequest object at 0x105d6bbb0>
+2022-10-19 18:36:37 ERROR Failed to run a request listener: 'email'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/slack_sdk/socket_mode/client.py", line 143, in run_message_listeners
+    listener(self, request)  # type: ignore
+  File "/Users/salomon/Desktop/Salomon/Change++/changepp-slackbot/changeppbot.py", line 92, in process
+    email = client.web_client.users_info(user=req.payload["event"]["user"])[
+KeyError: 'email'
+2022-11-28 19:12:38 INFO A new session has been established (session id: 6012a214-147f-4c91-8d43-b6f460589963)
+2022-11-28 19:12:38 INFO Starting to receive messages from a new connection (session id: 6012a214-147f-4c91-8d43-b6f460589963)
