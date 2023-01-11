@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 import PyPDF2
+import urllib.parse
 
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
@@ -80,7 +81,7 @@ class ResumeModule(ModuleTemplate):
                 PyPDF2.PdfFileReader(io.BytesIO(content))
                 s3.upload_fileobj(io.BytesIO(content), bucket_name, f"{email}.pdf")
                 if not db.get_resumes(email):
-                    db.insert_resume(email, f"https://{bucket_name}.s3.amazonaws.com/{email}.pdf")
+                    db.insert_resume(email, f"https://{bucket_name}.s3.amazonaws.com/{urllib.parse.quote(email)}.pdf")
                 response = resume_added()
             except (ClientError, PyPDF2.errors.PdfReadError) as e:
                 response = resume_not_added(e.response['Error']['Message'] if hasattr(e, 'response') else "Invalid PDF")
