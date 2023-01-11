@@ -28,16 +28,13 @@ def run_setup():
     # Now connect to the database
     db = database.instance()
 
-    # # Check if a table actually exists in the database, if not, make one
-    if db.user_table_exists():
-        return
+    # Create the tables if they don't exist
+    db.create_user_table_if_not_exists()
+    db.create_resume_table_if_not_exists()
+    db.create_books_table_if_not_exists()
+    db.create_networking_table_if_not_exists()
+    db.create_intern_table_if_not_exists()
 
-    # # Now create everything
-    db.create_user_table()
-    db.create_books_table()
-    db.create_resume_table()
-    db.create_networking_table()
-    db.create_intern_table()
     db.insert_user(slack_email=admin_slack_email,
                    first_name=first_name,
                    last_name=last_name,

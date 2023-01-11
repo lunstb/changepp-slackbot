@@ -62,6 +62,12 @@ class database:
         self.con.commit()
         logging.info("User table created")
 
+    def create_user_table_if_not_exists(self):
+        """Creates the user table if it doesn't exist """
+
+        if not self.user_table_exists():
+            self.create_user_table()
+
     def check_user_is_admin(self, slack_email):
         """Checks whether the user correlating to the supplied slack_email is an admin"""
 
@@ -83,7 +89,6 @@ class database:
             "SELECT graduation_year FROM users WHERE email is ?", (slack_email,))
         return self.cur.fetchone()[0]
 
-    # FIXME: do we need user_type and is_admin?
     def insert_user(self, slack_email, first_name, last_name, user_type, graduation_year, is_admin):
         """Inserts a user into the database with the specified parameters """
 
@@ -141,6 +146,19 @@ class database:
         logging.info("Books table created")
 
         self.create_transaction_history_table()
+
+    def books_table_exists(self):
+        """Returns whether the 'books' table exists or not """
+
+        self.cur.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' and name='books'")
+        return self.cur.fetchone() is not None
+
+    def create_books_table_if_not_exists(self):
+        """Creates the books table if it does not exist"""
+
+        if not self.books_table_exists():
+            self.create_books_table()
 
     def get_book_by_isbn(self, book_isbn):
         """Returns the book with the supplied isbn"""
@@ -257,6 +275,19 @@ class database:
         self.con.commit()
         logging.info("Resume table created")
 
+    def resume_table_exists(self):
+        """Returns whether the 'resume' table exists or not """
+
+        self.cur.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' and name='resume'")
+        return self.cur.fetchone() is not None
+
+    def create_resume_table_if_not_exists(self):
+        """Creates the resume table if it doesn't already exist"""
+
+        if not self.resume_table_exists():
+            self.create_resume_table()
+
     def get_resumes(self, id=None):
         """Returns all of the resumes from the database"""
         
@@ -303,6 +334,19 @@ class database:
         )
         self.con.commit()
         logging.info("Networking table created")
+
+    def networking_table_exists(self):
+        """Returns whether the 'networking' table exists or not """
+
+        self.cur.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' and name='networking'")
+        return self.cur.fetchone() is not None
+
+    def create_networking_table_if_not_exists(self):
+        """Creates the networking table if it doesn't exist"""
+
+        if not self.networking_table_exists():
+            self.create_networking_table()
 
     def insert_user_to_networking(self, user_id, is_alum, last=""):
         """Inserts a user to the networking table"""
@@ -360,6 +404,19 @@ class database:
         )
         self.con.commit()
         logging.info("Intern table created")
+
+    def intern_table_exists(self):
+        """Returns whether the 'intern' table exists or not """
+
+        self.cur.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' and name='intern'")
+        return self.cur.fetchone() is not None
+
+    def create_intern_table_if_not_exists(self):
+        """Creates the intern table if it does not exist, only used in setup"""
+
+        if not self.intern_table_exists():
+            self.create_intern_table()
 
     def get_interns(self, id=None):
         """Returns all of the interns from the database"""
