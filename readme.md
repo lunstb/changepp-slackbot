@@ -19,6 +19,8 @@ This was all accomplished thanks to Berke Lunstad, Kyle Burgess, and myself.
 # How to use Lauren
 The bot should be visible in the bottom part of our slack’s side navigation, in the “Apps” section. You have to open a direct message with the bot to interact with her. You can do this by clicking on the “>” button next to the "Apps" section in the bottom left corner of the side navigation and selecting “Lauren” from the list of apps.
 
+If "Laurenbot" doesn't show up in the apps section, click the "+" button that shows up when you hover over the "apps" section. Select it in the list of apps, or search for it if it doesn't show up there. This will add the app to your workspace, and you can proceed as directed above.
+
 ## Help
 If you ever need help with the bot, you can type `help` in a direct message with the bot. This will return a list of all the modules and their respective help commands.
 
