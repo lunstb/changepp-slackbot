@@ -109,7 +109,7 @@ class LibraryModule(ModuleTemplate):
             isbn = extract_isbn_from_phone_number_format(interpretation["book_isbn"])
             book = db.get_book_by_isbn(isbn)
             if book is None:
-                response = book_with_isbn_not_found(interpretation["book_isbn"])
+                response = book_with_isbn_not_found(isbn)
                 return response 
 
             book_name = book[2]
