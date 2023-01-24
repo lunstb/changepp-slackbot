@@ -39,7 +39,7 @@ def help_response():
             f"- Type `library help` for library module help commands.\n" \
             f"- Type `resume help` for resume module help commands.\n" \
             f"- Type `intern help` for resume module help commands.\n" \
-            f"- *(Still in development + Testing)* Type `network help` for network module help commands.\n" \
+            f"- Type `network help` for network module help commands.\n" \
            "- `{anything else}` Any other message is unrecognized and will return a message clarifying how the bot failed to understand it.\n" \
            "If you're an admin type `admin help` for more information!"
 
