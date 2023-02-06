@@ -68,4 +68,5 @@ Here are all of the command options for interacting with the intern module:
 - `intern help` - This returns a clarification on how to interact with the bot's intern module
 
 ## Networking Module
-**Note**: This module is currently in beta testing.
+- `network add_me` - Adds you to a private networking channel. Random users will be paired up with some generated prompts on a biweekly basis!
+- `network help` - Returns clarification on how to interact with the bot's network module
