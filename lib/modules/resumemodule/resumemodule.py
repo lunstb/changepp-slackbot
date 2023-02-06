@@ -18,7 +18,13 @@ env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 
 
-s3 = boto3.client('s3')
+s3 = boto3.client(
+    's3',
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
+)
+
+
 bucket_name = os.getenv("S3_BUCKET_NAME")
 
 class ResumeModule(ModuleTemplate):
@@ -78,7 +84,7 @@ class ResumeModule(ModuleTemplate):
                 headers = {'Authorization': 'Bearer ' + os.getenv("SLACK_BOT_TOKEN")}
                 content = requests.get(req.payload['event']['files'][0]['url_private'], headers=headers, allow_redirects=True).content
                 # Check if PDF is valid:
-                PyPDF2.PdfFileReader(io.BytesIO(content))
+                PyPDF2.PdfReader(io.BytesIO(content))
                 s3.upload_fileobj(io.BytesIO(content), bucket_name, f"{email}.pdf")
                 if not db.get_resumes(email):
                     db.insert_resume(email, f"https://{bucket_name}.s3.amazonaws.com/{urllib.parse.quote(email)}.pdf")
@@ -89,7 +95,7 @@ class ResumeModule(ModuleTemplate):
             if not db.get_resumes(email):
                 response = resume_not_removed()
             try:
-                s3.delete_object(Bucket=bucket_name, Key=email)
+                s3.delete_object(Bucket=bucket_name, Key= f"${email}.pdf")
                 db.remove_resume(email)
                 response = resume_removed()
             except ClientError as e:
